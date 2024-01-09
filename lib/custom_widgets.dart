@@ -49,7 +49,30 @@ class _CustomTextFieldState extends State<CustomTextField> {
     );
   }
 }
+class BottomZigZagClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var smallLineLength = size.width / 20;
+    const  smallLineHeight = 12;
+    var path = Path();
 
+    path.lineTo(0, size.height);
+    for (int i = 1; i <= 20; i++) {
+      if (i % 2 == 0) {
+        path.lineTo(smallLineLength * i, size.height);
+      } else {
+        path.lineTo(smallLineLength * i, size.height - smallLineHeight);
+
+      }
+    }
+    path.lineTo(size.width, 0);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper old) => false;}
 class CustomButton extends StatelessWidget {
   final String buttonText;
   final Color buttonColor;
@@ -112,6 +135,115 @@ class CustomIconButton extends StatelessWidget {
           color: Colors.black,
         ),
       ),
+    );
+  }
+}
+
+class CustomThumbShape extends SliderComponentShape {
+  @override
+  Size getPreferredSize(bool isEnabled, bool isDiscrete) {
+    return Size.fromRadius(12.0);
+  }
+
+  @override
+  void paint(PaintingContext context, Offset center,
+      {required Animation<double> activationAnimation, required Animation<
+          double> enableAnimation, required bool isDiscrete, required TextPainter labelPainter, required RenderBox parentBox, required SliderThemeData sliderTheme, required TextDirection textDirection, required double value, required double textScaleFactor, required Size sizeWithOverflow}) {
+    final canvas = context.canvas;
+    final rect = Rect.fromCenter(center: center, width: 6.0,height: 12);
+
+    // Draw black rounded rect with white stroke
+    final paint = Paint()
+      ..color = Colors.black
+      ..style = PaintingStyle.fill;
+    final strokePaint = Paint()
+      ..color = Colors.white
+      ..strokeWidth = 2.0
+      ..style = PaintingStyle.stroke;
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(rect, Radius.circular(6.0)),
+      strokePaint,
+    );
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(rect, Radius.circular(6.0)),
+      paint,
+    );
+
+  }
+
+
+}
+
+class Commitment extends StatelessWidget {
+  const Commitment({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.all(0),
+      padding: EdgeInsets.symmetric(vertical: 10,),
+      //height: 200,
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),gradient: LinearGradient(
+        begin: Alignment.center,
+        end: Alignment.centerRight,
+        colors: [
+          Colors.blue.shade900,
+          Colors.blue.shade800,
+        ],
+      ),),
+      child: Column(children: [
+        Padding(
+          padding:  EdgeInsets.symmetric(horizontal: 15),
+          child: Row(
+            children: [
+              Expanded(
+                  child: Row(
+                    children: [
+                      Icon(Icons.airplanemode_on_rounded, color: Colors.white),
+                      SizedBox(width: 8),
+                      Text(
+                        'Amazon Prime',
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                    ],
+                  )
+              ),Text('20 SAR', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.white),)
+            ],
+          ),
+        ),
+        Container(
+
+          width: double.maxFinite,
+          child: SliderTheme(
+            data: SliderThemeData(
+                thumbShape: CustomThumbShape()
+            ),
+            child: Slider(
+              activeColor: Colors.teal,
+
+              min: 0.0,
+              max: 100.0,
+              value: 20,
+              // divisions: 10,
+              label: '20',
+              onChanged: (value) {
+
+              },
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('100% collected',style: TextStyle(fontSize: 12,color: Colors.white)),
+              Text('100% collected',style: TextStyle(fontSize: 12,color: Colors.white)),
+            ],
+          ),
+        )
+      ],),
     );
   }
 }

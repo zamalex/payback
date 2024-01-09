@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:payback/commitments_screen.dart';
+import 'package:payback/commitmetn_details_screen.dart';
 import 'package:payback/email.dart';
 import 'package:payback/login.dart';
+import 'package:payback/main_screen.dart';
 import 'package:payback/onboarding.dart';
 import 'package:payback/phonenumber.dart';
 import 'package:payback/register.dart';
@@ -38,7 +41,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: RegisterScreen(),
+      home: CommitmetDetails(),
     );
   }
 }

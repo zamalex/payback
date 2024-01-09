@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
+import 'package:payback/login.dart';
+
 class OnBoard {
   final String image, title, description;
 
@@ -237,7 +239,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             fontSize: 18,
                           ),
                         ),
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginScreen(),));
+                        },
                       ),
                       SizedBox(
                         height: 16,

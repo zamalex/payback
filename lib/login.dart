@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:payback/colors.dart';
+import 'package:payback/register.dart';
 
 import 'custom_widgets.dart';
 
@@ -48,7 +49,11 @@ class LoginScreen extends StatelessWidget {
                     children: [
                       Text('Dont have an account?'),
                       SizedBox(width: 5,),
-                      Text('Sign up',style: TextStyle(fontWeight: FontWeight.bold,color: kBlueColor),),
+                      InkWell(
+                          onTap: (){
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => RegisterScreen(),));
+                          },
+                          child: Text('Sign up',style: TextStyle(fontWeight: FontWeight.bold,color: kBlueColor),)),
                     ],
                   ),
                   SizedBox(height: 10,),
