@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:payback/colors.dart';
-import 'package:payback/commitments_screen.dart';
-import 'package:payback/home_screen.dart';
+import 'package:payback/helpers/colors.dart';
+import 'package:payback/screens/commitments_screen.dart';
+import 'package:payback/screens/home_screen.dart';
 
 
 class MainScreen extends StatefulWidget {

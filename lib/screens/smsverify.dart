@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:payback/colors.dart';
+import 'package:payback/helpers/colors.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-import 'custom_widgets.dart';
+import '../helpers/custom_widgets.dart';
 
 class SMSScreen extends StatelessWidget {
   const SMSScreen({Key? key}) : super(key: key);

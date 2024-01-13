@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:payback/colors.dart';
+import 'package:payback/helpers/colors.dart';
 
-import 'custom_widgets.dart';
+import '../helpers/custom_widgets.dart';
 
 class CheckPhoneNumberScreen extends StatelessWidget {
   const CheckPhoneNumberScreen({Key? key}) : super(key: key);

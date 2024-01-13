@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-import 'package:payback/login.dart';
+
+import 'login.dart';
 
 class OnBoard {
   final String image, title, description;

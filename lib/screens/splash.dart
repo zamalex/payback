@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:payback/onboarding.dart';
+import 'package:payback/screens/onboarding.dart';
 
 class Splash extends StatefulWidget {
   @override

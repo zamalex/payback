@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:payback/colors.dart';
-import 'package:payback/login.dart';
+import 'package:payback/helpers/colors.dart';
 
-import 'custom_widgets.dart';
+import '../helpers/custom_widgets.dart';
+import 'login.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({Key? key}) : super(key: key);

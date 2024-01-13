@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:payback/colors.dart';
+import 'package:payback/helpers/colors.dart';
 
-import 'custom_widgets.dart';
+import '../helpers/custom_widgets.dart';
 
 class CheckEmailScreen extends StatelessWidget {
   const CheckEmailScreen({Key? key}) : super(key: key);
