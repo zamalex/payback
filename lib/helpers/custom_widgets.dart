@@ -53,34 +53,41 @@ class _CustomTextFieldState extends State<CustomTextField> {
 class TextFieldButton extends StatelessWidget{
 
   String hinttext;
-  TextFieldButton({required this.hinttext});
+  Function onTap;
+  TextFieldButton({required this.hinttext,required this.onTap});
 
   @override
    Widget build(BuildContext context) {
-      return Container(
-        height: 48.0,
-        child: TextField(
-          enabled: false,
-          decoration: InputDecoration(
-            fillColor: Colors.white, // Custom background color
-            filled: true,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16.0),
-              borderSide: BorderSide(
-                color: Colors.grey,
-                width: 1.0,
-              ),
-            ),
-            hintText: hinttext,
-            hintStyle: TextStyle(
-              color: Colors.grey,
-            ),
-            contentPadding: EdgeInsets.symmetric(vertical: 12.0,horizontal: 10),
-            suffixIcon: IconButton(
-              icon: Icon(Icons.menu),
-              onPressed: () {
+      return InkWell(
 
-              },
+        onTap: (){
+          onTap();
+        },
+        child: Container(
+          height: 48.0,
+          child: TextField(
+            enabled: false,
+            decoration: InputDecoration(
+              fillColor: Colors.white, // Custom background color
+              filled: true,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16.0),
+                borderSide: BorderSide(
+                  color: Colors.grey,
+                  width: 1.0,
+                ),
+              ),
+              hintText: hinttext,
+              hintStyle: TextStyle(
+                color: Colors.grey,
+              ),
+              contentPadding: EdgeInsets.symmetric(vertical: 12.0,horizontal: 10),
+              suffixIcon: IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () {
+
+                },
+              ),
             ),
           ),
         ),

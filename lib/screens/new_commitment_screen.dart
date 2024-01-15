@@ -14,6 +14,7 @@ class NewCommitmentScreen extends StatefulWidget {
 class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
   int selected =0;
   int type = 0;
+  int selectedPercentage = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +66,9 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
                     SizedBox(height: 15,),
                     Text('Enter SADAD'),
                     SizedBox(height: 5,),
-                    TextFieldButton(hinttext: 'Choose category'),
+                    TextFieldButton(hinttext: 'Choose category',onTap: (){
+                      showCategoriesSheet(context);
+                    },),
                     SizedBox(height: 15,),
                     Text('Payment target'),
                     SizedBox(height: 5,),
@@ -81,20 +84,31 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
                     ),
                     SizedBox(height: 5,),
                     GridView.count(
+
+                      padding: EdgeInsets.all(5),
+                        crossAxisSpacing: 5,
+                        mainAxisSpacing: 5,
                         crossAxisCount: 5,
                         shrinkWrap: true,
                         children: List.generate(10, (index) {
-                          return Container(
-                            margin: EdgeInsets.all(4),
-                            child: Card(
-                              elevation: 0,
-                                color: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                    side: BorderSide(color: Colors.grey,width: 1)
-                                ),
+                          return InkWell(
+                            onTap: (){
+                              if(((index+1)*10)<=70)
+                              setState(() {
+                                selectedPercentage=index;
+                              });
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: ((index+1)*10)>70?Colors.grey.shade200:selectedPercentage==index?kPurpleColor:Colors.white,
+                                  borderRadius: BorderRadius.circular(16),
+                                border: Border.all(color: selectedPercentage==index?kPurpleColor:Colors.grey,width: 1)
+
+                              ),
+                              margin: EdgeInsets.all(0),
                                 child: Center(
-                                    child: Text('10%'))),
+                                    child: Text('${((index+1)*10)}%',style: TextStyle(color: selectedPercentage==index?Colors.white:Colors.grey),)),
+                            ),
                           );})),
                     SizedBox(height: 15,),
                     Text('Due date'),
@@ -113,7 +127,7 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
                           });
                         },)),
 
-                        SizedBox(width: 15,),
+                        SizedBox(width: 10,),
                         Expanded(child: PaymentType(myIndex: 1,selectedIndex:type,txt:'Repeatable (renews after completion)',onTap: (){
                           setState(() {
                             type=1;
@@ -156,6 +170,51 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
       ),
     );
   }
+
+
+  void showCategoriesSheet(BuildContext context) {
+    showModalBottomSheet(
+      backgroundColor: Colors.white,
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16.0),
+          topRight: Radius.circular(16.0),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return Container(
+          decoration:BoxDecoration( borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16.0),
+            topRight: Radius.circular(16.0),
+          ),color: Colors.white) ,
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Select category',style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
+              SizedBox(height: 10,)
+            ]..addAll(List.generate(3, (index) =>   Column(
+              children: [
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  dense: true,
+                  leading: Icon(Icons.airplanemode_active,color: kPurpleColor,),
+                  title: Text('Category Name',style: TextStyle(fontSize: 15),),
+                  onTap: () {
+                    // Handle settings tile tap
+                  },
+                ),
+                index<2?Divider():Container()
+              ],
+            ),)
+          )),
+        );
+      },
+    );
+  }
+
 }
 
 
@@ -181,7 +240,7 @@ class PaymentType extends StatelessWidget {
                 margin: EdgeInsets.only(top: 10),
                 child: Column(
                   children: [
-                    Icon(Icons.payments_rounded,size: 50,color: myIndex==selectedIndex?kBlueColor:Colors.grey,),
+                    Icon(Icons.payments_rounded,size: 60,color: myIndex==selectedIndex?kBlueColor:Colors.grey,),
                     Container(
                         margin: EdgeInsets.all(10),
                         child: Text(txt,textAlign: TextAlign.center,style: TextStyle(color: myIndex==selectedIndex?kBlueColor:Colors.grey),))
