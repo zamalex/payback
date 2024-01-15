@@ -3,6 +3,7 @@ import 'package:payback/screens/commitments_screen.dart';
 import 'package:payback/screens/commitmetn_details_screen.dart';
 import 'package:payback/screens/contributer_screen.dart';
 import 'package:payback/screens/email.dart';
+import 'package:payback/screens/new_commitment_screen.dart';
 
 import 'package:payback/screens/onboarding.dart';
 import 'package:payback/screens/phonenumber.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: CommitmetDetails(),
+      home: NewCommitmentScreen(),
     );
   }
 }
