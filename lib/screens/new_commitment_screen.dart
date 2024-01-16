@@ -67,7 +67,7 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
                     Text('Enter SADAD'),
                     SizedBox(height: 5,),
                     TextFieldButton(hinttext: 'Choose category',onTap: (){
-                      showCategoriesSheet(context);
+                      showPartnersSheet(context);
                     },),
                     SizedBox(height: 15,),
                     Text('Payment target'),
@@ -216,6 +216,97 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
   }
 
 }
+
+
+  void showPartnersSheet(BuildContext context) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16.0),
+          topRight: Radius.circular(16.0),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.95,
+          decoration:BoxDecoration( borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16.0),
+            topRight: Radius.circular(16.0),
+          ),color: Colors.white) ,
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  InkWell(
+                    onTap: (){Navigator.pop(context);},
+                  child: Icon(Icons.close,color: kPurpleColor,),
+                  )
+                ],
+              ),
+              Text('Choose partner',style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
+              SizedBox(height: 10,),
+              CustomTextField(hintText: 'Search...'),
+              SizedBox(height: 10,)
+            ]..addAll([
+            Expanded(
+              child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              ),
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return Container(
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: kBlueColor,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Icon(
+                          Icons.home,
+                          size: 70,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Container(
+                        alignment: Alignment.bottomCenter,
+                        child: Text(
+                          'Netflix',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+          ),
+            )
+            ]
+          )),
+        );
+      },
+    );
+  }
+
+
 
 
 class PaymentType extends StatelessWidget {

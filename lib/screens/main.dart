@@ -3,9 +3,11 @@ import 'package:payback/screens/commitments_screen.dart';
 import 'package:payback/screens/commitmetn_details_screen.dart';
 import 'package:payback/screens/contributer_screen.dart';
 import 'package:payback/screens/email.dart';
+import 'package:payback/screens/main_screen.dart';
 import 'package:payback/screens/new_commitment_screen.dart';
 
 import 'package:payback/screens/onboarding.dart';
+import 'package:payback/screens/partner_info_screen.dart';
 import 'package:payback/screens/phonenumber.dart';
 import 'package:payback/screens/register.dart';
 import 'package:payback/screens/smsverify.dart';
@@ -28,7 +30,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: NewCommitmentScreen(),
+      home: Splash(),
     );
   }
 }
