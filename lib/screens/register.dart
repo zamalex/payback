@@ -1,12 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:provider/provider.dart';
 
 import '../helpers/custom_widgets.dart';
+import '../helpers/functions.dart';
+import '../providers/auth_provider.dart';
 import 'login.dart';
 
 class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+   RegisterScreen({Key? key}) : super(key: key);
 
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+
+  register(BuildContext context){
+    if(emailController.text.isEmpty||passwordController.text.isEmpty){
+      showErrorMessage(context, 'Enter required data');
+      return;
+    }
+
+    Map<String,String> request = {
+      'name':nameController.text,
+      'email':emailController.text,
+      'password':passwordController.text
+    };
+
+    Provider.of<AuthProvider>(context,listen: false).register(request).then((value) {
+      showErrorMessage(context, value['message']);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +54,7 @@ class RegisterScreen extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 5,),
-                  CustomTextField(hintText: 'Enter your name'),
+                  CustomTextField(hintText: 'Enter your name',controller: nameController,),
                   SizedBox(height: 15,),
 
                   Row(
@@ -39,7 +63,7 @@ class RegisterScreen extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 5,),
-                  CustomTextField(hintText: 'Enter your email'),
+                  CustomTextField(hintText: 'Enter your email',controller: emailController,),
                   SizedBox(height: 15,),
                   Row(
                     children: [
@@ -47,11 +71,15 @@ class RegisterScreen extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 5,),
-                  CustomTextField(hintText: 'Enter your password',obscureText: true,),
+                  CustomTextField(hintText: 'Enter your password',obscureText: true,controller: passwordController,),
                   SizedBox(height: 20,),
-                  Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: CustomButton(buttonText: 'Create account', buttonColor: kPurpleColor)),
+                  Consumer<AuthProvider>(
+                    builder:(context, value, child) => value.isLoading?CircularProgressIndicator(): Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: CustomButton(buttonText: 'Create account', buttonColor: kPurpleColor,onTap: (){
+                          register(context);
+                        },)),
+                  ),
                   SizedBox(height: 20,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

@@ -1,12 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/helpers/functions.dart';
+import 'package:payback/providers/auth_provider.dart';
 import 'package:payback/screens/register.dart';
+import 'package:provider/provider.dart';
 
 import '../helpers/custom_widgets.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+   LoginScreen({Key? key}) : super(key: key);
 
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  login(BuildContext context){
+    if(emailController.text.isEmpty||passwordController.text.isEmpty){
+        showErrorMessage(context, 'Enter required data');
+        return;
+    }
+
+    Provider.of<AuthProvider>(context,listen: false).login(emailController.text, passwordController.text, '').then((value) {
+      showErrorMessage(context, value['message']);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +46,7 @@ class LoginScreen extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 5,),
-                  CustomTextField(hintText: 'Enter your email'),
+                  CustomTextField(hintText: 'Enter your email',controller: emailController,),
                   SizedBox(height: 15,),
                   Row(
                     children: [
@@ -38,11 +54,15 @@ class LoginScreen extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 5,),
-                  CustomTextField(hintText: 'Enter your password',obscureText: true,),
+                  CustomTextField(hintText: 'Enter your password',obscureText: true,controller: passwordController,),
                   SizedBox(height: 20,),
-                  Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: CustomButton(buttonText: 'Log in', buttonColor: kPurpleColor)),
+                  Consumer<AuthProvider>(
+                    builder:(context, value, child) => value.isLoading?CircularProgressIndicator(): Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: CustomButton(buttonText: 'Log in', buttonColor: kPurpleColor,onTap: (){
+                          login(context);
+                        },)),
+                  ),
                   SizedBox(height: 20,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

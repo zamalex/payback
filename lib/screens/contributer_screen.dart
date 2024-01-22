@@ -111,7 +111,7 @@ class ContributerScreen extends StatelessWidget {
                           ListTile(
                             leading: CircleAvatar(
                               radius: 30,
-                              backgroundImage: AssetImage('assets/image.jpg'),
+                              backgroundImage: NetworkImage('https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png'),
                             ),
                             title: Text(
                               'Alan Rahondy',

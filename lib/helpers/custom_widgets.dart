@@ -6,8 +6,11 @@ class CustomTextField extends StatefulWidget {
 
   bool obscureText = false;
 
-  CustomTextField({required this.hintText,this.obscureText= false});
 
+  CustomTextField({required this.hintText,this.obscureText= false,this.controller});
+
+
+  TextEditingController? controller;
   @override
   _CustomTextFieldState createState() => _CustomTextFieldState();
 }
@@ -19,6 +22,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return Container(
       height: 48.0,
       child: TextField(
+        controller: widget.controller,
 
         obscureText: widget.obscureText,
         decoration: InputDecoration(
@@ -125,8 +129,9 @@ class BottomZigZagClipper extends CustomClipper<Path> {
 class CustomButton extends StatelessWidget {
   final String buttonText;
   final Color buttonColor;
+   Function? onTap;
 
-  CustomButton({required this.buttonText, required this.buttonColor});
+  CustomButton({required this.buttonText, required this.buttonColor,this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +139,8 @@ class CustomButton extends StatelessWidget {
       height: 48,
       child: ElevatedButton(
         onPressed: () {
-          // Add your button functionality here
+          if(onTap!=null)
+          onTap!();
         },
         style: ElevatedButton.styleFrom(
           primary: buttonColor, // Custom color for the button

@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     backgroundColor: kBlueLightColor,
-                    child: Icon(Icons.card_giftcard_rounded,color: kBlueColor,size: 35,),
+                    child: Image.network('https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png',width: 35,),
                     radius: 35,
                   ),
                   SizedBox(height: 8),
@@ -90,7 +90,7 @@ class HomeScreen extends StatelessWidget {
                         alignment: Alignment.topCenter,
                         width:170,
                         height:200 ,
-                        decoration: BoxDecoration(color: Colors.lightBlueAccent,borderRadius: BorderRadius.circular(15)),
+                        decoration: BoxDecoration(image: DecorationImage(image: NetworkImage('https://cdn-images.buyma.com/imgdata/item/230807/0097589320/564300514/428.jpg',),fit: BoxFit.cover),borderRadius: BorderRadius.circular(15)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -143,7 +143,7 @@ class HomeScreen extends StatelessWidget {
                         alignment: Alignment.topCenter,
                         width:170,
                         height:200 ,
-                        decoration: BoxDecoration(color: Colors.lightBlueAccent,borderRadius: BorderRadius.circular(15)),
+                        decoration: BoxDecoration(image: DecorationImage(image: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuCxMPJwglskH6j6jQhCmJGqIr9kR6_iMPng&usqp=CAU'),fit: BoxFit.cover),borderRadius: BorderRadius.circular(15)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

@@ -37,6 +37,12 @@ dependencies:
   cupertino_icons: ^1.0.2
   pin_code_fields: ^7.3.0
   slide_switcher: ^1.1.2
+  provider: ^6.0.1
+  dio: ^4.0.3
+  get_it: ^7.2.0
+  pretty_dio_logger: ^1.2.0-beta-1
+  shared_preferences: ^2.0.9
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
