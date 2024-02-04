@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/screens/cart_screen.dart';
 import 'package:payback/screens/commitments_screen.dart';
 import 'package:payback/screens/home_screen.dart';
+import 'package:payback/screens/shop_online_screen.dart';
 
 
 class MainScreen extends StatefulWidget {
@@ -11,27 +13,23 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
+  List screens=[
+    CartScreen(),
+    ShopOnlineScreen(),
+    ShopOnlineScreen(),
+    ShopOnlineScreen(),
+    ShopOnlineScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomRight: Radius.circular(25.0),
-          ),
-        ),
-        title: Text('Custom Screen'),
-      ),
+
       body: Container(
         decoration: BoxDecoration(
-          color:Colors.grey.shade200,
 
         ),
-        child: HomeScreen(),
+        child: screens[_currentIndex],
       ),
       bottomNavigationBar: ClipRRect(
         borderRadius: BorderRadius.only(
@@ -56,20 +54,20 @@ class _MainScreenState extends State<MainScreen> {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Search',
+              icon: Icon(Icons.shopping_bag_rounded),
+              label: 'Shopping inline',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.favorite),
-              label: 'Favorites',
+              icon: Icon(Icons.location_pin),
+              label: 'In-stores',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.category_outlined),
+              label: 'Controls',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart),
-              label: 'Cart',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
+              label: 'My cart',
             ),
           ],
         ),

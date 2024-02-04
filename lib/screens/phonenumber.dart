@@ -1,10 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/screens/smsverify.dart';
+import 'package:provider/provider.dart';
 
 import '../helpers/custom_widgets.dart';
+import '../helpers/functions.dart';
+import '../providers/auth_provider.dart';
 
 class CheckPhoneNumberScreen extends StatelessWidget {
-  const CheckPhoneNumberScreen({Key? key}) : super(key: key);
+   CheckPhoneNumberScreen({Key? key,required this.request}) : super(key: key);
+
+  Map<String,String> request;
+
+   TextEditingController phnoneController = TextEditingController();
+
+   register(BuildContext context){
+     if(phnoneController.text.isEmpty){
+       showErrorMessage(context, 'Enter required data');
+       return;
+     }
+
+
+
+     request.putIfAbsent('phone', () => phnoneController.text);
+     request.putIfAbsent('is_vendor', () => "0");
+
+
+     Provider.of<AuthProvider>(context,listen: false).register(request).then((value) {
+       if(value['data']){
+         Get.to(SMSScreen());
+       }else{
+         showErrorMessage(context, value['message']);
+
+       }
+     });
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +61,16 @@ class CheckPhoneNumberScreen extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 5,),
-                  CustomTextField(hintText: 'Enter your phone number'),
+                  CustomTextField(hintText: 'Enter your phone number',controller: phnoneController,),
 
                   SizedBox(height: 20,),
-                  Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: CustomButton(buttonText: 'Send', buttonColor: kPurpleColor)),
+                  Consumer<AuthProvider>(
+                    builder:(context,value,child)=> value.isLoading?CircularProgressIndicator():Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: CustomButton(buttonText: 'Send', buttonColor: kPurpleColor,onTap: (){
+                          register(context);
+                        },)),
+                  ),
                   SizedBox(height: 20,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

@@ -23,7 +23,11 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
       appBar: AppBar(
         leadingWidth: double.infinity,
         leading: Container(
-          child: Text('Close',style: TextStyle(color: kPurpleColor),),
+          child: InkWell(
+              onTap: (){
+                Navigator.of(context).pop();
+              },
+              child: Text('Close',style: TextStyle(color: kPurpleColor),)),
           margin: EdgeInsets.all(16),
         ),
         backgroundColor: Colors.grey.shade100,

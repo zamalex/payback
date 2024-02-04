@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/helpers/functions.dart';
 import 'package:payback/providers/auth_provider.dart';
+import 'package:payback/screens/main_screen.dart';
 import 'package:payback/screens/register.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +16,7 @@ class LoginScreen extends StatelessWidget {
   TextEditingController passwordController = TextEditingController();
 
   login(BuildContext context){
+    
     if(emailController.text.isEmpty||passwordController.text.isEmpty){
         showErrorMessage(context, 'Enter required data');
         return;

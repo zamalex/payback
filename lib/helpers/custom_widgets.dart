@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
+import 'package:payback/screens/commitmetn_details_screen.dart';
 
 
 class CustomTextField extends StatefulWidget {
@@ -6,11 +8,14 @@ class CustomTextField extends StatefulWidget {
 
   bool obscureText = false;
 
+  Widget? icon = null;
 
-  CustomTextField({required this.hintText,this.obscureText= false,this.controller});
+
+  CustomTextField({required this.hintText,this.obscureText= false,this.controller,this.icon,this.maxLines=1});
 
 
   TextEditingController? controller;
+  int maxLines = 1;
   @override
   _CustomTextFieldState createState() => _CustomTextFieldState();
 }
@@ -20,8 +25,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 48.0,
+      height: widget.maxLines*48.0,
       child: TextField(
+        maxLines: widget.maxLines,
+
         controller: widget.controller,
 
         obscureText: widget.obscureText,
@@ -41,7 +48,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           ),
           contentPadding: EdgeInsets.symmetric(vertical: 12.0,horizontal: 10),
           suffixIcon: IconButton(
-            icon: !widget.obscureText?Icon(null):Icon(widget.obscureText ? Icons.visibility : Icons.visibility_off),
+            icon: !widget.obscureText?widget.icon??Icon(null):Icon(widget.obscureText ? Icons.visibility : Icons.visibility_off),
             onPressed: () {
               setState(() {
                 widget.obscureText = !widget.obscureText;
@@ -234,71 +241,88 @@ class Commitment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(0),
-      padding: EdgeInsets.symmetric(vertical: 10,),
-      //height: 200,
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),gradient: LinearGradient(
-        begin: Alignment.center,
-        end: Alignment.centerRight,
-        colors: [
-          Colors.blue.shade900,
-          Colors.blue.shade800,
-        ],
-      ),),
-      child: Column(children: [
-        Padding(
-          padding:  EdgeInsets.symmetric(horizontal: 15),
-          child: Row(
-            children: [
-              Expanded(
-                  child: Row(
-                    children: [
-                      Icon(Icons.airplanemode_on_rounded, color: Colors.white),
-                      SizedBox(width: 8),
-                      Text(
-                        'Amazon Prime',
-                        style: TextStyle(fontSize: 20, color: Colors.white),
-                      ),
-                    ],
-                  )
-              ),Text('20 SAR', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.white),)
-            ],
-          ),
-        ),
-        Container(
-
-          width: double.maxFinite,
-          child: SliderTheme(
-            data: SliderThemeData(
-                thumbShape: CustomThumbShape()
-            ),
-            child: Slider(
-              activeColor: Colors.teal,
-
-              min: 0.0,
-              max: 100.0,
-              value: 20,
-              // divisions: 10,
-              label: '20',
-              onChanged: (value) {
-
-              },
+    return InkWell(
+      onTap: (){
+        Get.to(CommitmetDetails());
+      },
+      child: Container(
+        margin: EdgeInsets.all(0),
+        padding: EdgeInsets.symmetric(vertical: 10,),
+        //height: 200,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),gradient: LinearGradient(
+          begin: Alignment.center,
+          end: Alignment.centerRight,
+          colors: [
+            Colors.blue.shade900,
+            Colors.blue.shade800,
+          ],
+        ),),
+        child: Column(children: [
+          Padding(
+            padding:  EdgeInsets.symmetric(horizontal: 15),
+            child: Row(
+              children: [
+                Expanded(
+                    child: Row(
+                      children: [
+                        Icon(Icons.airplanemode_on_rounded, color: Colors.white),
+                        SizedBox(width: 8),
+                        Text(
+                          'Amazon Prime',
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        ),
+                      ],
+                    )
+                ),Text('20 SAR', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.white),)
+              ],
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('100% collected',style: TextStyle(fontSize: 12,color: Colors.white)),
-              Text('100% collected',style: TextStyle(fontSize: 12,color: Colors.white)),
-            ],
+          Container(
+
+            width: double.maxFinite,
+            child: SliderTheme(
+              data: SliderThemeData(
+                  thumbShape: CustomThumbShape()
+              ),
+              child: Slider(
+                activeColor: Colors.teal,
+
+                min: 0.0,
+                max: 100.0,
+                value: 20,
+                // divisions: 10,
+                label: '20',
+                onChanged: (value) {
+
+                },
+              ),
+            ),
           ),
-        )
-      ],),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('100% collected',style: TextStyle(fontSize: 12,color: Colors.white)),
+                Text('100% collected',style: TextStyle(fontSize: 12,color: Colors.white)),
+              ],
+            ),
+          )
+        ],),
+      ),
     );
   }
+}
+AppBar mainAppBar(){
+  return AppBar(
+
+    leading: Row(
+      children: [
+        TextButton.icon(onPressed: (){
+        Get.back();
+  }
+          , icon: Icon(Icons.arrow_back_ios), label: Text('Back')),
+      ],
+    ),leadingWidth: double.infinity,);
 }

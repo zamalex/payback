@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'dart:math' as math;
 
 
@@ -192,7 +193,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       Spacer(),
                       InkWell(
                         onTap: () {
-                          if (_pageIndex == 3) return;
+                          if (_pageIndex == 3) Get.to(LoginScreen());
                           if (_pageIndex < 3) {
                             _pageIndex++;
                           } else {

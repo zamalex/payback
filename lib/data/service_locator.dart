@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:payback/data/repository/auth_repo.dart';
+import 'package:payback/data/repository/home_repo.dart';
 
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -24,5 +25,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => PreferenceUtils());
 
   sl.registerLazySingleton(() => AuthRepository());
+  sl.registerLazySingleton(() => HomeRepository());
 
 }

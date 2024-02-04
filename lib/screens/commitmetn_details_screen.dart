@@ -10,7 +10,7 @@ class CommitmetDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
+      backgroundColor: kBackgroundColor,//Colors.grey.shade200,
       body:  Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
@@ -40,7 +40,11 @@ class CommitmetDetails extends StatelessWidget {
                                 padding: const EdgeInsets.all(10.0),
                                 child: Row(
                                   children: [
-                                    Icon(Icons.arrow_back_ios,color: Colors.white,),
+                                    InkWell(
+                                      onTap:(){
+                                        Navigator.of(context).pop();
+                                    },
+                                        child: Icon(Icons.arrow_back_ios,color: Colors.white,)),
                                     Expanded(child: Text('Back',style: TextStyle(color: Colors.white),)),
                                     Icon(Icons.edit,color: Colors.white,),
                                     SizedBox(width: 5,),

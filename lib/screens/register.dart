@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/screens/phonenumber.dart';
 import 'package:provider/provider.dart';
 
 import '../helpers/custom_widgets.dart';
@@ -23,9 +26,15 @@ class RegisterScreen extends StatelessWidget {
 
     Map<String,String> request = {
       'name':nameController.text,
+      'first_name':nameController.text,
+      'last_name':nameController.text,
       'email':emailController.text,
-      'password':passwordController.text
+      'password':passwordController.text,
+      'password_confirmation':passwordController.text,
     };
+
+    Get.to(CheckPhoneNumberScreen(request: request,));
+    return;
 
     Provider.of<AuthProvider>(context,listen: false).register(request).then((value) {
       showErrorMessage(context, value['message']);
