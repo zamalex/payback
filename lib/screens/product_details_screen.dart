@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:slide_switcher/slide_switcher.dart';
 import '../helpers/custom_widgets.dart';
@@ -28,7 +29,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           child: CircleAvatar(child: Icon(Icons.save,color: kBlueColor,),backgroundColor: Colors.white,),
         )
       ],
-      leading: Container(width:100,child: TextButton.icon(onPressed: (){}, icon: Icon(Icons.arrow_back_ios,color: kPurpleColor,), label: Text('Back',style: TextStyle(color: kPurpleColor),),)),
+      leading: Container(width:100,child: TextButton.icon(onPressed: (){
+        Get.back();
+      }, icon: Icon(Icons.arrow_back_ios,color: kPurpleColor,), label: Text('Back',style: TextStyle(color: kPurpleColor),),)),
     ),body: Column(
       children: [
         Expanded(

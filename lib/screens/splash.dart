@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:payback/providers/home_provider.dart';
+import 'package:payback/screens/login.dart';
 import 'package:payback/screens/onboarding.dart';
+import 'package:provider/provider.dart';
 
 class Splash extends StatefulWidget {
   @override
@@ -14,7 +18,21 @@ class _SplashState extends State<Splash> {
     // TODO: implement initState
     super.initState();
 
-    Future.delayed(Duration(seconds: 3)).then((value) => Navigator.of(context).push(MaterialPageRoute(builder: (context) => OnBoardingScreen(),)));
+    Future.delayed(Duration(seconds: 1)).then((value){
+        Provider.of<HomeProvider>(context,listen: false).getOnBoarding().then((value){
+          if(value['data']==null){
+            Get.to(LoginScreen());
+          }else{
+            if((value['data'] as List).isEmpty){
+              Get.to(LoginScreen());
+            }
+            else{
+              Get.to(OnBoardingScreen());
+            }
+          }
+        });
+    });
+
   }
   @override
   Widget build(BuildContext context) {

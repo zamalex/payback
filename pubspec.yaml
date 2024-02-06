@@ -43,6 +43,8 @@ dependencies:
   pretty_dio_logger: ^1.2.0-beta-1
   shared_preferences: ^2.0.9
   get: ^4.6.6
+  custom_date_range_picker: ^1.0.10
+
 
 dev_dependencies:
   flutter_test:

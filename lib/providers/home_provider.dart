@@ -15,11 +15,25 @@ class HomeProvider extends ChangeNotifier{
 
   List<Category>? categories = [];
   List<Category>? products = [];
+  List<Category>? onBoarding = [];
 
 
 
 
 
+
+  Future<Map> getOnBoarding()async{
+    isLoading = true;
+    notifyListeners();
+
+    Map response= await sl<HomeRepository>().getOnBoarding();
+    onBoarding = response['data'];
+
+    isLoading = false;
+    notifyListeners();
+
+    return response;
+  }
 
   Future<Map> getCategories()async{
     isLoading = true;

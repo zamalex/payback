@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/helpers/custom_widgets.dart';
 import 'package:payback/providers/checkout_provider.dart';
 import 'package:payback/screens/cart_screen.dart';
 import 'package:payback/screens/checkout_object.dart';
+import 'package:payback/screens/payment_success_screen.dart';
 import 'package:provider/provider.dart';
 
 class CheckoutScreen extends StatelessWidget {
@@ -12,9 +14,16 @@ class CheckoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(leading: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text('Close',style: TextStyle(color: kPurpleColor),),
+      appBar: AppBar(
+        backgroundColor: kBackgroundColor,
+        centerTitle: true,
+        title: Text('Checkout'),
+        leading: Center(
+        child: InkWell(
+            onTap: (){
+              Get.back();
+            },
+            child: Text('Close',style: TextStyle(color: kPurpleColor),)),
       ),),
       body: SafeArea(child: Column(
         children: [Expanded(child: Container(
@@ -82,7 +91,7 @@ class CheckoutScreen extends StatelessWidget {
             padding: EdgeInsets.all(8),
             decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.only(topLeft: Radius.circular(16),topRight: Radius.circular(16))),
             child: Container(
-                width:double.infinity,child: CustomButton(buttonText: 'Submit order', buttonColor: kPurpleColor)),
+                width:double.infinity,child: CustomButton(buttonText: 'Submit order', buttonColor: kPurpleColor,onTap: (){Get.to(PaymentSuccessScreen());},)),
           )
         ],
       ),)

@@ -40,16 +40,16 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: EdgeInsets.all(0),
         child: ListView(children: [
           Card(
+            margin: EdgeInsets.zero,
 
             color: Colors.white,
             elevation:0,
              shadowColor: Colors.grey,
              shape: RoundedRectangleBorder(
-               borderRadius: BorderRadius.only(bottomRight: Radius.circular(20)),
+               borderRadius: BorderRadius.only(bottomRight: Radius.circular(40)),
              ),
-             borderOnForeground: true,
              child:  Padding(
-               padding: const EdgeInsets.all(8.0),
+               padding: const EdgeInsets.all(16.0),
                child: Row(
                    children: [
                      Container(
@@ -58,8 +58,8 @@ class _HomeScreenState extends State<HomeScreen> {
                          borderRadius: BorderRadius.only(
                          topRight: Radius.circular(8),
                          bottomLeft: Radius.circular(8),
-                         topLeft: Radius.circular(25),
-                         bottomRight: Radius.circular(25),
+                         topLeft: Radius.circular(30),
+                         bottomRight: Radius.circular(30),
                        ),),
                        child: ClipRRect(borderRadius: BorderRadius.only(
                          topRight: Radius.circular(8),
@@ -168,41 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
                child: ListView.builder(
                  scrollDirection: Axis.horizontal,
                  itemBuilder: (c,i){
-                   return Padding(
-                     padding: const EdgeInsets.all(8.0),
-                     child: Container(
-                       width: 170,
-                       child: Column(
-                         crossAxisAlignment: CrossAxisAlignment.start,
-                         children: [
-
-                           Container(
-                             padding: EdgeInsets.all(8),
-                             alignment: Alignment.topCenter,
-                             width:170,
-                             height:200 ,
-                             decoration: BoxDecoration(image: DecorationImage(image: NetworkImage('https://cdn-images.buyma.com/imgdata/item/230807/0097589320/564300514/428.jpg',),fit: BoxFit.cover),borderRadius: BorderRadius.circular(15)),
-                             child: Row(
-                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                               children: [
-                                 Container(
-
-                                   child: Text('Earn 100 SAR',style: TextStyle(fontSize:11,color: Colors.purple,),),
-                                   padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-
-                                   decoration:BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(15)),),
-                                 CircleAvatar(radius:15,child: Icon(Icons.battery_saver_rounded,color: Colors.blue,),backgroundColor: Colors.white,)
-                               ],
-                             ),
-                           ),
-                           SizedBox(height: 5,),
-                           Text('Nike shop',style: TextStyle(color: Colors.grey,),overflow: TextOverflow.ellipsis,maxLines: 1,)
-                           ,                Text('2000 SAR',style: TextStyle(color: Colors.purple,fontSize: 16),overflow: TextOverflow.ellipsis,maxLines: 1)
-                           ,                Text('Snakers shoe women',style: TextStyle(color: Colors.grey),overflow: TextOverflow.ellipsis,maxLines: 1)
-
-                         ],),
-                     ),
-                   );
+                   return ProductWidget();
                  },itemCount: 5,),
              ),
              SizedBox(height: 20,),
@@ -221,41 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                child: ListView.builder(
                  scrollDirection: Axis.horizontal,
                  itemBuilder: (c,i){
-                   return Padding(
-                     padding: const EdgeInsets.all(8.0),
-                     child: Container(
-                       width: 170,
-                       child: Column(
-                         crossAxisAlignment: CrossAxisAlignment.start,
-                         children: [
-
-                           Container(
-                             padding: EdgeInsets.all(8),
-                             alignment: Alignment.topCenter,
-                             width:170,
-                             height:200 ,
-                             decoration: BoxDecoration(image: DecorationImage(image: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuCxMPJwglskH6j6jQhCmJGqIr9kR6_iMPng&usqp=CAU'),fit: BoxFit.cover),borderRadius: BorderRadius.circular(15)),
-                             child: Row(
-                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                               children: [
-                                 Container(
-
-                                   child: Text('Earn 100 SAR',style: TextStyle(fontSize:11,color: Colors.purple,),),
-                                   padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-
-                                   decoration:BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(15)),),
-                                 CircleAvatar(radius:15,child: Icon(Icons.battery_saver_rounded,color: Colors.blue,),backgroundColor: Colors.white,)
-                               ],
-                             ),
-                           ),
-                           SizedBox(height: 5,),
-                           Text('Nike shop',style: TextStyle(color: Colors.grey,),overflow: TextOverflow.ellipsis,maxLines: 1,)
-                           ,                Text('2000 SAR',style: TextStyle(color: Colors.purple,fontSize: 16),overflow: TextOverflow.ellipsis,maxLines: 1)
-                           ,                Text('Snakers shoe women',style: TextStyle(color: Colors.grey),overflow: TextOverflow.ellipsis,maxLines: 1)
-
-                         ],),
-                     ),
-                   );
+                   return ProductWidget();
                  },itemCount: 5,),
              )
 

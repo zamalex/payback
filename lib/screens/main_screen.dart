@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/screens/cart_screen.dart';
 import 'package:payback/screens/commitments_screen.dart';
+import 'package:payback/screens/controls_Screen.dart';
 import 'package:payback/screens/home_screen.dart';
 import 'package:payback/screens/shop_online_screen.dart';
 
@@ -14,11 +15,11 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
   List screens=[
+    HomeScreen(),
+    ShopOnlineScreen(),
+    ShopOnlineScreen(),
+    ControlsScreen(),
     CartScreen(),
-    ShopOnlineScreen(),
-    ShopOnlineScreen(),
-    ShopOnlineScreen(),
-    ShopOnlineScreen(),
   ];
 
   @override
@@ -50,23 +51,23 @@ class _MainScreenState extends State<MainScreen> {
           },
           items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: Image.asset('assets/images/home_navigation.png',color: _currentIndex==0?kBlueColor:kBlueLightColor,),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_bag_rounded),
+              icon: Image.asset('assets/images/online_shop_navigation.png',color: _currentIndex==1?kBlueColor:kBlueLightColor),
               label: 'Shopping inline',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.location_pin),
+              icon: Image.asset('assets/images/local_stores_navigation.png',color: _currentIndex==2?kBlueColor:kBlueLightColor),
               label: 'In-stores',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.category_outlined),
+              icon: Image.asset('assets/images/controls_navigation.png',color: _currentIndex==3?kBlueColor:kBlueLightColor),
               label: 'Controls',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart),
+              icon: Image.asset('assets/images/cart_navigation.png',color: _currentIndex==4?kBlueColor:kBlueLightColor),
               label: 'My cart',
             ),
           ],

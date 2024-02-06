@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/helpers/custom_widgets.dart';
+import 'package:payback/screens/checkout_screen.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -53,7 +55,7 @@ class CartScreen extends StatelessWidget {
               Text('Summary',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
               SizedBox(height: 20,),
               Container(
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(11),color: kBlueLightColor.withOpacity(.7)),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(11),color: kBlueLightColor),
                 padding: EdgeInsets.all(16),
               child: Column(children: [
                 Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,children: [Text('Total price'),Text('20,000 SAR',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold,fontSize: 18),)],)
@@ -65,7 +67,7 @@ class CartScreen extends StatelessWidget {
               ),
 
               SizedBox(height: 25,),
-              Container(child: CustomButton(buttonText: 'Proceed to check out', buttonColor: kPurpleColor),width: double.infinity,)
+              Container(child: CustomButton(buttonText: 'Proceed to check out', buttonColor: kPurpleColor,onTap: (){Get.to(CheckoutScreen());}),width: double.infinity,)
 
             ],
           ),

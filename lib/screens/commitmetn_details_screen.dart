@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import '../helpers/colors.dart';
 import '../helpers/custom_widgets.dart';
+import 'contributer_screen.dart';
 
 
 class CommitmetDetails extends StatelessWidget {
@@ -284,23 +287,7 @@ class CommitmetDetails extends StatelessWidget {
                           Text('Commitment contributors',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
                           SizedBox(height: 20,),
                           Column(
-                            children:  List.generate(2, (index) => ListTile(
-                              leading: CircleAvatar(
-                                radius: 30,
-                                backgroundImage: NetworkImage('https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png'),
-                              ),
-                              title: Text('Alan Rahondy',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Sharing 10% of cashback',style: TextStyle(color: Colors.black)),
-                                  Text('32 SAR contributed',style: TextStyle(fontWeight: FontWeight.bold,color: kBlueColor)),
-                                ],
-                              ),
-                              onTap: () {
-                                // Add onTap functionality here
-                              },
-                            )),
+                            children:  List.generate(2, (index) => ContributorWidget()),
                           )
                           ,
                           ],),)
@@ -322,4 +309,37 @@ class CommitmetDetails extends StatelessWidget {
 
     );
   }
+}
+
+class ContributorWidget extends StatelessWidget{
+  bool showDetails = true;
+
+  ContributorWidget({this.showDetails = true});
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 4),
+      child: ListTile(
+
+        leading: CircleAvatar(
+          radius: 30,
+          backgroundImage: NetworkImage('https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png'),
+        ),
+        title: Text('Alan Rahondy',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),),
+        subtitle:!showDetails?null: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Sharing 10% of cashback',style: TextStyle(color: Colors.black)),
+            Text('32 SAR contributed',style: TextStyle(fontWeight: FontWeight.bold,color: kBlueColor)),
+          ],
+        ),
+        onTap: () {
+          Get.to(ContributerScreen());
+        },
+      ),
+    );
+  }
+
+
 }

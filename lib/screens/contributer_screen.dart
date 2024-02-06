@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 
 import '../helpers/colors.dart';
 import '../helpers/custom_widgets.dart';
@@ -20,7 +21,7 @@ class ContributerScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Container(
-                      padding: EdgeInsets.only(top: 10),
+                      padding: EdgeInsets.only(top: 20,bottom: 10),
                       width: double.infinity,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
@@ -41,15 +42,26 @@ class ContributerScreen extends StatelessWidget {
                               padding: const EdgeInsets.all(10.0),
                               child: Row(
                                 children: [
-                                  Icon(
-                                    Icons.arrow_back_ios,
-                                    color: Colors.white,
+                                  InkWell(
+                                    onTap:(){
+                                      Get.back();
+                                    },
+                                    child: Icon(
+                                      Icons.arrow_back_ios,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                   Expanded(
-                                      child: Text(
+                                      child: InkWell(
+                                        onTap:(){
+                                          Get.back();
+
+                                        },
+                                        child: Text(
                                     'Back',
                                     style: TextStyle(color: Colors.white),
-                                  )),
+                                  ),
+                                      )),
                                   Icon(
                                     Icons.delete,
                                     color: Colors.white,
@@ -105,8 +117,9 @@ class ContributerScreen extends StatelessWidget {
                           Text(
                             'Commitment owner',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 30),
+                                fontWeight: FontWeight.bold, fontSize: 25),
                           ),
+                          SizedBox(height: 10,),
                           ListTile(
                             leading: CircleAvatar(
                               radius: 30,
@@ -115,20 +128,9 @@ class ContributerScreen extends StatelessWidget {
                             title: Text(
                               'Alan Rahondy',
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold,
                                   color: Colors.black),
                             ),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Sharing 10% of cashback',
-                                    style: TextStyle(color: Colors.black)),
-                                Text('32 SAR contributed',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: kBlueColor)),
-                              ],
-                            ),
+
                             onTap: () {
                               // Add onTap functionality here
                             },
