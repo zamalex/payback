@@ -1,10 +1,13 @@
 import 'package:custom_date_range_picker/custom_date_range_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/screens/commitment_category_spent_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_switcher/slide_switcher.dart';
 
 import '../providers/CommitmentsProvider.dart';
+import 'commitment_category_received.dart';
 import 'main.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -15,10 +18,7 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  List<String> months = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
-  ];
+
   int selected = 0;
   @override
   Widget build(BuildContext context) {
@@ -68,7 +68,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 containerWight: MediaQuery.of(context).size.width-32-10,
               ),
               SizedBox(height: 20,),
-              Consumer<CommitmentsProvider>(builder:(context, value, child) =>  SingleChildScrollView(scrollDirection: Axis.horizontal,child: Row(children: List.generate(months.length, (index) => MonthWidget(name: months[index],isChecked: value.selectedMonth==months[index],)),),)),
+              Consumer<CommitmentsProvider>(builder:(context, value, child) =>  SingleChildScrollView(scrollDirection: Axis.horizontal,child: Row(children: List.generate(value.months.length, (index) => MonthWidget(name: value.months[index],isChecked: value.selectedMonth==value.months[index],)),),)),
               SizedBox(height: 20,),
               Row(children: [
                 CircleAvatar(
@@ -131,14 +131,27 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   ],
                 ),
               ),
-              Column(children: List.generate(4, (index) => Container(child:  Row(
-                children: [
-                  Expanded(child: Row(children: [Icon(Icons.airplanemode_active), SizedBox(width: 5,),Text('Travel and vacation',style: TextStyle(fontWeight: FontWeight.normal),)],)),
-                  Container(margin:EdgeInsets.only(right: 50,left: 10),child: Text('10%',style: TextStyle(fontWeight: FontWeight.normal),)),
-                  Container(child: Text('20%',style: TextStyle(fontWeight: FontWeight.normal),)),
+              Column(children: List.generate(4, (index) => InkWell(
+                onTap: (){
+                  if(selected==0){
+                    Get.to(CommitmentCategorySpentScreen());
 
-                ],
-              ),padding:EdgeInsets.all(12),margin: EdgeInsets.only(bottom: 4),decoration: BoxDecoration(borderRadius:BorderRadius.circular(12),color: Colors.grey.shade200),)),)
+
+                }
+                  else{
+
+                  Get.to(CommitmentCategoryReceivedScreen());
+                  }
+                },
+                child: Container(child:  Row(
+                  children: [
+                    Expanded(child: Row(children: [Icon(Icons.airplanemode_active), SizedBox(width: 5,),Text('Travel and vacation',style: TextStyle(fontWeight: FontWeight.normal),)],)),
+                    Container(margin:EdgeInsets.only(right: 50,left: 10),child: Text('10%',style: TextStyle(fontWeight: FontWeight.normal),)),
+                    Container(child: Text('20%',style: TextStyle(fontWeight: FontWeight.normal),)),
+
+                  ],
+                ),padding:EdgeInsets.all(12),margin: EdgeInsets.only(bottom: 4),decoration: BoxDecoration(borderRadius:BorderRadius.circular(12),color: Colors.grey.shade200),),
+              )),)
 
           ],),
         ),

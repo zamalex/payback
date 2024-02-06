@@ -65,7 +65,7 @@ class _SavedScreenState extends State<SavedScreen> {
                 containerWight: MediaQuery.of(context).size.width - 32 - 10,
               ),
               Container(height: 20),
-              Expanded(
+              Container(
                 child: selected == 0
                     ? GridView(
                         physics: NeverScrollableScrollPhysics(),

@@ -60,66 +60,58 @@ class PaymentSuccessScreen extends StatelessWidget {
                                  contentPadding:
                                  EdgeInsets.symmetric(horizontal: 10, vertical: 0.0),
                                  visualDensity: VisualDensity(vertical: -4),
-                                 leading: Icon(
-                                   Icons.abc_sharp,
-                                   color: kBlueColor,
-                                 ),
+
                                  title: Text(
-                                   'Unassigned cashback, SAR',
-                                   style: TextStyle(fontSize: 15),
+                                   'Date & Time',
+                                   style: TextStyle(fontSize: 15,color: Colors.black),
                                  ),
                                  trailing: Text(
-                                   '20 SAR',
+                                   '18.09.2023; 12:23',
                                    style: TextStyle(
                                        fontSize: 15,
-                                       color: kBlueColor,
+                                       color: Colors.grey,
                                        fontWeight: FontWeight.bold),
                                  ),
                                ),
                                Divider(),
-                               ListTile(
+                     ListTile(
                                  dense: true,
                                  contentPadding:
                                  EdgeInsets.symmetric(horizontal: 10, vertical: 0.0),
                                  visualDensity: VisualDensity(vertical: -4),
-                                 leading: Icon(
-                                   Icons.abc_sharp,
-                                   color: kBlueColor,
-                                 ),
+
                                  title: Text(
-                                   'Unassigned cashback, SAR',
-                                   style: TextStyle(fontSize: 15),
+                                   'Total price',
+                                   style: TextStyle(fontSize: 15,color: Colors.black),
                                  ),
                                  trailing: Text(
-                                   '20 SAR',
+                                   '21 630,39 SAR',
                                    style: TextStyle(
                                        fontSize: 15,
-                                       color: kBlueColor,
+                                       color: Colors.grey,
                                        fontWeight: FontWeight.bold),
                                  ),
                                ),
                                Divider(),
-                               ListTile(
+                     ListTile(
                                  dense: true,
                                  contentPadding:
                                  EdgeInsets.symmetric(horizontal: 10, vertical: 0.0),
                                  visualDensity: VisualDensity(vertical: -4),
-                                 leading: Icon(
-                                   Icons.abc_sharp,
-                                   color: kBlueColor,
-                                 ),
+
                                  title: Text(
-                                   'Unassigned cashback, SAR',
-                                   style: TextStyle(fontSize: 15),
+                                   'Total cashbak',
+                                   style: TextStyle(fontSize: 15,color: Colors.black),
                                  ),
                                  trailing: Text(
-                                   '20 SAR',
+                                   '229,7 SAR',
                                    style: TextStyle(
                                        fontSize: 15,
-                                       color: kBlueColor,
+                                       color: Colors.grey,
                                        fontWeight: FontWeight.bold),
                                  ),
                                ),
+
 
                              ],
                            ),
