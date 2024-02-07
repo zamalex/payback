@@ -82,11 +82,11 @@ class CommitmentsScreen extends StatelessWidget {
                                   horizontal: 10, vertical: 0.0),
                               visualDensity: VisualDensity(vertical: -4),
                               title: Text(
-                                'Unassigned cashback, SAR',
+                                'Unassigned % ofcashback',
                                 style: TextStyle(fontSize: 15),
                               ),
                               trailing: Text(
-                                '20 SAR',
+                                '20%',
                                 style: TextStyle(
                                     fontSize: 20,
                                     color: kBlueColor,
@@ -106,7 +106,7 @@ class CommitmentsScreen extends StatelessWidget {
                                   horizontal: 10, vertical: 0.0),
                               visualDensity: VisualDensity(vertical: -4),
                               title: Text(
-                                'Unassigned cashback, SAR',
+                                'Commitments total, SAR',
                                 style: TextStyle(fontSize: 15),
                               ),
                               trailing: Text(

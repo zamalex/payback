@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:payback/data/repository/home_repo.dart';
 import 'package:payback/model/categories_response.dart';
+import 'package:payback/model/onboarding_response.dart';
 
 import '../data/repository/auth_repo.dart';
 import '../data/service_locator.dart';
@@ -15,7 +16,7 @@ class HomeProvider extends ChangeNotifier{
 
   List<Category>? categories = [];
   List<Category>? products = [];
-  List<Category>? onBoarding = [];
+  List<Data>? onBoarding = [];
 
 
 

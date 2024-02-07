@@ -138,9 +138,10 @@ class CustomButton extends StatelessWidget {
   final String buttonText;
   final Color buttonColor;
   Function? onTap;
+  Color textColor = Colors.white;
 
   CustomButton(
-      {required this.buttonText, required this.buttonColor, this.onTap});
+      {required this.buttonText, required this.buttonColor, this.onTap,this.textColor=Colors.white});
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +161,7 @@ class CustomButton extends StatelessWidget {
           buttonText,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: textColor,
           ),
         ),
       ),

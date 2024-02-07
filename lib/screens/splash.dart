@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payback/model/onboarding_response.dart';
 import 'package:payback/providers/home_provider.dart';
 import 'package:payback/screens/login.dart';
 import 'package:payback/screens/onboarding.dart';
+import 'package:payback/screens/welcome_screen.dart';
 import 'package:provider/provider.dart';
 
 class Splash extends StatefulWidget {
@@ -27,7 +29,7 @@ class _SplashState extends State<Splash> {
               Get.to(LoginScreen());
             }
             else{
-              Get.to(OnBoardingScreen());
+              Get.to(WelcomeScreen());
             }
           }
         });

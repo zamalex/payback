@@ -150,114 +150,105 @@ class CommitmetDetails extends StatelessWidget {
                                   children: [
 
                                     ListTile(
+                                      horizontalTitleGap: 0,
                                       dense: true,
                                       contentPadding:
                                       EdgeInsets.symmetric(horizontal: 10, vertical: 0.0),
                                       visualDensity: VisualDensity(vertical: -4),
-                                      leading: Icon(
-                                        Icons.abc_sharp,
-                                        color: kBlueColor,
-                                      ),
+                                      leading: Image.asset('assets/images/sadad.png',width: 15,height: 15,),
                                       title: Text(
-                                        'Unassigned cashback, SAR',
-                                        style: TextStyle(fontSize: 15),
+                                        'SADAD',
+                                        style: TextStyle(fontSize: 15,color: kBlueColor,fontWeight: FontWeight.bold),
                                       ),
                                       trailing: Text(
-                                        '20 SAR',
+                                        '20123456844',
                                         style: TextStyle(
                                             fontSize: 15,
-                                            color: kBlueColor,
+                                            color: Colors.black,
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                     Divider(),
                                     ListTile(
+                                      horizontalTitleGap: 0,
                                       dense: true,
                                       contentPadding:
                                       EdgeInsets.symmetric(horizontal: 10, vertical: 0.0),
                                       visualDensity: VisualDensity(vertical: -4),
-                                      leading: Icon(
-                                        Icons.abc_sharp,
-                                        color: kBlueColor,
-                                      ),
+                                      leading: Image.asset('assets/images/payment_sum.png',width: 15,height: 15,),
                                       title: Text(
-                                        'Unassigned cashback, SAR',
-                                        style: TextStyle(fontSize: 15),
+                                        'Payment sum',
+                                        style: TextStyle(fontSize: 15,color: kBlueColor,fontWeight: FontWeight.bold),
                                       ),
                                       trailing: Text(
-                                        '20 SAR',
+                                        '300 SAR',
                                         style: TextStyle(
                                             fontSize: 15,
-                                            color: kBlueColor,
+                                            color: Colors.black,
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                     Divider(),
                                     ListTile(
+                                      horizontalTitleGap: 0,
                                       dense: true,
                                       contentPadding:
                                       EdgeInsets.symmetric(horizontal: 10, vertical: 0.0),
                                       visualDensity: VisualDensity(vertical: -4),
-                                      leading: Icon(
-                                        Icons.abc_sharp,
-                                        color: kBlueColor,
-                                      ),
+                                      leading: Image.asset('assets/images/percentage.png',width: 15,height: 15,),
                                       title: Text(
-                                        'Unassigned cashback, SAR',
-                                        style: TextStyle(fontSize: 15),
+                                        'Cashback to commitment',
+                                        style: TextStyle(fontSize: 15,color: kBlueColor,fontWeight: FontWeight.bold),
                                       ),
                                       trailing: Text(
-                                        '20 SAR',
+                                        '20%',
                                         style: TextStyle(
                                             fontSize: 15,
-                                            color: kBlueColor,
+                                            color: Colors.black,
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                     Divider(),
                                     ListTile(
+                                      horizontalTitleGap: 0,
                                       dense: true,
                                       contentPadding:
                                       EdgeInsets.symmetric(horizontal: 10, vertical: 0.0),
                                       visualDensity: VisualDensity(vertical: -4),
-                                      leading: Icon(
-                                        Icons.abc_sharp,
-                                        color: kBlueColor,
-                                      ),
+                                      leading: Image.asset('assets/images/calendar.png',width: 15,height: 15,),
                                       title: Text(
-                                        'Unassigned cashback, SAR',
-                                        style: TextStyle(fontSize: 15),
+                                        'Due date',
+                                        style: TextStyle(fontSize: 15,color: kBlueColor,fontWeight: FontWeight.bold),
                                       ),
                                       trailing: Text(
-                                        '20 SAR',
+                                        '27.07.2023',
                                         style: TextStyle(
                                             fontSize: 15,
-                                            color: kBlueColor,
+                                            color: Colors.black,
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                     Divider(),
                                     ListTile(
+                                      horizontalTitleGap: 0,
                                       dense: true,
                                       contentPadding:
                                       EdgeInsets.symmetric(horizontal: 10, vertical: 0.0),
                                       visualDensity: VisualDensity(vertical: -4),
-                                      leading: Icon(
-                                        Icons.abc_sharp,
-                                        color: kBlueColor,
-                                      ),
+                                      leading: Image.asset('assets/images/categories.png',width: 15,height: 15,),
                                       title: Text(
-                                        'Unassigned cashback, SAR',
-                                        style: TextStyle(fontSize: 15),
+                                        'Category',
+                                        style: TextStyle(fontSize: 15,color: kBlueColor,fontWeight: FontWeight.bold),
                                       ),
                                       trailing: Text(
-                                        '20 SAR',
+                                        'Home bills',
                                         style: TextStyle(
                                             fontSize: 15,
-                                            color: kBlueColor,
+                                            color: Colors.black,
                                             fontWeight: FontWeight.bold),
                                       ),
-                                    )
+                                    ),
+
                                   ],
                                 ),
                               ),

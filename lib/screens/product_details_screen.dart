@@ -77,9 +77,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(15)),
                       child: Column(
                         children: [
-                          ProductListTile(title: 'Product information'),
-                          Divider(), ProductListTile(title: 'Delivery and pickup'),
-                          Divider(), ProductListTile(title: 'Support'),
+                          ProductListTile(title: 'Product information',image: 'assets/images/product_characteristics.png',),
+                          Divider(), ProductListTile(title: 'Delivery and pickup',image: 'assets/images/shipping_info.png',),
+                          Divider(), ProductListTile(title: 'Support',image: 'assets/images/support_icon.png',),
                         ],
                       ),
                     ),
@@ -103,8 +103,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 }
 
 class ProductListTile extends StatelessWidget {
-   ProductListTile({super.key,required this.title});
+   ProductListTile({super.key,required this.title,required this.image});
   String title;
+  String image;
 
 
   @override
@@ -114,7 +115,7 @@ class ProductListTile extends StatelessWidget {
       child: ListTile(
         dense: true,
         contentPadding: EdgeInsets.zero,
-        leading: Icon(Icons.delivery_dining),
+        leading: Image.asset(image,width: 16,height: 16,),
         title: Text(title),
         trailing: Icon(Icons.arrow_forward_ios,color: kBlueColor,),
       ),

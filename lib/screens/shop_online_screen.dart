@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/screens/filter_products.dart';
 import 'package:payback/screens/saved_screen.dart';
 import 'package:slide_switcher/slide_switcher.dart';
 import '../helpers/custom_widgets.dart';
@@ -14,6 +16,109 @@ class ShopOnlineScreen extends StatefulWidget {
 
 class _ShopOnlineScreenState extends State<ShopOnlineScreen> {
   int selected = 0;
+
+  sortProducts() {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+          title: Text('Sort products by'),
+          actions: <Widget>[
+            CupertinoActionSheetAction(
+              child: const Text('Best cashback',style: TextStyle(color: Colors.blue)),
+              onPressed: () {
+                Navigator.pop(context, 'Delete For Everyone');
+              },
+            ),
+            CupertinoActionSheetAction(
+              child: const Text('Popular',style: TextStyle(color: Colors.blue)),
+              onPressed: () {
+                Navigator.pop(context, 'Delete For Everyone');
+              },
+            ),
+            CupertinoActionSheetAction(
+              child: const Text('Hot deals',style: TextStyle(color: Colors.blue)),
+              onPressed: () {
+                Navigator.pop(context, 'Delete For Everyone');
+              },
+            ),
+            CupertinoActionSheetAction(
+              child: const Text('Price : lowest to high',style: TextStyle(color: Colors.blue)),
+              onPressed: () {
+                Navigator.pop(context, 'Delete For Everyone');
+              },
+            ),
+            CupertinoActionSheetAction(
+              child: const Text('Price : highest to low',style: TextStyle(color: Colors.blue)),
+              onPressed: () {
+                Navigator.pop(context, 'Delete For Everyone');
+              },
+            ),
+            CupertinoActionSheetAction(
+              child: const Text('Name : A-Z',style: TextStyle(color: Colors.blue)),
+              onPressed: () {
+                Navigator.pop(context, 'Delete For Everyone');
+              },
+            ),
+            CupertinoActionSheetAction(
+              child: const Text('Name : Z-A',style: TextStyle(color: Colors.blue)),
+              onPressed: () {
+                Navigator.pop(context, 'Delete For Everyone');
+              },
+            ),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            child: const Text('Cancel',style: TextStyle(color: kBlueColor)),
+            onPressed: () {
+              Navigator.pop(context, 'Cancel');
+            },
+          )),
+    );
+  }
+  sortPartners() {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+          title: Text('Sort partners by'),
+          actions: <Widget>[
+            CupertinoActionSheetAction(
+              child: const Text('Best cashback',style: TextStyle(color: Colors.blue),),
+              onPressed: () {
+                Navigator.pop(context, 'Delete For Everyone');
+              },
+            ),
+            CupertinoActionSheetAction(
+              child: const Text('Popular',style: TextStyle(color: Colors.blue)),
+              onPressed: () {
+                Navigator.pop(context, 'Delete For Everyone');
+              },
+            ),
+
+            CupertinoActionSheetAction(
+              child: const Text('Name : A-Z',style: TextStyle(color: Colors.blue)),
+              onPressed: () {
+                Navigator.pop(context, 'Delete For Everyone');
+              },
+            ),
+            CupertinoActionSheetAction(
+              child: const Text('Name : Z-A',style: TextStyle(color: Colors.blue)),
+              onPressed: () {
+                Navigator.pop(context, 'Delete For Everyone');
+              },
+            ),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            child: const Text('Cancel',style: TextStyle(color: kBlueColor)),
+            onPressed: () {
+              Navigator.pop(context, 'Cancel');
+            },
+          )),
+    );
+  }
+
+
+  showFilterSheet(BuildContext context){
+    showModalBottomSheet(backgroundColor: Colors.transparent,isScrollControlled: true,context: context, builder: (context) => Container(margin:EdgeInsets.only(top: 40),child: FilterProducts()),useSafeArea: true,);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,12 +187,16 @@ class _ShopOnlineScreenState extends State<ShopOnlineScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     TextButton.icon(
-                      onPressed: () {},
+                      onPressed: () {
+                        selected==0?sortProducts():sortPartners();
+                      },
                       icon: Icon(Icons.sort, color: kBlueColor),
                       label: Text('Best cashback'),
                     ),
-                    TextButton.icon(
-                      onPressed: () {},
+                    if(selected==0)TextButton.icon(
+                      onPressed: () {
+                        showFilterSheet(context);
+                      },
                       icon: Icon(Icons.filter_alt_sharp, color: kBlueColor),
                       label: Text('Filter'),
                     ),

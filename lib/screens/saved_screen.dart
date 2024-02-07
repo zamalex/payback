@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:slide_switcher/slide_switcher.dart';
 import '../helpers/custom_widgets.dart';
+import 'filter_products.dart';
 
 class SavedScreen extends StatefulWidget {
   SavedScreen({Key? key}) : super(key: key);
@@ -12,7 +13,9 @@ class SavedScreen extends StatefulWidget {
 
 class _SavedScreenState extends State<SavedScreen> {
   int selected = 0;
-
+  showFilterSheet(BuildContext context){
+    showModalBottomSheet(backgroundColor: Colors.transparent,isScrollControlled: true,context: context, builder: (context) => Container(margin:EdgeInsets.only(top: 40),child: FilterProducts()),useSafeArea: true,);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

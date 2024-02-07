@@ -12,6 +12,7 @@ import 'package:payback/screens/commitments_screen.dart';
 import 'package:payback/screens/commitmetn_details_screen.dart';
 import 'package:payback/screens/contributer_screen.dart';
 import 'package:payback/screens/email.dart';
+import 'package:payback/screens/filter_products.dart';
 import 'package:payback/screens/history_screen.dart';
 import 'package:payback/screens/home_screen.dart';
 import 'package:payback/screens/login.dart';
@@ -29,31 +30,36 @@ import 'package:payback/screens/splash.dart';
 
 import 'package:provider/provider.dart';
 
-
 import '../data/service_locator.dart';
 import '../providers/auth_provider.dart';
 
-void main() async{
-
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await init();
 
-
-  runApp(MultiProvider(providers: [
-
-      ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
-      ChangeNotifierProvider<HomeProvider>(create: (_) => HomeProvider()),
-      ChangeNotifierProvider<CheckoutProvider>(create: (_) => CheckoutProvider()),
-      ChangeNotifierProvider<CommitmentsProvider>(create: (_) => CommitmentsProvider()),
-
-    ], child: GetMaterialApp(home:  MyApp(),theme: ThemeData(
-
-    scaffoldBackgroundColor: kBackgroundColor,
-    appBarTheme: AppBarTheme(backgroundColor: kBackgroundColor,),
-    colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-    useMaterial3: true,
-  ),),),
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
+        ChangeNotifierProvider<HomeProvider>(create: (_) => HomeProvider()),
+        ChangeNotifierProvider<CheckoutProvider>(
+            create: (_) => CheckoutProvider()),
+        ChangeNotifierProvider<CommitmentsProvider>(
+            create: (_) => CommitmentsProvider()),
+      ],
+      child: GetMaterialApp(
+        home: MyApp(),
+        theme: ThemeData(
+          scaffoldBackgroundColor: kBackgroundColor,
+          appBarTheme: AppBarTheme(
+            backgroundColor: kBackgroundColor,
+          ),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+      ),
+    ),
   );
 }
 
@@ -66,17 +72,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-
         scaffoldBackgroundColor: kBackgroundColor,
-        appBarTheme: AppBarTheme(backgroundColor: kBackgroundColor,),
+        appBarTheme: AppBarTheme(
+          backgroundColor: kBackgroundColor,
+        ),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: MainScreen(),
+      home: Splash(),
     );
   }
 }
-
 
 ///////////////////////////////////////////////////
 class PieChartData {
@@ -135,15 +141,15 @@ class _Painter extends CustomPainter {
     // convert chart data to painter data
     dataList = data
         .map((e) => _PainterData(
-      Paint()
-        ..color = e.color
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = strokeWidth,
-       // ..strokeCap = StrokeCap.round,
-        //..strokeCap = StrokeCap.square,
-      // remove padding from stroke
-      (e.percent - _padding) * _percentInRadians,
-    ))
+              Paint()
+                ..color = e.color
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = strokeWidth,
+              // ..strokeCap = StrokeCap.round,
+              //..strokeCap = StrokeCap.square,
+              // remove padding from stroke
+              (e.percent - _padding) * _percentInRadians,
+            ))
         .toList();
   }
 
