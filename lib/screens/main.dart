@@ -11,6 +11,9 @@ import 'package:payback/screens/commitments_details_another_screen.dart';
 import 'package:payback/screens/commitments_screen.dart';
 import 'package:payback/screens/commitmetn_details_screen.dart';
 import 'package:payback/screens/contributer_screen.dart';
+import 'package:payback/screens/edit_address_screen.dart';
+import 'package:payback/screens/edit_email_screen.dart';
+import 'package:payback/screens/edit_password_screen.dart';
 import 'package:payback/screens/email.dart';
 import 'package:payback/screens/filter_products.dart';
 import 'package:payback/screens/history_screen.dart';
@@ -32,6 +35,7 @@ import 'package:provider/provider.dart';
 
 import '../data/service_locator.dart';
 import '../providers/auth_provider.dart';
+import 'edit_name_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -79,7 +83,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: Splash(),
+      home: EditNameScreen(),
     );
   }
 }
