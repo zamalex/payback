@@ -1,11 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:provider/provider.dart';
 
 import '../helpers/custom_widgets.dart';
+import '../helpers/functions.dart';
+import '../providers/auth_provider.dart';
 
 class SMSScreen extends StatelessWidget {
-  const SMSScreen({Key? key}) : super(key: key);
+  SMSScreen({Key? key}) : super(key: key);
+
+  TextEditingController controller = TextEditingController();
+
+  verify(BuildContext context){
+    if (controller.text.isEmpty) {
+      showErrorMessage(context, 'Enter required data');
+      return;
+    }
+
+    Provider.of<AuthProvider>(context, listen: false)
+        .verify({
+      'code':controller.text
+    })
+        .then((value) {
+      value['data']==null?showErrorMessage(context, value['message'])
+          :showSuccessMessage(context,value['message']);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

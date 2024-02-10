@@ -1,7 +1,9 @@
+
+
 class Url {
-  static const BASE_URL = 'https://b1rincitech.com/api'; //test
-  static const LOGIN_URL = '/customer/login';
-  static const REGISTER_URL = '/customer/register';
+  static const BASE_URL = 'https://payback.b1rincitech.com/api'; //test
+  static const LOGIN_URL = '/login';
+  static const REGISTER_URL = '/register';
   static const CATEGORIES_URL = '/productsCategories';
   static const PRODUCTS_URL = '/productsCategories';
   static const ONBOARDING_URL = '/productsCategories';
@@ -9,4 +11,43 @@ class Url {
   static String TOKEN = '';
   static String LOCALE = 'ar';
 
+static String mocCategories = """{
+   "categories":[
+      {
+         "id":2,
+         "name":"Fruits",
+         "parent_id":"1",
+         "description":null
+    
+      },{
+         "id":2,
+         "name":"Fruits",
+         "parent_id":"1",
+         "description":null
+    
+      },{
+         "id":2,
+         "name":"Fruits",
+         "parent_id":"1",
+         "description":null
+    
+      },{
+         "id":2,
+         "name":"Fruits",
+         "parent_id":"1",
+         "description":null
+    
+      },{
+         "id":2,
+         "name":"Fruits",
+         "parent_id":"1",
+         "description":null
+    
+      },{
+         "id":2,
+         "name":"Fruits",
+         "parent_id":"1",
+         "description":null
+    
+      }]}""";
 }

@@ -58,5 +58,27 @@ class AuthRepository {
     }
   }
 
+  Future<Map> verify(Map<String, String> body) async {
+    try {
+      Response response =
+      await sl<DioClient>().post(Url.REGISTER_URL, data: jsonEncode(body));
+
+      final parsedJson = response.data;
+      if (response.statusCode! < 400) {
+        AuthResponse loginModel = AuthResponse.fromJson(parsedJson);
+        return {'message': loginModel.message, 'data': loginModel};
+      }
+
+      return {'message': 'Server Error'};
+    } catch (e) {
+      if (e is DioError) {
+        return {'message': e.message,};
+        //return {'message':e.message};
+      } else {
+        return {'message': 'unknown error',};
+      }
+    }
+  }
+
 
 }

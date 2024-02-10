@@ -41,4 +41,18 @@ class AuthProvider extends ChangeNotifier{
 
 
 
+  Future<Map> verify(Map<String,String> body)async{
+    isLoading = true;
+    notifyListeners();
+
+    Map response= await sl<AuthRepository>().verify(body);
+
+    isLoading = false;
+    notifyListeners();
+
+    return response;
+  }
+
+
+
 }

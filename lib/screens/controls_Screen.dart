@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/screens/help_community_screen.dart';
 import 'package:payback/screens/history_screen.dart';
 
 class ControlsScreen extends StatelessWidget {
@@ -23,7 +24,9 @@ class ControlsScreen extends StatelessWidget {
             ),
            ControlsItem(image: 'assets/images/bill.png',color: kPurpleColor,text: 'Commitments',onTap: (){},),
            ControlsItem(image: 'assets/images/pie.png',color: kBlueColor,text: 'Cashback dashboard',onTap: (){Get.to(HistoryScreen());},),
-           ControlsItem(image: 'assets/images/group.png',color: Color.fromRGBO(10, 91, 148, 1),text: 'Help community',onTap: (){},),
+           ControlsItem(image: 'assets/images/group.png',color: Color.fromRGBO(10, 91, 148, 1),text: 'Help community',onTap: (){
+             Get.to(HelpCommunityScreen());
+           },),
 
           ],
         ),

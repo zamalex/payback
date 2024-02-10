@@ -45,7 +45,7 @@ class PreferenceUtils{
       sl.unregister<AuthResponse>();
     sl.registerSingleton(loginModel);
 
-    Url.TOKEN = loginModel.token!;
+    Url.TOKEN = loginModel.data!.token!;
 
     await sharedPreferences!.setString('user',jsonEncode(loginModel.toJson()));
   }

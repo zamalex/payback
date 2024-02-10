@@ -27,7 +27,8 @@ class LoginScreen extends StatelessWidget {
     Provider.of<AuthProvider>(context, listen: false)
         .login(emailController.text, passwordController.text, '')
         .then((value) {
-      showErrorMessage(context, value['message']);
+          value['data']==null?      showErrorMessage(context, value['message'])
+          :showSuccessMessage(context,value['message']);
     });
   }
 

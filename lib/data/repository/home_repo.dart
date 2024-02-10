@@ -14,6 +14,9 @@ import '../service_locator.dart';
 class HomeRepository {
   Future getCategories() async {
 
+    CategoriesResponse loginModel = CategoriesResponse.fromJson(jsonDecode(Url.mocCategories));
+    return {'message': 'Welcome', 'data':(loginModel.categories??[]) as List<Category>};
+
     try {
       Response response =
       await sl<DioClient>().get(Url.CATEGORIES_URL,);

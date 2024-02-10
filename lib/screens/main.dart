@@ -16,20 +16,29 @@ import 'package:payback/screens/edit_email_screen.dart';
 import 'package:payback/screens/edit_password_screen.dart';
 import 'package:payback/screens/email.dart';
 import 'package:payback/screens/filter_products.dart';
+import 'package:payback/screens/help_community_screen.dart';
+import 'package:payback/screens/help_details_screen.dart';
 import 'package:payback/screens/history_screen.dart';
 import 'package:payback/screens/home_screen.dart';
 import 'package:payback/screens/login.dart';
 import 'package:payback/screens/main_screen.dart';
+import 'package:payback/screens/my_orders_screen.dart';
+import 'package:payback/screens/my_profile_screen.dart';
 import 'package:payback/screens/new_commitment_screen.dart';
+import 'package:payback/screens/notifications_screen.dart';
+import 'package:payback/screens/notifications_settings_screen.dart';
 import 'package:payback/screens/order_details_screen.dart';
 import 'package:payback/screens/partner_details_screen.dart';
 import 'package:payback/screens/partner_info_screen.dart';
 import 'package:payback/screens/phonenumber.dart';
 import 'package:payback/screens/product_details_screen.dart';
+import 'package:payback/screens/profile_info_screen.dart';
 import 'package:payback/screens/register.dart';
 import 'package:payback/screens/saved_screen.dart';
+import 'package:payback/screens/settings_screen.dart';
 import 'package:payback/screens/shop_online_screen.dart';
 import 'package:payback/screens/splash.dart';
+import 'package:payback/screens/subscription_screen.dart';
 
 import 'package:provider/provider.dart';
 
@@ -83,7 +92,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: EditNameScreen(),
+      home: Splash(),
     );
   }
 }

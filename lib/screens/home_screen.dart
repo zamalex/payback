@@ -3,6 +3,7 @@ import 'package:get/route_manager.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/providers/home_provider.dart';
 import 'package:payback/screens/commitments_screen.dart';
+import 'package:payback/screens/my_profile_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../helpers/custom_widgets.dart';
@@ -39,57 +40,63 @@ class _HomeScreenState extends State<HomeScreen> {
       body:  Container(
         padding: EdgeInsets.all(0),
         child: ListView(children: [
-          Card(
-            margin: EdgeInsets.zero,
+          InkWell(
+            onTap: (){
+              Get.to(MyProfileScreen());
 
-            color: Colors.white,
-            elevation:0,
-             shadowColor: Colors.grey,
-             shape: RoundedRectangleBorder(
-               borderRadius: BorderRadius.only(bottomRight: Radius.circular(40)),
-             ),
-             child:  Padding(
-               padding: const EdgeInsets.all(16.0),
-               child: Row(
-                   children: [
-                     Container(
-                       decoration: BoxDecoration(
-                         border: Border.all(color: Colors.white,width: 2),
-                         borderRadius: BorderRadius.only(
-                         topRight: Radius.circular(8),
-                         bottomLeft: Radius.circular(8),
-                         topLeft: Radius.circular(30),
-                         bottomRight: Radius.circular(30),
-                       ),),
-                       child: ClipRRect(borderRadius: BorderRadius.only(
-                         topRight: Radius.circular(8),
-                         bottomLeft: Radius.circular(8),
-                         topLeft: Radius.circular(25),
-                         bottomRight: Radius.circular(25),
-                       ),child: Image.network('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVR9V1Ix26V2s_WWWryH3FU5Qkl2yR4PL3BcUybf2cUw&s',fit: BoxFit.cover,width: 70,height: 70,)),),
-                     SizedBox(width: 10,),
-                     Column(
-                       crossAxisAlignment: CrossAxisAlignment.start,
-                       children: [
-                         Text('Hello, Mustafa',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: kPurpleColor),)
-                         ,SizedBox(height: 10,)
-                         ,Container(padding:EdgeInsets.symmetric(horizontal: 8,vertical: 4),decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),color: kPurpleColor),child: Row(children: [Icon(Icons.notification_add_outlined,color: Colors.white,),Text('2 notifications',style: TextStyle(color: Colors.white),)],),)
-                       ],
-                     ),
+            },
+            child: Card(
+              margin: EdgeInsets.zero,
 
-                     Expanded(
-                       child: Row(
-                         mainAxisAlignment: MainAxisAlignment.end,
+              color: Colors.white,
+              elevation:0,
+               shadowColor: Colors.grey,
+               shape: RoundedRectangleBorder(
+                 borderRadius: BorderRadius.only(bottomRight: Radius.circular(40)),
+               ),
+               child:  Padding(
+                 padding: const EdgeInsets.all(16.0),
+                 child: Row(
+                     children: [
+                       Container(
+                         decoration: BoxDecoration(
+                           border: Border.all(color: Colors.white,width: 2),
+                           borderRadius: BorderRadius.only(
+                           topRight: Radius.circular(8),
+                           bottomLeft: Radius.circular(8),
+                           topLeft: Radius.circular(30),
+                           bottomRight: Radius.circular(30),
+                         ),),
+                         child: ClipRRect(borderRadius: BorderRadius.only(
+                           topRight: Radius.circular(8),
+                           bottomLeft: Radius.circular(8),
+                           topLeft: Radius.circular(25),
+                           bottomRight: Radius.circular(25),
+                         ),child: Image.network('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVR9V1Ix26V2s_WWWryH3FU5Qkl2yR4PL3BcUybf2cUw&s',fit: BoxFit.cover,width: 70,height: 70,)),),
+                       SizedBox(width: 10,),
+                       Column(
+                         crossAxisAlignment: CrossAxisAlignment.start,
                          children: [
-                           Icon(Icons.arrow_forward)
+                           Text('Hello, Mustafa',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: kPurpleColor),)
+                           ,SizedBox(height: 10,)
+                           ,Container(padding:EdgeInsets.symmetric(horizontal: 8,vertical: 4),decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),color: kPurpleColor),child: Row(children: [Icon(Icons.notification_add_outlined,color: Colors.white,),Text('2 notifications',style: TextStyle(color: Colors.white),)],),)
                          ],
                        ),
-                     )
-                   ],
-                 ),
-             ),
 
-             ),
+                       Expanded(
+                         child: Row(
+                           mainAxisAlignment: MainAxisAlignment.end,
+                           children: [
+                             Icon(Icons.arrow_forward)
+                           ],
+                         ),
+                       )
+                     ],
+                   ),
+               ),
+
+               ),
+          ),
 
 
        
