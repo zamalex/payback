@@ -4,6 +4,7 @@ import 'package:payback/screens/cart_screen.dart';
 import 'package:payback/screens/commitments_screen.dart';
 import 'package:payback/screens/controls_Screen.dart';
 import 'package:payback/screens/home_screen.dart';
+import 'package:payback/screens/map_screen.dart';
 import 'package:payback/screens/shop_online_screen.dart';
 
 
@@ -17,7 +18,7 @@ class _MainScreenState extends State<MainScreen> {
   List screens=[
     HomeScreen(),
     ShopOnlineScreen(),
-    ShopOnlineScreen(),
+    MapSample(),
     ControlsScreen(),
     CartScreen(),
   ];

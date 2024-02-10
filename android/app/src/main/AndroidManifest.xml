@@ -6,6 +6,8 @@
         android:label="payback"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAm_ZEJZ58IDAn9IjtGr3a9Y0UKKjOcWI0"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -53,7 +53,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   void dispose() {
     // Dispose everything
     _pageController.dispose();
-    _timer!.cancel();
     super.dispose();
   }
 
