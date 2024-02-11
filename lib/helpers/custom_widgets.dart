@@ -9,15 +9,21 @@ class CustomTextField extends StatefulWidget {
   final String hintText;
 
   bool obscureText = false;
+      TextInputType type =  TextInputType.text;
 
   Widget? icon = null;
   bool editable =true;
 
+  bool isPassword=false;
+
+
   CustomTextField(
       {required this.hintText,
       this.obscureText = false,
+        this.type =  TextInputType.text,
       this.controller,
       this.icon,
+        this.isPassword=false,
         this.editable=true,
       this.maxLines = 1});
 
@@ -33,6 +39,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return Container(
       height: widget.maxLines * 48.0,
       child: TextField(
+
+
         readOnly: !widget.editable,
         maxLines: widget.maxLines,
         controller: widget.controller,
@@ -53,18 +61,18 @@ class _CustomTextFieldState extends State<CustomTextField> {
           ),
           contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 10),
           suffixIcon: IconButton(
-            icon: !widget.obscureText
-                ? widget.icon ?? Icon(null)
-                : Icon(widget.obscureText
-                    ? Icons.visibility
-                    : Icons.visibility_off),
+            icon: widget.isPassword?Icon(widget.obscureText
+                ? Icons.visibility
+                : Icons.visibility_off):widget.icon??Icon(null),
             onPressed: () {
+              if(widget.isPassword)
               setState(() {
                 widget.obscureText = !widget.obscureText;
               });
             },
           ),
         ),
+        keyboardType:widget.type,
       ),
     );
   }

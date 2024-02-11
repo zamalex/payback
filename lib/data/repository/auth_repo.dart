@@ -79,7 +79,9 @@ class AuthRepository {
       return {'message': 'Server Error'};
     } catch (e) {
       if (e is DioError) {
-        return {'message': e.message,};
+        String error = e.response?.data['message']??
+            e.message;
+        return {'message': error,};
         //return {'message':e.message};
       } else {
         return {'message': 'unknown error',};

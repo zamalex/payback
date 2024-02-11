@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:payback/data/preferences.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/helpers/functions.dart';
 import 'package:payback/providers/auth_provider.dart';
@@ -7,6 +8,7 @@ import 'package:payback/screens/main_screen.dart';
 import 'package:payback/screens/register.dart';
 import 'package:provider/provider.dart';
 
+import '../data/service_locator.dart';
 import '../helpers/custom_widgets.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -28,7 +30,10 @@ class LoginScreen extends StatelessWidget {
         .login(emailController.text, passwordController.text, '')
         .then((value) {
           value['data']==null?      showErrorMessage(context, value['message'])
-          :showSuccessMessage(context,value['message']);
+          :Get.to(MainScreen());
+          if(value['data']!=null){
+            sl<PreferenceUtils>().saveUser(value['data']);
+          }
     });
   }
 
@@ -97,6 +102,7 @@ class LoginScreen extends StatelessWidget {
                   CustomTextField(
                     hintText: 'Enter your password',
                     obscureText: true,
+                    isPassword: true,
                     controller: passwordController,
                   ),
                   SizedBox(
@@ -174,10 +180,15 @@ class LoginScreen extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
-                  Text(
-                    'Continue as a Guest',
-                    style: TextStyle(
-                        color: Colors.blue, fontWeight: FontWeight.bold),
+                  InkWell(
+                    onTap: (){
+                      Get.to(MainScreen());
+                    },
+                    child: Text(
+                      'Continue as a Guest',
+                      style: TextStyle(
+                          color: Colors.blue, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ]),
           ),

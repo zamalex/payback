@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:payback/data/preferences.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/model/auth_response.dart';
 import 'package:payback/providers/home_provider.dart';
 import 'package:payback/screens/commitments_screen.dart';
 import 'package:payback/screens/my_profile_screen.dart';
 import 'package:provider/provider.dart';
 
+import '../data/service_locator.dart';
 import '../helpers/custom_widgets.dart';
 
 
@@ -22,6 +25,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   double _counter = 20;
 
+  AuthResponse? authResponse;
+
 
   @override
   void initState() {
@@ -32,6 +37,16 @@ class _HomeScreenState extends State<HomeScreen> {
       Provider.of<HomeProvider>(context,listen: false).getCategories();
       Provider.of<HomeProvider>(context,listen: false).getProducts();
     });
+
+       sl<PreferenceUtils>().readUser().then((value) {
+         setState(() {
+           authResponse = value;
+
+         });
+
+    });
+
+
   }
 
   @override
@@ -79,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                        Column(
                          crossAxisAlignment: CrossAxisAlignment.start,
                          children: [
-                           Text('Hello, Mustafa',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: kPurpleColor),)
+                           Text('Hello, ${authResponse==null?'Mustafa':authResponse!.data!.user!.name}',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: kPurpleColor),)
                            ,SizedBox(height: 10,)
                            ,Container(padding:EdgeInsets.symmetric(horizontal: 8,vertical: 4),decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),color: kPurpleColor),child: Row(children: [Icon(Icons.notification_add_outlined,color: Colors.white,),Text('2 notifications',style: TextStyle(color: Colors.white),)],),)
                          ],

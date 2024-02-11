@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/screens/login.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +32,9 @@ class SMSScreen extends StatelessWidget {
         .then((value) {
       value['data']==null?showErrorMessage(context, value['message'])
           :showSuccessMessage(context,value['message']);
+      if(value['data']!=null){
+        Get.to(LoginScreen());
+      }
     });
   }
 
@@ -97,9 +103,11 @@ class SMSScreen extends StatelessWidget {
                 ),
 
                 SizedBox(height: 20,),
-                Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: CustomButton(buttonText: 'Confirm', buttonColor: kPurpleColor,onTap: (){verify(context);},)),
+                Consumer<AuthProvider>(
+                  builder:(context, value, child) => value.isLoading?Center(child: CircularProgressIndicator(),): Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: CustomButton(buttonText: 'Confirm', buttonColor: kPurpleColor,onTap: (){verify(context);},)),
+                ),
                 SizedBox(height: 30,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -21,9 +21,16 @@ class CheckPhoneNumberScreen extends StatelessWidget {
        return;
      }
 
+     if(!phnoneController.text.startsWith('20')){
+       showErrorMessage(context, 'Phone number should start with 20');
+       return;
+     }
 
 
-     request.putIfAbsent('phone', () => phnoneController.text);
+
+
+
+     request.putIfAbsent('phone', () => '+${phnoneController.text}');
      request.putIfAbsent('is_vendor', () => "0");
 
 
@@ -61,7 +68,7 @@ class CheckPhoneNumberScreen extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 5,),
-                  CustomTextField(hintText: 'Enter your phone number',controller: phnoneController,),
+                  CustomTextField(hintText: 'Enter your phone number',controller: phnoneController,type: TextInputType.phone,),
 
                   SizedBox(height: 20,),
                   Consumer<AuthProvider>(
