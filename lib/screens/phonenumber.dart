@@ -29,7 +29,7 @@ class CheckPhoneNumberScreen extends StatelessWidget {
 
      Provider.of<AuthProvider>(context,listen: false).register(request).then((value) {
        if(value['data']){
-         Get.to(SMSScreen());
+         Get.to(SMSScreen(request: request,));
        }else{
          showErrorMessage(context, value['message']);
 

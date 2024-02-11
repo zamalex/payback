@@ -46,6 +46,7 @@ dependencies:
   custom_date_range_picker: ^1.0.10
   google_maps_flutter: ^2.5.3
   http: ^1.2.0
+  mobile_scanner: ^4.0.0
 
 
 

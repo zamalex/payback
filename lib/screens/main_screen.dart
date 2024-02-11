@@ -16,12 +16,21 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
   List screens=[
-    HomeScreen(),
-    ShopOnlineScreen(),
-    MapSample(),
-    ControlsScreen(),
-    CartScreen(),
+
   ];
+  @override
+  void initState() {
+    // TODO: implement initState
+    screens.addAll([ HomeScreen(shopAll: (){
+      setState(() {
+        _currentIndex=1;
+      });
+    },),
+      ShopOnlineScreen(),
+      MapSample(),
+      ControlsScreen(),
+      CartScreen(),]);
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -11,12 +11,14 @@ class CustomTextField extends StatefulWidget {
   bool obscureText = false;
 
   Widget? icon = null;
+  bool editable =true;
 
   CustomTextField(
       {required this.hintText,
       this.obscureText = false,
       this.controller,
       this.icon,
+        this.editable=true,
       this.maxLines = 1});
 
   TextEditingController? controller;
@@ -31,6 +33,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return Container(
       height: widget.maxLines * 48.0,
       child: TextField(
+        readOnly: !widget.editable,
         maxLines: widget.maxLines,
         controller: widget.controller,
         obscureText: widget.obscureText,

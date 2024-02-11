@@ -16,8 +16,8 @@ class LoginScreen extends StatelessWidget {
   TextEditingController passwordController = TextEditingController();
 
   login(BuildContext context) {
-    Get.to(MainScreen());
-    return;
+    /*Get.to(MainScreen());
+    return;*/
 
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
       showErrorMessage(context, 'Enter required data');

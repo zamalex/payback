@@ -30,6 +30,7 @@ import 'package:payback/screens/notifications_settings_screen.dart';
 import 'package:payback/screens/order_details_screen.dart';
 import 'package:payback/screens/partner_details_screen.dart';
 import 'package:payback/screens/partner_info_screen.dart';
+import 'package:payback/screens/partners_screen.dart';
 import 'package:payback/screens/phonenumber.dart';
 import 'package:payback/screens/product_details_screen.dart';
 import 'package:payback/screens/profile_info_screen.dart';

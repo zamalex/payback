@@ -8,9 +8,11 @@ import '../helpers/functions.dart';
 import '../providers/auth_provider.dart';
 
 class SMSScreen extends StatelessWidget {
-  SMSScreen({Key? key}) : super(key: key);
+  SMSScreen({Key? key,required this.request}) : super(key: key);
 
   TextEditingController controller = TextEditingController();
+
+  Map<String,String> request;
 
   verify(BuildContext context){
     if (controller.text.isEmpty) {
@@ -18,10 +20,12 @@ class SMSScreen extends StatelessWidget {
       return;
     }
 
+    request.putIfAbsent('otp', () => controller.text);
+
+    print(request.toString());
+
     Provider.of<AuthProvider>(context, listen: false)
-        .verify({
-      'code':controller.text
-    })
+        .verify(request)
         .then((value) {
       value['data']==null?showErrorMessage(context, value['message'])
           :showSuccessMessage(context,value['message']);
@@ -48,6 +52,7 @@ class SMSScreen extends StatelessWidget {
                 Directionality(
                   textDirection: TextDirection.ltr,
                   child: PinCodeTextField(
+                    controller: controller,
                     keyboardType: TextInputType.number,
                     length: 4,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -94,7 +99,7 @@ class SMSScreen extends StatelessWidget {
                 SizedBox(height: 20,),
                 Container(
                     width: MediaQuery.of(context).size.width,
-                    child: CustomButton(buttonText: 'Confirm', buttonColor: kPurpleColor)),
+                    child: CustomButton(buttonText: 'Confirm', buttonColor: kPurpleColor,onTap: (){verify(context);},)),
                 SizedBox(height: 30,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

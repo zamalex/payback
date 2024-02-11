@@ -11,7 +11,9 @@ import '../helpers/custom_widgets.dart';
 
 
 class HomeScreen extends StatefulWidget {
-   HomeScreen({super.key});
+
+  Function shopAll;
+   HomeScreen({super.key,required this.shopAll});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -122,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
              Row(
                children: [
                  Expanded(child: Text('Product categories',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),)),
-                 Text('Show all',style: TextStyle(color: kBlueColor,fontWeight: FontWeight.bold),),
+                 InkWell(onTap:(){widget.shopAll();},child:Text('Show all',style: TextStyle(color: kBlueColor,fontWeight: FontWeight.bold),),),
                  Icon(Icons.arrow_forward,color: kBlueColor,)
                ],
              ),
@@ -163,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
              Row(
                children: [
                  Expanded(child: Text('Hot deals',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),)),
-                 Text('Show all',style: TextStyle(color: kBlueColor,fontWeight: FontWeight.bold),),
+                 InkWell(onTap:(){widget.shopAll();},child: Text('Show all',style: TextStyle(color: kBlueColor,fontWeight: FontWeight.bold),)),
                  Icon(Icons.arrow_forward,color: kBlueColor,)
                ],
              ),
@@ -182,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
              Row(
                children: [
                  Expanded(child: Text('Suggested for you',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),)),
-                 Text('Show all',style: TextStyle(color: kBlueColor,fontWeight: FontWeight.bold),),
+                 InkWell(onTap:(){widget.shopAll();},child:Text('Show all',style: TextStyle(color: kBlueColor,fontWeight: FontWeight.bold),)),
                  Icon(Icons.arrow_forward,color: kBlueColor,)
                ],
              ),

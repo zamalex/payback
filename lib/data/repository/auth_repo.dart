@@ -28,7 +28,7 @@ class AuthRepository {
       return {'message': 'Not found'};
     } catch (e) {
       if (e is DioError) {
-        return {'message': e.message};
+        return {'message': e.response?.data['message']??e.message};
         //return {'message':e.message};
       } else {
         return {'message': 'unknown error'};
@@ -50,7 +50,14 @@ class AuthRepository {
       return {'message': 'Error', 'data': false};
     } catch (e) {
       if (e is DioError) {
-        return {'message': e.message, 'data': false};
+        String error = e.response?.data['message']??
+            e.message;
+
+        if(e.response!.data.toString().contains('email')||e.response!.data.toString().contains('phone')){
+            error = 'Account Already Registered';
+        }
+
+        return {'message':  error, 'data': false};
         //return {'message':e.message};
       } else {
         return {'message': 'unknown error', 'data': false};
@@ -61,7 +68,7 @@ class AuthRepository {
   Future<Map> verify(Map<String, String> body) async {
     try {
       Response response =
-      await sl<DioClient>().post(Url.REGISTER_URL, data: jsonEncode(body));
+      await sl<DioClient>().post(Url.VERIFY_URL, data: jsonEncode(body));
 
       final parsedJson = response.data;
       if (response.statusCode! < 400) {

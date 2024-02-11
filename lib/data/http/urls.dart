@@ -4,6 +4,7 @@ class Url {
   static const BASE_URL = 'https://payback.b1rincitech.com/api'; //test
   static const LOGIN_URL = '/login';
   static const REGISTER_URL = '/register';
+  static const VERIFY_URL = '/verify';
   static const CATEGORIES_URL = '/productsCategories';
   static const PRODUCTS_URL = '/productsCategories';
   static const ONBOARDING_URL = '/productsCategories';
