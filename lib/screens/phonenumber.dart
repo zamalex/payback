@@ -14,85 +14,81 @@ class CheckPhoneNumberScreen extends StatelessWidget {
   Map<String,String> request;
 
    TextEditingController phnoneController = TextEditingController();
+   final _formKey = GlobalKey<FormState>();
 
-   register(BuildContext context){
-     if(phnoneController.text.isEmpty){
-       showErrorMessage(context, 'Enter required data');
-       return;
+
+   register(BuildContext context) {
+     if (_formKey.currentState!.validate()) {
+
+       _formKey.currentState!.save();
+       request.putIfAbsent('phone', () => '+${phnoneController.text}');
+       request.putIfAbsent('is_vendor', () => "0");
+
+
+       Provider.of<AuthProvider>(context, listen: false)
+           .register(request)
+           .then((value) {
+         if (value['data']) {
+           Get.to(SMSScreen(request: request,));
+         } else {
+           showErrorMessage(context, value['message']);
+         }
+       });
      }
-
-     if(!phnoneController.text.startsWith('20')){
-       showErrorMessage(context, 'Phone number should start with 20');
-       return;
-     }
-
-
-
-
-
-     request.putIfAbsent('phone', () => '+${phnoneController.text}');
-     request.putIfAbsent('is_vendor', () => "0");
-
-
-     Provider.of<AuthProvider>(context,listen: false).register(request).then((value) {
-       if(value['data']){
-         Get.to(SMSScreen(request: request,));
-       }else{
-         showErrorMessage(context, value['message']);
-
-       }
-     });
    }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:  Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/images/auth_background.png'),fit: BoxFit.cover)),
-        padding: EdgeInsets.all(10),
-        child: SafeArea(
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children:[
-                  SizedBox(height: 20,),
-                  Text('Confirm phone number',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
-                  SizedBox(height: 10,),
-                  Text('To get all the benefits from Payback, please, authenticate your phone number via SMS code',textAlign: TextAlign.center),
+      body:  Form(
+        key: _formKey,
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/images/auth_background.png'),fit: BoxFit.cover)),
+          padding: EdgeInsets.all(10),
+          child: SafeArea(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children:[
+                    SizedBox(height: 20,),
+                    Text('Confirm phone number',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
+                    SizedBox(height: 10,),
+                    Text('To get all the benefits from Payback, please, authenticate your phone number via SMS code',textAlign: TextAlign.center),
 
-                  SizedBox(height: 20,),
-                  Row(
-                    children: [
-                      Text('Phone number',style: TextStyle(),),
-                    ],
-                  ),
-                  SizedBox(height: 5,),
-                  CustomTextField(hintText: 'Enter your phone number',controller: phnoneController,type: TextInputType.phone,),
+                    SizedBox(height: 20,),
+                    Row(
+                      children: [
+                        Text('Phone number',style: TextStyle(),),
+                      ],
+                    ),
+                    SizedBox(height: 5,),
+                    CustomTextField(hintText: 'Enter your phone number',controller: phnoneController,type: TextInputType.phone,),
 
-                  SizedBox(height: 20,),
-                  Consumer<AuthProvider>(
-                    builder:(context,value,child)=> value.isLoading?CircularProgressIndicator():Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: CustomButton(buttonText: 'Send', buttonColor: kPurpleColor,onTap: (){
-                          register(context);
-                        },)),
-                  ),
-                  SizedBox(height: 20,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('Already have an account?'),
-                      SizedBox(width: 5,),
-                      Text('Sign in',style: TextStyle(fontWeight: FontWeight.bold,color: kBlueColor),),
-                    ],
-                  ),
+                    SizedBox(height: 20,),
+                    Consumer<AuthProvider>(
+                      builder:(context,value,child)=> value.isLoading?CircularProgressIndicator():Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: CustomButton(buttonText: 'Send', buttonColor: kPurpleColor,onTap: (){
+                            register(context);
+                          },)),
+                    ),
+                    SizedBox(height: 20,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Already have an account?'),
+                        SizedBox(width: 5,),
+                        Text('Sign in',style: TextStyle(fontWeight: FontWeight.bold,color: kBlueColor),),
+                      ],
+                    ),
 
-                  Expanded(child: Text('Continue as a Guest',style: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold),)),
+                    Expanded(child: Text('Continue as a Guest',style: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold),)),
 
-                ]
+                  ]
+              ),
             ),
-          ),
+        ),
       ),
     );
   }

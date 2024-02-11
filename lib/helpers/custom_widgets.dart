@@ -25,10 +25,11 @@ class CustomTextField extends StatefulWidget {
       this.icon,
         this.isPassword=false,
         this.editable=true,
-      this.maxLines = 1});
+      this.maxLines = 1,this.onSaved});
 
   TextEditingController? controller;
   int maxLines = 1;
+  Function? onSaved;
   @override
   _CustomTextFieldState createState() => _CustomTextFieldState();
 }
@@ -37,10 +38,23 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: widget.maxLines * 48.0,
-      child: TextField(
+      //height: widget.maxLines * 48.0,
+      child: TextFormField(
+        validator: (text){
+          if(text!.isEmpty){
+            return 'Enter required data';
+          }
 
-
+          if(widget.type==TextInputType.phone&&!text.startsWith('20')){
+            return 'Phone should start with 20';
+          }
+          else
+            return null;
+        },
+        onSaved: (s){
+          if(widget.onSaved!=null)
+            widget.onSaved!(s);
+        },
         readOnly: !widget.editable,
         maxLines: widget.maxLines,
         controller: widget.controller,
@@ -59,7 +73,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           hintStyle: TextStyle(
             color: Colors.grey,
           ),
-          contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 10),
+          contentPadding: EdgeInsets.symmetric(vertical: widget.maxLines*(12), horizontal: 10),
           suffixIcon: IconButton(
             icon: widget.isPassword?Icon(widget.obscureText
                 ? Icons.visibility
