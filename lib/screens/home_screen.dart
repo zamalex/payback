@@ -36,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Future.delayed(Duration.zero).then((value){
       Provider.of<HomeProvider>(context,listen: false).getCategories();
       Provider.of<HomeProvider>(context,listen: false).getProducts();
+      Provider.of<HomeProvider>(context,listen: false).getCommitments();
     });
 
        sl<PreferenceUtils>().readUser().then((value) {
@@ -134,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
              ),
 
              SizedBox(height: 20,),
-             Commitment(),
+             Consumer<HomeProvider>(builder:(c,v,cc)=> v.commitments.isEmpty?Container():Commitment(commitment: v.commitments.first,)),
              SizedBox(height: 20,),
              Row(
                children: [
@@ -186,14 +187,16 @@ class _HomeScreenState extends State<HomeScreen> {
              ),
              Text('Best deals from Payback partners that might be interesting to you'),
              SizedBox(height: 10,),
-             Container(
-               height: 300,
-               width: double.infinity,
-               child: ListView.builder(
-                 scrollDirection: Axis.horizontal,
-                 itemBuilder: (c,i){
-                   return ProductWidget();
-                 },itemCount: 5,),
+             Consumer<HomeProvider>(
+               builder:(c,v,child)=> Container(
+                 height: 300,
+                 width: double.infinity,
+                 child: ListView.builder(
+                   scrollDirection: Axis.horizontal,
+                   itemBuilder: (c,i){
+                     return ProductWidget(product: v.products[i]);
+                   },itemCount: v.products.length,),
+               ),
              ),
              SizedBox(height: 20,),
              Row(
@@ -205,14 +208,16 @@ class _HomeScreenState extends State<HomeScreen> {
              ),
              Text('Check products with best cashback percentage to cover your commitments'),
              SizedBox(height: 10,),
-             Container(
-               height: 300,
-               width: double.infinity,
-               child: ListView.builder(
-                 scrollDirection: Axis.horizontal,
-                 itemBuilder: (c,i){
-                   return ProductWidget();
-                 },itemCount: 5,),
+             Consumer<HomeProvider>(
+               builder:(c,v,cc)=> Container(
+                 height: 300,
+                 width: double.infinity,
+                 child: ListView.builder(
+                   scrollDirection: Axis.horizontal,
+                   itemBuilder: (c,i){
+                     return ProductWidget(product: v.products[i],);
+                   },itemCount: v.products.length,),
+               ),
              )
 
            ],

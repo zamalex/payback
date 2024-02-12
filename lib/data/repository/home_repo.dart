@@ -7,6 +7,8 @@ import 'package:payback/model/onboarding_response.dart';
 
 
 import '../../model/auth_response.dart';
+import '../../model/commitment_model.dart';
+import '../../model/product_model.dart';
 import '../http/dio_client.dart';
 import '../http/urls.dart';
 import '../service_locator.dart';
@@ -14,8 +16,8 @@ import '../service_locator.dart';
 class HomeRepository {
   Future getCategories() async {
 
-    CategoriesResponse loginModel = CategoriesResponse.fromJson(jsonDecode(Url.mocCategories));
-    return {'message': 'Welcome', 'data':(loginModel.categories??[]) as List<Category>};
+    //CategoriesResponse loginModel = CategoriesResponse.fromJson(jsonDecode(Url.mocCategories));
+    //return {'message': 'Welcome', 'data':(loginModel.categories??[]) as List<Category>};
 
     try {
       Response response =
@@ -37,25 +39,49 @@ class HomeRepository {
       }
     }
   }
-  Future getProducts() async {
-
+  Future<Map<String, dynamic>> getProducts() async {
     try {
-      Response response =
-      await sl<DioClient>().get(Url.PRODUCTS_URL,);
+      Response response = await sl<DioClient>().get(Url.PRODUCTS_URL);
 
       final parsedJson = response.data;
       if (response.statusCode! < 400) {
-        CategoriesResponse loginModel = CategoriesResponse.fromJson(parsedJson);
-        return {'message': 'Welcome', 'data':(loginModel.categories??[]) as List<Category>};
+        List<Product> products = (parsedJson['data'] as List)
+            .map((json) => Product.fromJson(json as Map<String, dynamic>))
+            .toList();
+
+        return {'message': 'Products retrieved successfully', 'data': products};
       }
 
       return {'message': 'Not found'};
     } catch (e) {
       if (e is DioError) {
         return {'message': e.message};
-        //return {'message':e.message};
       } else {
-        return {'message': 'unknown error'};
+        return {'message': 'Unknown error'};
+      }
+    }
+  }
+
+
+  Future<Map<String, dynamic>> getCommitments() async {
+    try {
+      Response response = await sl<DioClient>().get(Url.COMMIMENTS_URL);
+
+      final parsedJson = response.data;
+      if (response.statusCode! < 400) {
+        List<Commitment> commitments = (parsedJson['data'] as List)
+            .map((json) => Commitment.fromJson(json))
+            .toList();
+
+        return {'message': 'Commitments retrieved successfully', 'data': commitments};
+      }
+
+      return {'message': 'Not found'};
+    } catch (e) {
+      if (e is DioError) {
+        return {'message': e.message};
+      } else {
+        return {'message': 'Unknown error'};
       }
     }
   }

@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:payback/data/http/urls.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/model/product_model.dart';
+import 'package:payback/model/commitment_model.dart' as com;
 import 'package:payback/screens/commitmetn_details_screen.dart';
 import 'package:payback/screens/partner_details_screen.dart';
 import 'package:payback/screens/product_details_screen.dart';
@@ -273,12 +278,18 @@ class CustomThumbShape extends SliderComponentShape {
 }
 
 class Commitment extends StatelessWidget {
-  const Commitment({super.key});
+   Commitment({super.key,this.commitment});
+
+
+  com.Commitment? commitment;
 
   @override
   Widget build(BuildContext context) {
+    if(commitment==null)
+      commitment = com.Commitment.fromJson(jsonDecode(Url.COMMITMENT_JSON));
     return InkWell(
       onTap: () {
+
         Get.to(CommitmetDetails());
       },
       child: Container(
@@ -316,13 +327,13 @@ class Commitment extends StatelessWidget {
                       ),
                       SizedBox(width: 8),
                       Text(
-                        'Amazon Prime',
+                        '${commitment!.name??''}',
                         style: TextStyle(fontSize: 20, color: Colors.white),
                       ),
                     ],
                   )),
                   Text(
-                    '20 SAR',
+                    '${commitment!.paymentTarget??'0'} SAR',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -385,10 +396,15 @@ AppBar mainAppBar() {
 }
 
 class ProductWidget extends StatelessWidget {
-  const ProductWidget({super.key});
+   ProductWidget({super.key,this.product});
+
+  Product? product=Product.fromJson(jsonDecode(Url.PRODUCT_JSON));
 
   @override
   Widget build(BuildContext context) {
+    if(product==null){
+      product=Product.fromJson(jsonDecode(Url.PRODUCT_JSON));
+    }
     return InkWell(
       onTap: (){
         Get.to(ProductDetailsScreen());
@@ -442,14 +458,14 @@ class ProductWidget extends StatelessWidget {
                 height: 5,
               ),
               Text(
-                'Nike shop',
+                '${product!.name??''}',
                 style: TextStyle(
                   color: Colors.grey,
                 ),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),
-              Text('2000 SAR',
+              Text('${product!.price??'0'} SAR',
                   style: TextStyle(color: Colors.purple, fontSize: 16),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1),

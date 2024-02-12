@@ -4,9 +4,9 @@ class CategoriesResponse {
   CategoriesResponse({this.categories});
 
   CategoriesResponse.fromJson(Map<String, dynamic> json) {
-    if (json['categories'] != null) {
+    if (json['data'] != null) {
       categories = <Category>[];
-      json['categories'].forEach((v) {
+      json['data'].forEach((v) {
         categories!.add(new Category.fromJson(v));
       });
     }
