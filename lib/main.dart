@@ -43,9 +43,9 @@ import 'package:payback/screens/subscription_screen.dart';
 
 import 'package:provider/provider.dart';
 
-import '../data/service_locator.dart';
-import '../providers/auth_provider.dart';
-import 'edit_name_screen.dart';
+import 'data/service_locator.dart';
+import 'providers/auth_provider.dart';
+import 'screens/edit_name_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

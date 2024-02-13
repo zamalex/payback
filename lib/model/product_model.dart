@@ -5,7 +5,7 @@ class Product {
   late String? quantity;
   late String? price;
   late String? featuredImage;
-  late String? gallery;
+  late List? gallery;
 
   late String? categoryId;
 

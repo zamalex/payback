@@ -8,7 +8,7 @@ import 'package:slide_switcher/slide_switcher.dart';
 
 import '../providers/CommitmentsProvider.dart';
 import 'commitment_category_received.dart';
-import 'main.dart';
+import '../main.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
