@@ -36,7 +36,7 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
       'partner_id':partner ==null?null:'${partner!.id}',
       'category_id':category==null?null:'${category!.id}',
       'payment_target':payment_target,
-      'cashback_to_commitment':null,
+      'cashback_to_commitment':'50',
       'due_date':date,
       'type':type==0?'one-time':'repeatable',
       'notify':notify?'1':'0',
@@ -140,11 +140,16 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
                           SizedBox(
                             height: 15,
                           ),
+                          if(selected==1)
                           Text('Choose partner'),
-                          SizedBox(
+                          if(selected==1)
+
+                            SizedBox(
                             height: 5,
                           ),
-                          TextFieldButton(
+                          if(selected==1)
+
+                            TextFieldButton(
                             hinttext: partner==null?'Choose partner':partner!.name??'',
                             onTap: () {
                               showPartnersSheet(context,(Partner p){setState(() {
@@ -152,7 +157,9 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
                               });});
                             },
                           ),
-                          SizedBox(
+                          if(selected==1)
+
+                            SizedBox(
                             height: 15,
                           ),
 
@@ -294,7 +301,7 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
                                 color: kBlueLightColor.withOpacity(.5)),
                             padding: EdgeInsets.all(4),
                             child: SwitchListTile(
-                              trackColor: MaterialStateProperty.all(Colors.green),
+                              trackColor: notify?MaterialStateProperty.all(Colors.green):MaterialStateProperty.all(Colors.grey),
                               activeColor: Colors.white,
                               inactiveThumbColor: Colors.white,
                               title: Text(
@@ -320,17 +327,19 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
                     ),
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(16),
-                          topRight: Radius.circular(16))),
-                  child: Container(
-                      width: double.infinity,
-                      child: CustomButton(
-                          buttonText: 'Create', buttonColor: kPurpleColor)),
+                Consumer<CommitmentsProvider>(
+                  builder:(context, value, child) => value.isLoading?Center(child: CircularProgressIndicator(),): Container(
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(16),
+                            topRight: Radius.circular(16))),
+                    child: Container(
+                        width: double.infinity,
+                        child: CustomButton(onTap: (){createCommitment();},
+                            buttonText: 'Create', buttonColor: kPurpleColor)),
+                  ),
                 )
               ],
             )),
