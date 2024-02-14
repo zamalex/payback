@@ -103,14 +103,14 @@ class RegisterScreen extends StatelessWidget {
                             child: Text('Sign in',style: TextStyle(fontWeight: FontWeight.bold,color: kBlueColor),)),
                       ],
                     ),
-                    SizedBox(height: 40,),
+                    SizedBox(height: 30,),
                     Text('Or sign in with',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)
                     ,SizedBox(height: 5,),
                     Row(
                       children: [
-                        Expanded(child: CustomIconButton(buttonText: 'Apple', iconData: Icons.apple)),
+                        Expanded(child: CustomIconButton(buttonText: 'Apple', iconData: 'assets/images/apple.png')),
                         SizedBox(width: 15,),
-                        Expanded(child: CustomIconButton(buttonText: 'Google', iconData: Icons.apple)),
+                        Expanded(child: CustomIconButton(buttonText: 'Google', iconData: 'assets/images/google.png')),
 
                       ],
                     ),

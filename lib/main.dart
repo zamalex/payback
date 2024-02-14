@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payback/helpers/colors.dart';
@@ -33,11 +34,7 @@ import 'package:payback/screens/partner_info_screen.dart';
 import 'package:payback/screens/partners_screen.dart';
 import 'package:payback/screens/phonenumber.dart';
 import 'package:payback/screens/product_details_screen.dart';
-import 'package:payback/screens/profile_info_screen.dart';
-import 'package:payback/screens/register.dart';
-import 'package:payback/screens/saved_screen.dart';
-import 'package:payback/screens/settings_screen.dart';
-import 'package:payback/screens/shop_online_screen.dart';
+
 import 'package:payback/screens/splash.dart';
 import 'package:payback/screens/subscription_screen.dart';
 
@@ -49,6 +46,8 @@ import 'screens/edit_name_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+  );
 
   await init();
 

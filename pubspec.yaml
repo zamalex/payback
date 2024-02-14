@@ -47,6 +47,9 @@ dependencies:
   google_maps_flutter: ^2.5.3
   http: ^1.2.0
   mobile_scanner: ^4.0.0
+  firebase_core: ^2.25.4
+  firebase_auth: ^4.17.4
+  google_sign_in: ^6.2.1
 
 
 

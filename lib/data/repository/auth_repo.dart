@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:payback/helpers/dio_error_helper.dart';
 
 
 import '../../model/auth_response.dart';
@@ -29,7 +30,6 @@ class AuthRepository {
     } catch (e) {
       if (e is DioError) {
         return {'message': e.response?.data['message']??e.message};
-        //return {'message':e.message};
       } else {
         return {'message': 'unknown error'};
       }
@@ -50,6 +50,8 @@ class AuthRepository {
       return {'message': 'Error', 'data': false};
     } catch (e) {
       if (e is DioError) {
+        return {'message':  DioErrorHelper.handleError(e), 'data': false};
+
         String error = e.response?.data['message']??
             e.message;
 

@@ -10,6 +10,8 @@ import 'package:payback/screens/commitmetn_details_screen.dart';
 import 'package:payback/screens/partner_details_screen.dart';
 import 'package:payback/screens/product_details_screen.dart';
 
+import '../model/partner_model.dart';
+
 class CustomTextField extends StatefulWidget {
   final String hintText;
 
@@ -201,13 +203,16 @@ class CustomButton extends StatelessWidget {
 
 class CustomIconButton extends StatelessWidget {
   final String buttonText;
-  final IconData iconData;
+  final String iconData;
   final Color buttonColor;
   final Color iconColor;
+
+  Function? onTap;
 
   CustomIconButton(
       {required this.buttonText,
       required this.iconData,
+        this.onTap,
       this.buttonColor = Colors.white,
       this.iconColor = Colors.black});
 
@@ -215,7 +220,8 @@ class CustomIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       onPressed: () {
-        // Add your button functionality here
+        if(onTap!=null)
+       onTap!();
       },
       style: ElevatedButton.styleFrom(
         primary: buttonColor, // Custom color for the button
@@ -223,9 +229,9 @@ class CustomIconButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(16.0),
         ),
       ),
-      icon: Icon(
+      icon: Image.asset(
         iconData,
-        color: iconColor,
+
       ),
       label: Text(
         buttonText,
@@ -482,10 +488,14 @@ class ProductWidget extends StatelessWidget {
 }
 
 class PartnerWidget extends StatelessWidget {
-  const PartnerWidget({super.key});
+   PartnerWidget({super.key,this.partner});
+
+  Partner? partner;
 
   @override
   Widget build(BuildContext context) {
+    if(partner==null)
+      partner = Partner.fromJson(jsonDecode(Url.PARTNER_JSON));
     return InkWell(
       onTap: (){
         Get.to(PartnerDetailsScreen());
@@ -505,7 +515,7 @@ class PartnerWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: NetworkImage(
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuCxMPJwglskH6j6jQhCmJGqIr9kR6_iMPng&usqp=CAU'),
+                        partner!.image??'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuCxMPJwglskH6j6jQhCmJGqIr9kR6_iMPng&usqp=CAU'),
                     fit: BoxFit.cover,
                   ),
                   borderRadius: BorderRadius.circular(15),
@@ -543,7 +553,7 @@ class PartnerWidget extends StatelessWidget {
               ),
               SizedBox(height: 5),
               Text(
-                'Nike shop',
+                '${partner!.name??''}',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,

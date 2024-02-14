@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:payback/data/preferences.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/helpers/functions.dart';
-import 'package:payback/providers/auth_provider.dart';
+import 'package:payback/providers/auth_provider.dart' as a;
 import 'package:payback/screens/main_screen.dart';
 import 'package:payback/screens/register.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +15,27 @@ import '../helpers/custom_widgets.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+  Future<User?> _handleSignIn() async {
+    try {
+      final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+      final GoogleSignInAuthentication googleSignInAuthentication =
+      await googleSignInAccount!.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+      final UserCredential authResult = await _auth.signInWithCredential(credential);
+      final User? user = authResult.user;
+      if(user!=null)
+      print('user ${user?.email}');
+      return user;
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -24,7 +47,7 @@ class LoginScreen extends StatelessWidget {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      Provider.of<AuthProvider>(context, listen: false)
+      Provider.of<a.AuthProvider>(context, listen: false)
           .login(emailController.text, passwordController.text, '')
           .then((value) {
         value['data'] == null
@@ -113,7 +136,7 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(
                       height: 20,
                     ),
-                    Consumer<AuthProvider>(
+                    Consumer<a.AuthProvider>(
                       builder: (context, value, child) => value.isLoading
                           ? CircularProgressIndicator()
                           : Container(
@@ -174,13 +197,14 @@ class LoginScreen extends StatelessWidget {
                       children: [
                         Expanded(
                             child: CustomIconButton(
-                                buttonText: 'Apple', iconData: Icons.apple)),
+                                buttonText: 'Apple', iconData: 'assets/images/apple.png')),
                         SizedBox(
                           width: 15,
                         ),
                         Expanded(
                             child: CustomIconButton(
-                                buttonText: 'Google', iconData: Icons.apple)),
+                              onTap: (){_handleSignIn();},
+                                buttonText: 'Google', iconData:'assets/images/google.png')),
                       ],
                     ),
                     SizedBox(

@@ -5,6 +5,7 @@ import 'package:payback/data/repository/home_repo.dart';
 import 'package:payback/model/categories_response.dart';
 import 'package:payback/model/commitment_model.dart';
 import 'package:payback/model/onboarding_response.dart';
+import 'package:payback/model/partner_model.dart';
 
 import '../data/repository/auth_repo.dart';
 import '../data/service_locator.dart';
@@ -22,8 +23,21 @@ class HomeProvider extends ChangeNotifier{
 
    List<Product> products=[];
    List<Commitment> commitments=[];
+   List<Partner> partners=[];
+
+  Future<Map<String, dynamic>> getPartners() async {
+    // Implement your loading logic here if needed
+    // ...
+
+    final response = await sl<HomeRepository>().getPartners();
+    if (response.containsKey('data')) {
+      partners = response['data'];
+    }
 
 
+    notifyListeners();
+    return response;
+  }
   Future<Map<String, dynamic>> getCommitments() async {
 
     final response = await sl<HomeRepository>().getCommitments();

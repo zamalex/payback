@@ -7,12 +7,20 @@ class Url {
   static const VERIFY_URL = '/verify';
   static const CATEGORIES_URL = '/admin/categories';
   static const PRODUCTS_URL = '/admin/products';
+  static const PARTNERS_URL = '/admin/partners';
   static const COMMIMENTS_URL = '/admin/commitments';
+  static const COMMIMENTS_CATEGORIES_URL = '/admin/commitment-categories';
   static const ONBOARDING_URL = '/productsCategories';
 
   static String TOKEN = '';
   static String LOCALE = 'ar';
 
+  static String PARTNER_JSON = """ {
+            "id": 1,
+            "name": "Partner",
+            "description": "Partner",
+            "image": "https://payback.b1rincitech.com/storage/10/01HPCZ31MECN1Y2WA3BYZSNG7D.png"
+        }""";
   static String PRODUCT_JSON ="""{
             "id": 1,
             "name": "tea",
