@@ -90,7 +90,7 @@ class HomeRepository {
 
   Future getOnBoarding() async {
 
-    var json = """{
+    /*var json = """{
 "success": true,
 "status": 200,
 "data": [
@@ -115,21 +115,21 @@ class HomeRepository {
 }""";
 
     OnBoardingResponse loginModel = OnBoardingResponse.fromJson(jsonDecode(json));
-    return {'message': 'Welcome', 'data':(loginModel.data??[]) as List<Data>};
+    return {'message': 'Welcome', 'data':(loginModel.data??[]) as List<Data>};*/
     try {
       Response response =
       await sl<DioClient>().get(Url.ONBOARDING_URL,);
 
       final parsedJson = response.data;
       if (response.statusCode! < 400) {
-        CategoriesResponse loginModel = CategoriesResponse.fromJson(parsedJson);
-        return {'message': 'Welcome', 'data':(loginModel.categories??[]) as List<Category>};
+        OnBoardingResponse loginModel = OnBoardingResponse.fromJson(parsedJson);
+        return {'message': 'Welcome', 'data':(loginModel.data??[]) as List<Data>};
       }
 
-      return {'message': 'Not found'};
+      return {'message': 'Not found','data':[]};
     } catch (e) {
       if (e is DioError) {
-        return {'message': e.message};
+        return {'message': e.message,};
         //return {'message':e.message};
       } else {
         return {'message': 'unknown error'};

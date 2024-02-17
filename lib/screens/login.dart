@@ -6,6 +6,7 @@ import 'package:payback/data/preferences.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/helpers/functions.dart';
 import 'package:payback/providers/auth_provider.dart' as a;
+import 'package:payback/screens/forgot_password_screen.dart';
 import 'package:payback/screens/main_screen.dart';
 import 'package:payback/screens/register.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +31,8 @@ class LoginScreen extends StatelessWidget {
       final User? user = authResult.user;
       if(user!=null)
       print('user ${user?.email}');
+      print('token ${googleSignInAuthentication.accessToken}');
+      print('id token ${googleSignInAuthentication.idToken}');
       return user;
     } catch (error) {
       print(error);
@@ -177,10 +180,13 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      'Forgot password?',
-                      style: TextStyle(
-                          color: kBlueColor, fontWeight: FontWeight.bold),
+                    InkWell(
+                      onTap: (){Get.to(ForgotScreen());},
+                      child: Text(
+                        'Forgot password?',
+                        style: TextStyle(
+                            color: kBlueColor, fontWeight: FontWeight.bold),
+                      ),
                     ),
                     SizedBox(
                       height: 40,

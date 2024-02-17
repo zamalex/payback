@@ -86,13 +86,13 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                    /* child: Image.network(widget.data[_pageIndex].image,
                         width: 50,
                         height: 50, fit: BoxFit.contain),*/
-                    decoration: BoxDecoration(image: DecorationImage(image: AssetImage(widget.data[_pageIndex].image!),fit: BoxFit.cover)));
+                    decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(widget.data[_pageIndex].image!),fit: BoxFit.cover)));
               }),
         ),
         Transform.rotate(
           angle: -math.pi,
           child: Container(
-            decoration: BoxDecoration(image: DecorationImage(image:AssetImage(widget.data[_pageIndex].image!),fit: BoxFit.cover)),
+            decoration: BoxDecoration(image: DecorationImage(image:NetworkImage(widget.data[_pageIndex].image!),fit: BoxFit.cover)),
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * .45,
               child: Transform.rotate(
@@ -148,7 +148,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                         ),
                                       ),
                                       Text(
-                                        widget.data[_pageIndex].description!,
+                                        widget.data[_pageIndex].description??'',
                                         textAlign: TextAlign.center,
                                         style: const TextStyle(
                                           color: Colors.black,

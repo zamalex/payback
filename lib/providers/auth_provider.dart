@@ -39,6 +39,43 @@ class AuthProvider extends ChangeNotifier{
     return response;
   }
 
+  Future<Map> forgotPassword(Map<String,String> request)async{
+    isLoading = true;
+    notifyListeners();
+
+    Map response= await sl<AuthRepository>().forgotPassword(request);
+
+    isLoading = false;
+    notifyListeners();
+
+    return response;
+  }
+
+
+  Future<Map> checkForgotToken(Map<String,String> request)async{
+    isLoading = true;
+    notifyListeners();
+
+    Map response= await sl<AuthRepository>().checkForgotToken(request);
+
+    isLoading = false;
+    notifyListeners();
+
+    return response;
+  }
+
+  Future<Map> resetPassword(Map<String,String> request)async{
+    isLoading = true;
+    notifyListeners();
+
+    Map response= await sl<AuthRepository>().resetPassword(request);
+
+    isLoading = false;
+    notifyListeners();
+
+    return response;
+  }
+
 
 
   Future<Map> verify(Map<String,String> body)async{

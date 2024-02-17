@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/screens/login.dart';
+import 'package:payback/screens/reset_screen.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +12,9 @@ import '../helpers/functions.dart';
 import '../providers/auth_provider.dart';
 
 class SMSScreen extends StatelessWidget {
-  SMSScreen({Key? key,required this.request}) : super(key: key);
+  SMSScreen({Key? key,required this.request,this.isRegister=true}) : super(key: key);
+
+  bool isRegister = true;
 
   TextEditingController controller = TextEditingController();
 
@@ -22,20 +25,38 @@ class SMSScreen extends StatelessWidget {
       showErrorMessage(context, 'Enter required data');
       return;
     }
+    if(isRegister){
+      request.putIfAbsent('otp', () => controller.text);
 
-    request.putIfAbsent('otp', () => controller.text);
+      print(request.toString());
 
-    print(request.toString());
+      Provider.of<AuthProvider>(context, listen: false)
+          .verify(request)
+          .then((value) {
+        value['data']==null?showErrorMessage(context, value['message'])
+            :showSuccessMessage(context,value['message']);
+        if(value['data']!=null){
+          Get.to(LoginScreen());
+        }
+      });
+    }
+    else{
+      request.putIfAbsent('token', () => controller.text);
 
-    Provider.of<AuthProvider>(context, listen: false)
-        .verify(request)
-        .then((value) {
-      value['data']==null?showErrorMessage(context, value['message'])
-          :showSuccessMessage(context,value['message']);
-      if(value['data']!=null){
-        Get.to(LoginScreen());
-      }
-    });
+      print(request.toString());
+
+      Provider.of<AuthProvider>(context, listen: false)
+          .checkForgotToken(request)
+          .then((value) {
+        value['data']==false?showErrorMessage(context, value['message'])
+            :showSuccessMessage(context,value['message']);
+        if(value['data']){
+          Get.to(ResetScreen(request: request));
+        }
+      });
+    }
+
+
   }
 
   @override

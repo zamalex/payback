@@ -5,12 +5,15 @@ class Url {
   static const LOGIN_URL = '/login';
   static const REGISTER_URL = '/register';
   static const VERIFY_URL = '/verify';
+  static const FORGOT_URL = '/forget-password';
+  static const CHECK_TOKEN_URL = '/check-token';
+  static const RESET_PASSWORD_URL = '/reset-password';
   static const CATEGORIES_URL = '/admin/categories';
   static const PRODUCTS_URL = '/admin/products';
   static const PARTNERS_URL = '/admin/partners';
   static const COMMIMENTS_URL = '/admin/commitments';
   static const COMMIMENTS_CATEGORIES_URL = '/admin/commitment-categories';
-  static const ONBOARDING_URL = '/productsCategories';
+  static const ONBOARDING_URL = '/admin/screens';
 
   static String TOKEN = '';
   static String LOCALE = 'ar';
