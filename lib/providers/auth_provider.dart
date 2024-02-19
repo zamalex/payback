@@ -12,7 +12,21 @@ class AuthProvider extends ChangeNotifier{
   bool isLoading=false;
 
 
-  Future<Map> register(Map<String,String> body)async{
+  Future<Map> socialLogin(Map<String,String> body)async{
+    isLoading = true;
+    notifyListeners();
+
+    Map response= await sl<AuthRepository>().socialLogin(body);
+
+    isLoading = false;
+    notifyListeners();
+
+    return response;
+  }
+
+
+
+Future<Map> register(Map<String,String> body)async{
     isLoading = true;
     notifyListeners();
 

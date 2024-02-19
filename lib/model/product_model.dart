@@ -6,10 +6,12 @@ class Product {
   late String? price;
   late String? featuredImage;
   late List? gallery;
+  int cartQuantity=0;
 
   late String? categoryId;
 
   Product({
+    this.cartQuantity=0,
      required this.id,
      this.name,
      this.description,
@@ -29,6 +31,7 @@ class Product {
       price: json['price'],
       featuredImage: json['featured_image'],
       gallery: json['gallery'],
+      cartQuantity: json['cartQuantity']??0,
 
       categoryId: json['category_id'],
     );
@@ -43,8 +46,9 @@ class Product {
       'price': price,
       'featured_image': featuredImage,
       'gallery': gallery,
-
+      'categoryId': categoryId,
       'category_id': categoryId,
+      'cartQuantity': cartQuantity,
     };
     return data;
   }

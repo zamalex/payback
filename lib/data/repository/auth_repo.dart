@@ -68,6 +68,28 @@ class AuthRepository {
   }
 
 
+  Future socialLogin(Map<String, String> body) async {
+    try {
+      Response response =
+      await sl<DioClient>().post(Url.SOCIAL_LOGIN_URL, data: jsonEncode(body));
+
+      final parsedJson = response.data;
+      if (response.statusCode! < 400) {
+        return {'message': 'Done', 'data': true};
+      }
+
+      return {'message': 'Error', 'data': false};
+    } catch (e) {
+      if (e is DioError) {
+        return {'message':  DioErrorHelper.handleError(e), 'data': false};
+
+      } else {
+        return {'message': 'unknown error', 'data': false};
+      }
+    }
+  }
+
+
   Future forgotPassword(Map<String, String> body) async {
     try {
       Response response =

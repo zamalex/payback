@@ -1,12 +1,20 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payback/data/preferences.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/model/product_model.dart';
+import 'package:payback/providers/checkout_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:slide_switcher/slide_switcher.dart';
+import '../data/service_locator.dart';
 import '../helpers/custom_widgets.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
-  ProductDetailsScreen({Key? key}) : super(key: key);
+  ProductDetailsScreen({Key? key,required this.product}) : super(key: key);
+
+  Product product;
 
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
@@ -95,7 +103,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           padding: EdgeInsets.all(16),
           decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.only(topLeft: Radius.circular(16),topRight: Radius.circular(16))),
           child: Container(
-              width:double.infinity,child: CustomButton(buttonText: 'Add to cart', buttonColor: kPurpleColor)),
+              width:double.infinity,child: CustomButton(buttonText: 'Add to cart', buttonColor: kPurpleColor,onTap: (){
+                Provider.of<CheckoutProvider>(context,listen: false).addToCart(widget.product);
+                Get.snackbar('Success', 'Item added to cart',backgroundColor: Colors.green,colorText: Colors.white);
+          },)),
         )
       ],
     ),);

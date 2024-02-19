@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:payback/data/preferences.dart';
@@ -18,7 +19,7 @@ class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
-  Future<User?> _handleSignIn() async {
+  Future<User?> _handleSignIn(BuildContext context) async {
     try {
       final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
       final GoogleSignInAuthentication googleSignInAuthentication =
@@ -33,6 +34,10 @@ class LoginScreen extends StatelessWidget {
       print('user ${user?.email}');
       print('token ${googleSignInAuthentication.accessToken}');
       print('id token ${googleSignInAuthentication.idToken}');
+
+      Provider.of<a.AuthProvider>(context, listen: false)
+          .socialLogin({'provider':'google','access_token':googleSignInAuthentication.accessToken!})
+          .then((value){});
       return user;
     } catch (error) {
       print(error);
@@ -50,12 +55,12 @@ class LoginScreen extends StatelessWidget {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
+
       Provider.of<a.AuthProvider>(context, listen: false)
           .login(emailController.text, passwordController.text, '')
           .then((value) {
         value['data'] == null
-            ? showErrorMessage(context, value['message'])
-            : Get.to(MainScreen());
+            ?Get.snackbar('Alertt', value['message'],backgroundColor: Colors.red,colorText: Colors.white): Get.to(MainScreen());
         if (value['data'] != null) {
           sl<PreferenceUtils>().saveUser(value['data']);
         }
@@ -209,7 +214,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                         Expanded(
                             child: CustomIconButton(
-                              onTap: (){_handleSignIn();},
+                              onTap: (){_handleSignIn(context);},
                                 buttonText: 'Google', iconData:'assets/images/google.png')),
                       ],
                     ),

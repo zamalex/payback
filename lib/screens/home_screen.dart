@@ -151,29 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                  child: ListView.builder(
                      scrollDirection: Axis.horizontal,
                      itemCount:value.categories==null?0:value.categories!.length,itemBuilder: (c,i){
-                   return  Container(width:70,
-                       margin: EdgeInsets.symmetric(horizontal: 8),
-                     child: Column(
-                       children: [
-                         CircleAvatar(
-                           backgroundColor: kBlueLightColor,
-                           child: Image.network('https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png',width: 35,),
-                           radius: 35,
-                         ),
-                         SizedBox(height: 8),
-                         Text(
-
-                           value.categories![i].name??'',
-                           style: TextStyle(
-                             overflow: TextOverflow.ellipsis,
-                             color: kBlueColor,
-                             fontSize: 12,
-                             fontWeight: FontWeight.bold,
-                           ),
-                         ),
-                       ],
-                     ),
-                   );
+                   return  CategoryWidget(category: value.categories![i]);
                  }),
                ),
              ),

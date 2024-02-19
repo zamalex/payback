@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:payback/data/http/urls.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/model/categories_response.dart';
 import 'package:payback/model/product_model.dart';
 import 'package:payback/model/commitment_model.dart' as com;
 import 'package:payback/screens/commitmetn_details_screen.dart';
@@ -401,6 +402,38 @@ AppBar mainAppBar() {
   );
 }
 
+class CategoryWidget extends StatelessWidget {
+   CategoryWidget({super.key,required this.category});
+  Category category;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(width:70,
+      margin: EdgeInsets.symmetric(horizontal: 8),
+      child: Column(
+        children: [
+          CircleAvatar(
+            backgroundColor: kBlueLightColor,
+            child: Image.network('https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png',width: 35,),
+            radius: 35,
+          ),
+          SizedBox(height: 8),
+          Text(
+category.name??'',
+            style: TextStyle(
+              overflow: TextOverflow.ellipsis,
+              color: kBlueColor,
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
 class ProductWidget extends StatelessWidget {
    ProductWidget({super.key,this.product});
 
@@ -413,7 +446,7 @@ class ProductWidget extends StatelessWidget {
     }
     return InkWell(
       onTap: (){
-        Get.to(ProductDetailsScreen());
+        Get.to(ProductDetailsScreen(product: product!,));
       },
       child: Padding(
         padding: const EdgeInsets.all(4.0),

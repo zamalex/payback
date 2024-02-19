@@ -219,35 +219,14 @@ class _ShopOnlineScreenState extends State<ShopOnlineScreen> {
                   Container(height: 10),
                   Container(
                     height: 100,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 5,
-                      itemBuilder: (c, i) {
-                        return Container(
-                          margin: EdgeInsets.symmetric(horizontal: 8),
-                          child: Column(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: kBlueColor.withOpacity(.1),
-                                child: Image.network(
-                                  'https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png',
-                                  width: 35,
-                                ),
-                                radius: 35,
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                'Image 2',
-                                style: TextStyle(
-                                  color: kBlueColor,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
+                    child: Consumer<HomeProvider>(
+                      builder:(context, value, child) =>  ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: value.categories!.length,
+                        itemBuilder: (c, i) {
+                          return CategoryWidget(category: value.categories![i]);
+                        },
+                      ),
                     ),
                   ),
                   Container(height: 10),

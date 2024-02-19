@@ -11,8 +11,11 @@ import 'package:provider/provider.dart';
 class CheckoutScreen extends StatelessWidget {
   const CheckoutScreen({super.key});
 
+
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kBackgroundColor,
@@ -25,76 +28,83 @@ class CheckoutScreen extends StatelessWidget {
             },
             child: Text('Close',style: TextStyle(color: kPurpleColor),)),
       ),),
-      body: SafeArea(child: Column(
-        children: [Expanded(child: Container(
-          padding: EdgeInsets.all(10),
-          child: SingleChildScrollView(child: Column(
+      body: Consumer<CheckoutProvider>(
+        builder:(context, value, child){
+          Provider.of<CheckoutProvider>(context,listen: false).checkouts.forEach((element) {
+            element.products = Provider.of<CheckoutProvider>(context,listen: false).cart;
 
-            crossAxisAlignment:CrossAxisAlignment.start,children: [
+          });
 
-            Container(
+          return SafeArea(child: Column(
+            children: [Expanded(child: Container(
               padding: EdgeInsets.all(10),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.orange.shade100,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Attention!',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.orange),),
-                  Text('Products that are at different warehouses or from different sellers would be delivered as a separate orders!',style: TextStyle(fontWeight: FontWeight.normal,fontSize: 14,color: Colors.orange),),
+              child: SingleChildScrollView(child: Column(
 
-                ],
-              ),
-            ),
-            SizedBox(height: 20,),
+                crossAxisAlignment:CrossAxisAlignment.start,children: [
 
-            Text('Receiver name'),
-            SizedBox(height: 5,),
-            CustomTextField(hintText: 'Receiver name or pre-filled')
+                Container(
+                  padding: EdgeInsets.all(10),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.orange.shade100,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Attention!',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.orange),),
+                      Text('Products that are at different warehouses or from different sellers would be delivered as a separate orders!',style: TextStyle(fontWeight: FontWeight.normal,fontSize: 14,color: Colors.orange),),
 
-            ,SizedBox(height: 15,),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20,),
 
-            Text('Receiver phone number'),
-            SizedBox(height: 5,),
-            CustomTextField(hintText: 'Receiver phone number or pre-filled'),
-            SizedBox(height: 20,),
-            Consumer<CheckoutProvider>(
-              builder:(context, value, child) => Column(
-                children: List.generate(2, (index) => CheckoutItem(checkoutObject: value.checkouts[index],orderIndex: index,)),
-              ),
-            ),
-            SizedBox(height: 15,),
-            Text('Total',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
-            SizedBox(height: 20,),
-            Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(11),color: kBlueLightColor.withOpacity(.7)),
-              padding: EdgeInsets.all(16),
-              child: Column(children: [
-                Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,children: [Text('Total orders price'),Text('20,000 SAR',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold,fontSize: 18),)],)
+                Text('Receiver name'),
+                SizedBox(height: 5,),
+                CustomTextField(hintText: 'Receiver name or pre-filled')
+
                 ,SizedBox(height: 15,),
-                Divider()
-                ,SizedBox(height: 15,),
-                Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,children: [Text('Delivery'),Text('20,000 SAR',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold,fontSize: 18),)],)
-                ,SizedBox(height: 15,),
-                Divider()
-                ,SizedBox(height: 15,),
-                Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,children: [Text('Total orders cashack'),Text('20,000 SAR',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold,fontSize: 18),)],)
-              ],),
-            ),
-            SizedBox(height: 20,)
 
-          ],)),
-        )),
-          Container(
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.only(topLeft: Radius.circular(16),topRight: Radius.circular(16))),
-            child: Container(
-                width:double.infinity,child: CustomButton(buttonText: 'Submit order', buttonColor: kPurpleColor,onTap: (){Get.to(PaymentSuccessScreen());},)),
-          )
-        ],
-      ),)
+                Text('Receiver phone number'),
+                SizedBox(height: 5,),
+                CustomTextField(hintText: 'Receiver phone number or pre-filled'),
+                SizedBox(height: 20,),
+                Column(
+                  children: List.generate(value.checkouts.length, (index) => CheckoutItem(checkoutObject: value.checkouts[index],orderIndex: index,)),
+                ),
+                SizedBox(height: 15,),
+                Text('Total',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
+                SizedBox(height: 20,),
+                Container(
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(11),color: kBlueLightColor.withOpacity(.7)),
+                  padding: EdgeInsets.all(16),
+                  child: Column(children: [
+                    Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,children: [Text('Total orders price'),Text('20,000 SAR',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold,fontSize: 18),)],)
+                    ,SizedBox(height: 15,),
+                    Divider()
+                    ,SizedBox(height: 15,),
+                    Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,children: [Text('Delivery'),Text('20,000 SAR',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold,fontSize: 18),)],)
+                    ,SizedBox(height: 15,),
+                    Divider()
+                    ,SizedBox(height: 15,),
+                    Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,children: [Text('Total orders cashack'),Text('20,000 SAR',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold,fontSize: 18),)],)
+                  ],),
+                ),
+                SizedBox(height: 20,)
+
+              ],)),
+            )),
+              Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.only(topLeft: Radius.circular(16),topRight: Radius.circular(16))),
+                child: Container(
+                    width:double.infinity,child: CustomButton(buttonText: 'Submit order', buttonColor: kPurpleColor,onTap: (){Get.to(PaymentSuccessScreen());},)),
+              )
+            ],
+          ),);
+        },
+      )
     );
   }
 }
@@ -112,7 +122,8 @@ class CheckoutItem extends StatelessWidget {
       children: [
         Text('Order ${orderIndex+1}',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
         SizedBox(height: 20,),
-        CartItem(),
+        Column(children:         List.generate(checkoutObject.products.length, (index) => CartItem(product: checkoutObject.products[index]),)
+          ,),
         SizedBox(height: 15,),
         Text('Delivery method',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
 
