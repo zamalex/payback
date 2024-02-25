@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/helpers/custom_widgets.dart';
 import 'package:payback/providers/home_provider.dart';
@@ -31,6 +32,7 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
   final _formKey = GlobalKey<FormState>();
 
   createCommitment(){
+    _formKey.currentState!.save();
     Map<String,String?> request={
       'name':name,
       'partner_id':partner ==null?null:'${partner!.id}',
@@ -42,7 +44,11 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
       'notify':notify?'1':'0',
     };
 
-    Provider.of<CommitmentsProvider>(context,listen: false).createCommitment(request).then((value) {});
+    print(request.toString());
+    Provider.of<CommitmentsProvider>(context,listen: false).createCommitment(request).then((value) {}).then((value) {
+      Get.snackbar('Success', 'Commitment created',backgroundColor: Colors.green,colorText: Colors.white);
+    });
+
   }
 
 
@@ -249,7 +255,7 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
                             height: 5,
                           ),
                           CustomTextField(
-                              hintText: 'Enter the date (DD/MM/YYYY)',onSaved: (v){date=v;},),
+                              hintText: 'Enter the date (YYYY-MM-dd)',onSaved: (v){date=v;},),
                           SizedBox(
                             height: 15,
                           ),
@@ -485,10 +491,11 @@ void showPartnersSheet(BuildContext context,Function onSelected) {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Expanded(
-                                  child: Icon(
-                                    Icons.home,
-                                    size: 70,
-                                    color: Colors.white,
+                                  child: Image.network(
+                                   value.partners[index].image??'',
+                                    width: 70,
+                                    height: 70,
+                                   // color: Colors.white,
                                   ),
                                 ),
                                 SizedBox(height: 8),

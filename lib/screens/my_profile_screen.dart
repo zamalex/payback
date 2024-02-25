@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payback/data/preferences.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/screens/edit_address_screen.dart';
+import 'package:payback/screens/login.dart';
 import 'package:payback/screens/my_orders_screen.dart';
 import 'package:payback/screens/notifications_screen.dart';
 import 'package:payback/screens/notifications_settings_screen.dart';
 import 'package:payback/screens/profile_info_screen.dart';
 import 'package:payback/screens/settings_screen.dart';
 import 'package:payback/screens/subscription_screen.dart';
+
+import '../data/service_locator.dart';
 
 class MyProfileScreen extends StatelessWidget {
   const MyProfileScreen({super.key});
@@ -146,7 +150,7 @@ class MyProfileScreen extends StatelessWidget {
               ),
             ),
       SizedBox(height: 20,),
-            Container(width:double.infinity,child: Card(surfaceTintColor:Colors.white,color: Colors.white,child: Padding(padding: EdgeInsets.all(16),child: Text('Log out',style: TextStyle(color: Colors.red),),),))
+            InkWell(onTap:(){sl<PreferenceUtils>().logout();Get.to(LoginScreen());},child: Container(width:double.infinity,child: Card(surfaceTintColor:Colors.white,color: Colors.white,child: Padding(padding: EdgeInsets.all(16),child: Text('Log out',style: TextStyle(color: Colors.red),),),)))
     ],
         ),
       ),

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/model/auth_response.dart';
 import 'package:payback/providers/CommitmentsProvider.dart';
 import 'package:payback/providers/checkout_provider.dart';
 import 'package:payback/providers/home_provider.dart';
@@ -40,6 +41,8 @@ import 'package:payback/screens/subscription_screen.dart';
 
 import 'package:provider/provider.dart';
 
+import 'data/http/urls.dart';
+import 'data/preferences.dart';
 import 'data/service_locator.dart';
 import 'providers/auth_provider.dart';
 import 'screens/edit_name_screen.dart';
@@ -50,6 +53,14 @@ void main() async {
   );
 
   await init();
+
+  AuthResponse? loginModel = await sl<PreferenceUtils>().readUser();
+
+  if (loginModel != null) {
+    sl.registerSingleton(loginModel);
+    Url.TOKEN = loginModel.data!.token!;
+
+  }
 
   runApp(
     MultiProvider(

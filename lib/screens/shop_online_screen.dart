@@ -124,7 +124,7 @@ class _ShopOnlineScreenState extends State<ShopOnlineScreen> {
 
   getPartners(){
     Provider.of<HomeProvider>(context,listen: false
-    ).getPartners();
+    ).getVendors();
   }
 
   @override
@@ -253,8 +253,8 @@ class _ShopOnlineScreenState extends State<ShopOnlineScreen> {
                                     crossAxisSpacing: 8,
                                     crossAxisCount: 2),
                             children: List.generate(
-                                provider.partners.length,
-                                (index) => PartnerWidget(partner: provider.partners[index],)),
+                                provider.vendors.length,
+                                (index) => PartnerWidget(partner: provider.vendors[index],)),
                           ),
                   )
                 ],

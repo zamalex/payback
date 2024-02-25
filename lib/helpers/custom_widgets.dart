@@ -372,7 +372,7 @@ class Commitment extends StatelessWidget {
                 children: [
                   Text('100% collected',
                       style: TextStyle(fontSize: 12, color: Colors.white)),
-                  Text('100% collected',
+                  Text('0 SAR left',
                       style: TextStyle(fontSize: 12, color: Colors.white)),
                 ],
               ),
@@ -463,7 +463,7 @@ class ProductWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         image: NetworkImage(
-                          'https://cdn-images.buyma.com/imgdata/item/230807/0097589320/564300514/428.jpg',
+                          product!.featuredImage??'https://cdn-images.buyma.com/imgdata/item/230807/0097589320/564300514/428.jpg',
                         ),
                         fit: BoxFit.cover),
                     borderRadius: BorderRadius.circular(15)),

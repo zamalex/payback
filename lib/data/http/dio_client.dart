@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:payback/model/auth_response.dart';
 
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -19,7 +20,7 @@ class DioClient {
 
   DioClient(this.baseUrl, Dio dioC,
       {this.loggingInterceptor, this.token = ""}) {
-    //token = sl.isRegistered<LoginModel>()?sl<LoginModel>().data!.token:"";
+    token = sl.isRegistered<AuthResponse>()?sl<AuthResponse>().data!.token??'':"";
     // print(token);
     dio = dioC;
     dio!

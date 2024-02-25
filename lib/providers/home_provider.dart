@@ -23,7 +23,22 @@ class HomeProvider extends ChangeNotifier{
 
    List<Product> products=[];
    List<Commitment> commitments=[];
+   List<Partner> vendors=[];
    List<Partner> partners=[];
+
+  Future<Map<String, dynamic>> getVendors() async {
+    // Implement your loading logic here if needed
+    // ...
+
+    final response = await sl<HomeRepository>().getVendors();
+    if (response.containsKey('data')) {
+      vendors = response['data'];
+    }
+
+
+    notifyListeners();
+    return response;
+  }
 
   Future<Map<String, dynamic>> getPartners() async {
     // Implement your loading logic here if needed

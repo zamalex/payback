@@ -137,6 +137,28 @@ class HomeRepository {
     }
   }
 
+  Future<Map<String, dynamic>> getVendors() async {
+    try {
+      Response response = await sl<DioClient>().get(Url.Vendorrs_URL);
+
+      final parsedJson = response.data;
+      if (response.statusCode! < 400) {
+        List<Partner> partners = (parsedJson['data'] as List)
+            .map((json) => Partner.fromJson(json))
+            .toList();
+
+        return {'message': 'Partners retrieved successfully', 'data': partners};
+      }
+
+      return {'message': 'Not found'};
+    } catch (e) {
+      if (e is DioError) {
+        return {'message': e.message};
+      } else {
+        return {'message': 'Unknown error'};
+      }
+    }
+  }
   Future<Map<String, dynamic>> getPartners() async {
     try {
       Response response = await sl<DioClient>().get(Url.PARTNERS_URL);

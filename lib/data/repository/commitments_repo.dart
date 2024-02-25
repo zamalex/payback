@@ -13,7 +13,7 @@ class CommitmentsRepository{
   Future createCommitment(Map<String, String?> body) async {
     try {
       Response response =
-      await sl<DioClient>().post(Url.COMMIMENTS_URL, data: jsonEncode(body));
+      await sl<DioClient>().post(Url.CREATE_COMMIMENTS_URL, data: jsonEncode(body));
 
       final parsedJson = response.data;
       if (response.statusCode! < 400) {

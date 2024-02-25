@@ -11,8 +11,10 @@ class Url {
   static const RESET_PASSWORD_URL = '/reset-password';
   static const CATEGORIES_URL = '/admin/categories';
   static const PRODUCTS_URL = '/admin/products';
+  static const Vendorrs_URL = '/admin/vendors';
   static const PARTNERS_URL = '/admin/partners';
   static const COMMIMENTS_URL = '/admin/commitments';
+  static const CREATE_COMMIMENTS_URL = '/admin/commitments/create';
   static const COMMIMENTS_CATEGORIES_URL = '/admin/commitment-categories';
   static const ONBOARDING_URL = '/admin/screens';
 

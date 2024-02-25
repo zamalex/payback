@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/helpers/custom_widgets.dart';
+import 'package:payback/model/auth_response.dart';
+import 'package:payback/providers/home_provider.dart';
+import 'package:payback/screens/login.dart';
 import 'package:payback/screens/new_commitment_screen.dart';
+import 'package:provider/provider.dart';
+
+import '../data/service_locator.dart';
 
 class CommitmentsScreen extends StatelessWidget {
   const CommitmentsScreen({super.key});
@@ -143,12 +149,14 @@ class CommitmentsScreen extends StatelessWidget {
                       SizedBox(
                         height: 20,
                       ),
-                      Column(
-                        children: List.generate(
-                            5,
-                            (index) => Container(
-                                margin: EdgeInsets.symmetric(vertical: 4),
-                                child: Commitment())),
+                      Consumer<HomeProvider>(
+                        builder:(context, value, child) => Column(
+                          children: List.generate(
+                              value.commitments.length,
+                              (index) => Container(
+                                  margin: EdgeInsets.symmetric(vertical: 4),
+                                  child: Commitment(commitment: value.commitments[index],))),
+                        ),
                       ),
                     ],
                   ),
@@ -167,7 +175,16 @@ class CommitmentsScreen extends StatelessWidget {
                       buttonText: '+ Add new commitment',
                       buttonColor: kPurpleColor,
                       onTap: () {
-                        Get.to(NewCommitmentScreen());
+                        if(sl.isRegistered<AuthResponse>()){
+                          Get.to(NewCommitmentScreen());
+
+                        }
+                        else{
+                          Get.snackbar('Authentication required', 'please login first',backgroundColor: Colors.red,colorText: Colors.white);
+
+                          Get.to(LoginScreen());
+
+                        }
                       },
                     )),
               ),

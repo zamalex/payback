@@ -76,7 +76,7 @@ class FilterProducts extends StatelessWidget {
                     Text('Show partners products',style:TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.black54)),
                     SizedBox(height: 10,),
 
-                    SingleChildScrollView(scrollDirection: Axis.horizontal,child: Row(children: List.generate(i.partners.length, (index) => PartnerFilterWidget(index: index, selectedIndex: selectedIndex)),),)
+                    SingleChildScrollView(scrollDirection: Axis.horizontal,child: Row(children: List.generate(i.vendors.length, (index) => PartnerFilterWidget(index: index, selectedIndex: selectedIndex)),),)
 
 
 

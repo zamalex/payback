@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payback/model/auth_response.dart';
 import 'package:payback/model/onboarding_response.dart';
 import 'package:payback/providers/home_provider.dart';
 import 'package:payback/screens/login.dart';
+import 'package:payback/screens/main_screen.dart';
 import 'package:payback/screens/onboarding.dart';
 import 'package:payback/screens/welcome_screen.dart';
 import 'package:provider/provider.dart';
+
+import '../data/service_locator.dart';
 
 class Splash extends StatefulWidget {
   @override
@@ -22,6 +26,12 @@ class _SplashState extends State<Splash> {
 
     Future.delayed(Duration(seconds: 1)).then((value){
         Provider.of<HomeProvider>(context,listen: false).getOnBoarding().then((value){
+          if(sl.isRegistered<AuthResponse>()){
+            Get.to(MainScreen());
+
+            return;
+          }
+
           if(value['data']==null){
             Get.to(LoginScreen());
           }else{
