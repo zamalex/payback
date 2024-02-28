@@ -54,17 +54,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     height: 224,
                     width: double.infinity,
                     padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(16),color: kBlueLightColor,image:DecorationImage(image: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuCxMPJwglskH6j6jQhCmJGqIr9kR6_iMPng&usqp=CAU',),fit: BoxFit.cover)),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(16),color: kBlueLightColor,image:DecorationImage(image: NetworkImage(widget.product.featuredImage??'',),fit: BoxFit.cover)),
                   ),
                   Container(height: 20),
                   Text('Nike Shop',style: TextStyle(fontSize: 15),),
 
-                  Text('Sneakers nike products',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                  Text(widget.product.name??'',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
                   Container(height: 10,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('2000 SAR',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: kPurpleColor),),
+                      Text('${widget.product.price} SAR',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: kPurpleColor),),
                       Container(
 
                         child: Text('Cashback: 12,9 SAR',style: TextStyle(fontSize:11,color: kPurpleColor,),),
@@ -74,7 +74,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ],
                   ),
                   SizedBox(height: 10,),
-                  Text('Sneakers have gone by a variety of names, depending on geography and changing over the decades. The broader category inclusive of sneakers is athletic shoes. The term \'athletic shoes\' is typically used for shoes utilized for jogging or road running and indoor sports such as basketball, but tends to exclude shoes for sports played on grass such as association...',style: TextStyle(fontSize: 15),),
+                  Text(widget.product.description??'',style: TextStyle(fontSize: 15),),
 
                   SizedBox(height: 10,),
                   Card(

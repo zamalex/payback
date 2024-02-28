@@ -5,6 +5,7 @@ import 'package:payback/helpers/colors.dart';
 import 'package:payback/model/auth_response.dart';
 import 'package:payback/providers/home_provider.dart';
 import 'package:payback/screens/commitments_screen.dart';
+import 'package:payback/screens/login.dart';
 import 'package:payback/screens/my_profile_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -58,10 +59,13 @@ class _HomeScreenState extends State<HomeScreen> {
       body:  Container(
         padding: EdgeInsets.all(0),
         child: ListView(children: [
-          InkWell(
-            onTap: (){
-              Get.to(MyProfileScreen());
 
+            InkWell(
+            onTap: (){
+              if(sl.isRegistered<AuthResponse>())
+              Get.to(MyProfileScreen());
+              else
+                Get.to(LoginScreen());
             },
             child: Card(
               margin: EdgeInsets.zero,
@@ -78,6 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                      children: [
                        Container(
                          decoration: BoxDecoration(
+                           color: kPurpleColor,
                            border: Border.all(color: Colors.white,width: 2),
                            borderRadius: BorderRadius.only(
                            topRight: Radius.circular(8),
@@ -90,14 +95,19 @@ class _HomeScreenState extends State<HomeScreen> {
                            bottomLeft: Radius.circular(8),
                            topLeft: Radius.circular(25),
                            bottomRight: Radius.circular(25),
-                         ),child: Image.network('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVR9V1Ix26V2s_WWWryH3FU5Qkl2yR4PL3BcUybf2cUw&s',fit: BoxFit.cover,width: 70,height: 70,)),),
+                         ),child: !sl.isRegistered<AuthResponse>()?Padding(
+                           padding: const EdgeInsets.all(8.0),
+                           child: Image.asset('assets/images/payback_logo.png',width: 62,height: 62,),
+                         ):Image.network('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVR9V1Ix26V2s_WWWryH3FU5Qkl2yR4PL3BcUybf2cUw&s',fit: BoxFit.cover,width: 70,height: 70,)),),
                        SizedBox(width: 10,),
                        Column(
                          crossAxisAlignment: CrossAxisAlignment.start,
                          children: [
-                           Text('Hello, ${authResponse==null?'Mustafa':authResponse!.data!.user!.name}',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: kPurpleColor),)
-                           ,SizedBox(height: 10,)
-                           ,Container(padding:EdgeInsets.symmetric(horizontal: 8,vertical: 4),decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),color: kPurpleColor),child: Row(children: [Icon(Icons.notification_add_outlined,color: Colors.white,),Text('2 notifications',style: TextStyle(color: Colors.white),)],),)
+                           Text(!sl.isRegistered<AuthResponse>()?'Welcome, Login now':'Hello, ${authResponse==null?'Mustafa':authResponse!.data!.user!.name}',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: kPurpleColor),)
+                           ,SizedBox(height: 10,),
+                           if(sl.isRegistered<AuthResponse>())
+
+                           Container(padding:EdgeInsets.symmetric(horizontal: 8,vertical: 4),decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),color: kPurpleColor),child: Row(children: [Icon(Icons.notification_add_outlined,color: Colors.white,),Text('2 notifications',style: TextStyle(color: Colors.white),)],),)
                          ],
                        ),
 
@@ -121,7 +131,10 @@ class _HomeScreenState extends State<HomeScreen> {
          Padding(padding: EdgeInsets.all(10),child: Column(
            children: [
              SizedBox(height: 20,),
-             InkWell(
+
+             if(sl.isRegistered<AuthResponse>())
+
+               InkWell(
                onTap: (){
                  Get.to(CommitmentsScreen());
                },
@@ -135,7 +148,9 @@ class _HomeScreenState extends State<HomeScreen> {
              ),
 
              SizedBox(height: 20,),
-             Consumer<HomeProvider>(builder:(c,v,cc)=> v.commitments.isEmpty?Container():Commitment(commitment: v.commitments.first,)),
+             if(sl.isRegistered<AuthResponse>())
+
+               Consumer<HomeProvider>(builder:(c,v,cc)=> v.commitments.isEmpty?Container():Commitment(commitment: v.commitments.first,)),
              SizedBox(height: 20,),
              Row(
                children: [

@@ -24,7 +24,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: BackButtonIcon(),
+        leading: BackButton(),
         actions: [
           InkWell(
               onTap: (){

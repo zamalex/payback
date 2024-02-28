@@ -60,7 +60,7 @@ class LoginScreen extends StatelessWidget {
           .login(emailController.text, passwordController.text, '')
           .then((value) {
         value['data'] == null
-            ?Get.snackbar('Alertt', value['message'],backgroundColor: Colors.red,colorText: Colors.white): Get.to(MainScreen());
+            ?Get.snackbar('Alert', value['message'],backgroundColor: Colors.red,colorText: Colors.white): Get.to(MainScreen());
         if (value['data'] != null) {
           sl<PreferenceUtils>().saveUser(value['data']);
         }

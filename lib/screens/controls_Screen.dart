@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/helpers/functions.dart';
+import 'package:payback/model/auth_response.dart';
+import 'package:payback/screens/commitments_screen.dart';
 import 'package:payback/screens/help_community_screen.dart';
 import 'package:payback/screens/history_screen.dart';
+
+import '../data/service_locator.dart';
 
 class ControlsScreen extends StatelessWidget {
   const ControlsScreen({super.key});
@@ -22,10 +28,27 @@ class ControlsScreen extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-           ControlsItem(image: 'assets/images/bill.png',color: kPurpleColor,text: 'Commitments',onTap: (){},),
-           ControlsItem(image: 'assets/images/pie.png',color: kBlueColor,text: 'Cashback dashboard',onTap: (){Get.to(HistoryScreen());},),
+           ControlsItem(image: 'assets/images/bill.png',color: kPurpleColor,text: 'Commitments',onTap: (){
+             if(sl.isRegistered<AuthResponse>()){
+               Get.to(CommitmentsScreen());
+             }else{
+               showGoToLogin();
+             }
+           },),
+           ControlsItem(image: 'assets/images/pie.png',color: kBlueColor,text: 'Cashback dashboard',onTap: (){
+             if(sl.isRegistered<AuthResponse>()){
+               Get.to(HistoryScreen());
+             }else{
+               showGoToLogin();
+             }
+             },),
            ControlsItem(image: 'assets/images/group.png',color: Color.fromRGBO(10, 91, 148, 1),text: 'Help community',onTap: (){
-             Get.to(HelpCommunityScreen());
+
+             if(sl.isRegistered<AuthResponse>()){
+               Get.to(HelpCommunityScreen());
+             }else{
+               showGoToLogin();
+             }
            },),
 
           ],
