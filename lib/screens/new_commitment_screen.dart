@@ -397,10 +397,7 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
 
                           contentPadding: EdgeInsets.zero,
                           dense: true,
-                          leading: Icon(
-                            Icons.airplanemode_active,
-                            color: kPurpleColor,
-                          ),
+                          leading: Image.network(value.commitmentsCategories[index].image??'',width: 32,height: 32,),
                           title: Text(
                             '${value.commitmentsCategories[index].name}',
                             style: TextStyle(fontSize: 15),
@@ -409,7 +406,7 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
                             onSelected(value.commitmentsCategories[index]);Navigator.of(context).pop();
                           },
                         ),
-                        index < 2 ? Divider() : Container()
+                        index < value.commitmentsCategories.length-1 ? Divider() : Container()
                       ],
                     ),
                   ))),
