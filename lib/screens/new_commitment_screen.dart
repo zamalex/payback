@@ -32,13 +32,18 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
   final _formKey = GlobalKey<FormState>();
 
   createCommitment(){
+
     _formKey.currentState!.save();
+    bool isvalid = _formKey.currentState!.validate();
+    if(!isvalid)
+      return;
+
     Map<String,String?> request={
       'name':name,
       'partner_id':partner ==null?null:'${partner!.id}',
       'category_id':category==null?null:'${category!.id}',
       'payment_target':payment_target,
-      'cashback_to_commitment':'50',
+      'cashback_to_commitment':((selectedPercentage+1)*10).toString(),
       'due_date':date,
       'type':type==0?'one-time':'repeatable',
       'notify':notify?'1':'0',
