@@ -403,31 +403,40 @@ AppBar mainAppBar() {
 }
 
 class CategoryWidget extends StatelessWidget {
-   CategoryWidget({super.key,required this.category});
+   CategoryWidget({super.key,required this.category,this.isSelected=false,this.onTap});
   Category category;
+
+  bool isSelected = false;
+
+  Function? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(width:70,
-      margin: EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
-        children: [
-          CircleAvatar(
-            backgroundColor: kBlueLightColor,
-            child: Image.network('https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png',width: 35,),
-            radius: 35,
-          ),
-          SizedBox(height: 8),
-          Text(
-category.name??'',
-            style: TextStyle(
-              overflow: TextOverflow.ellipsis,
-              color: kBlueColor,
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
+    return InkWell(
+      onTap: (){
+        if(onTap!=null)
+        onTap!();},
+      child: Container(width:70,
+        margin: EdgeInsets.symmetric(horizontal: 8),
+        child: Column(
+          children: [
+            CircleAvatar(
+              backgroundColor: isSelected?kBlueColor:kBlueLightColor,
+              child: Image.network(category.image??'https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png',width: 35,),
+              radius: 35,
             ),
-          ),
-        ],
+            SizedBox(height: 8),
+            Text(
+      category.name??'',
+              style: TextStyle(
+                overflow: TextOverflow.ellipsis,
+                color: kBlueColor,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -508,7 +517,7 @@ class ProductWidget extends StatelessWidget {
                   style: TextStyle(color: Colors.purple, fontSize: 16),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1),
-              Text('Snakers shoe women',
+              Text(product!.description??'',
                   style: TextStyle(color: Colors.grey),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1)

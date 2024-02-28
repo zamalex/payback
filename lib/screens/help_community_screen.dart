@@ -19,7 +19,7 @@ class HelpCommunityScreen extends StatelessWidget {
                   'assets/images/auth_background.png',
                 ),
                 fit: BoxFit.cover)),
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(16).copyWith(top: 32),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

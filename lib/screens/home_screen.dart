@@ -166,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
                  child: ListView.builder(
                      scrollDirection: Axis.horizontal,
                      itemCount:value.categories==null?0:value.categories!.length,itemBuilder: (c,i){
-                   return  CategoryWidget(category: value.categories![i]);
+                   return  CategoryWidget(category: value.categories![i],isSelected: value.selectedHomeIndex==i,onTap: (){value.selectHomeIndex(i);},);
                  }),
                ),
              ),

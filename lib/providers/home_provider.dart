@@ -17,6 +17,25 @@ class HomeProvider extends ChangeNotifier{
 
   bool isLoading=false;
 
+  int selectedHomeIndex = -1;
+  int selectedShoppingIndex = -1;
+
+  selectHomeIndex(int i){
+    if(selectedHomeIndex==i)
+      selectedHomeIndex=-1;
+    else
+    selectedHomeIndex = i;
+    notifyListeners();
+  }
+
+  selectShoppingIndex(int i){
+    if(selectedShoppingIndex==i)
+      selectedShoppingIndex=-1;
+    else
+      selectedShoppingIndex = i;
+    notifyListeners();
+  }
+
   List<Category>? categories = [];
   List<Data>? onBoarding = [];
 

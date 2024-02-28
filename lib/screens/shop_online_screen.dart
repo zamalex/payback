@@ -224,7 +224,7 @@ class _ShopOnlineScreenState extends State<ShopOnlineScreen> {
                         scrollDirection: Axis.horizontal,
                         itemCount: value.categories!.length,
                         itemBuilder: (c, i) {
-                          return CategoryWidget(category: value.categories![i]);
+                          return CategoryWidget(category: value.categories![i],isSelected: i==value.selectedShoppingIndex,onTap: (){value.selectShoppingIndex(i);},);
                         },
                       ),
                     ),
