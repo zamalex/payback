@@ -241,8 +241,8 @@ class _ShopOnlineScreenState extends State<ShopOnlineScreen> {
                                     crossAxisSpacing: 0,
                                     crossAxisCount: 2),
                             children: List.generate(
-                                5,
-                                (index) => ProductWidget()),
+                                provider.products.length,
+                                (index) => ProductWidget(product: provider.products[index],)),
                           )
                         : GridView(
                             physics: NeverScrollableScrollPhysics(),
