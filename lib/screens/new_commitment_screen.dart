@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/helpers/custom_widgets.dart';
+import 'package:payback/model/partner_custom_fields_response.dart';
 import 'package:payback/providers/home_provider.dart';
+import 'package:payback/screens/partner_info_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_switcher/slide_switcher.dart';
 
@@ -478,8 +480,14 @@ void showPartnersSheet(BuildContext context,Function onSelected) {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: (){
-                            onSelected(value.partners[index]);
+                           // onSelected(value.partners[index]);
                             Navigator.of(context).pop();
+                            Get.to(PartnerInfoScreen(partner:value.partners[index],))?.then((list){
+                              if(list!=null){
+                                int partnerId = int.parse((list as List<CustomField>).first.partnerId??'0');
+                                onSelected(value.partners.firstWhere((element) => element.id==partnerId));
+                              }
+                            });
                           },
                           child: Container(
                             padding: EdgeInsets.all(10),

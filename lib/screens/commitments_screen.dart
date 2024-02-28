@@ -6,6 +6,7 @@ import 'package:payback/model/auth_response.dart';
 import 'package:payback/providers/home_provider.dart';
 import 'package:payback/screens/login.dart';
 import 'package:payback/screens/new_commitment_screen.dart';
+import 'package:payback/screens/reorder_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../data/service_locator.dart';
@@ -137,12 +138,17 @@ class CommitmentsScreen extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 25, fontWeight: FontWeight.bold),
                           ),
-                          Text(
-                            'Edit order',
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: kBlueColor),
+                          InkWell(
+                            onTap: (){
+                              Get.to(ReorderScreen());
+                            },
+                            child: Text(
+                              'Edit order',
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: kBlueColor),
+                            ),
                           ),
                         ],
                       ),

@@ -9,11 +9,14 @@ class Url {
   static const FORGOT_URL = '/forget-password';
   static const CHECK_TOKEN_URL = '/check-token';
   static const RESET_PASSWORD_URL = '/reset-password';
+  static const NOTIFICATIONS_URL = '/admin/products';
   static const CATEGORIES_URL = '/admin/categories';
   static const PRODUCTS_URL = '/admin/products';
   static const Vendorrs_URL = '/admin/vendors';
   static const PARTNERS_URL = '/admin/partners';
+  static const PARTNERS_CUSTOM_FIELDS_URL = '/admin/partners/';
   static const COMMIMENTS_URL = '/admin/commitments';
+  static const SORT_COMMIMENTS_URL = '/admin/commitments/sort';
   static const CREATE_COMMIMENTS_URL = '/admin/commitments/create';
   static const COMMIMENTS_CATEGORIES_URL = '/admin/commitment-categories';
   static const ONBOARDING_URL = '/admin/screens';

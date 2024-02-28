@@ -1,13 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:payback/data/preferences.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/model/auth_response.dart';
 import 'package:payback/providers/home_provider.dart';
+import 'package:payback/providers/auth_provider.dart' as authProvider;
 import 'package:payback/screens/commitments_screen.dart';
 import 'package:payback/screens/login.dart';
 import 'package:payback/screens/my_profile_screen.dart';
 import 'package:provider/provider.dart';
+
 
 import '../data/service_locator.dart';
 import '../helpers/custom_widgets.dart';
@@ -37,7 +40,12 @@ class _HomeScreenState extends State<HomeScreen> {
     Future.delayed(Duration.zero).then((value){
       Provider.of<HomeProvider>(context,listen: false).getCategories();
       Provider.of<HomeProvider>(context,listen: false).getProducts();
-      Provider.of<HomeProvider>(context,listen: false).getCommitments();
+      if(sl.isRegistered<AuthResponse>()){
+        Provider.of<HomeProvider>(context,listen: false).getCommitments();
+        Provider.of<authProvider.AuthProvider>(context,listen: false).getNotifications();
+
+      }
+
     });
 
        sl<PreferenceUtils>().readUser().then((value) {
@@ -107,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                            ,SizedBox(height: 10,),
                            if(sl.isRegistered<AuthResponse>())
 
-                           Container(padding:EdgeInsets.symmetric(horizontal: 8,vertical: 4),decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),color: kPurpleColor),child: Row(children: [Icon(Icons.notification_add_outlined,color: Colors.white,),Text('2 notifications',style: TextStyle(color: Colors.white),)],),)
+                           Container(padding:EdgeInsets.symmetric(horizontal: 8,vertical: 4),decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),color: kPurpleColor),child: Consumer<authProvider.AuthProvider>(builder:(context, value, child) => Row(children: [Icon(Icons.notification_add_outlined,color: Colors.white,),Text('${value.notifications.length} notifications',style: TextStyle(color: Colors.white),)],)),)
                          ],
                        ),
 
@@ -130,7 +138,9 @@ class _HomeScreenState extends State<HomeScreen> {
        
          Padding(padding: EdgeInsets.all(10),child: Column(
            children: [
-             SizedBox(height: 20,),
+             if(sl.isRegistered<AuthResponse>())
+
+               SizedBox(height: 20,),
 
              if(sl.isRegistered<AuthResponse>())
 
@@ -147,7 +157,9 @@ class _HomeScreenState extends State<HomeScreen> {
                ),
              ),
 
-             SizedBox(height: 20,),
+             if(sl.isRegistered<AuthResponse>())
+
+               SizedBox(height: 20,),
              if(sl.isRegistered<AuthResponse>())
 
                Consumer<HomeProvider>(builder:(c,v,cc)=> v.commitments.isEmpty?Container():Commitment(commitment: v.commitments.first,)),

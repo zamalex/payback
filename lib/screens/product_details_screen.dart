@@ -6,6 +6,7 @@ import 'package:payback/data/preferences.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/model/product_model.dart';
 import 'package:payback/providers/checkout_provider.dart';
+import 'package:payback/providers/home_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_switcher/slide_switcher.dart';
 import '../data/service_locator.dart';
@@ -21,6 +22,17 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    Future.delayed(Duration.zero).then((value) =>  Provider.of<HomeProvider>(context,listen: false
+    ).getVendors());
+  }
+
+
    @override
   Widget build(BuildContext context) {
     return Scaffold(appBar:AppBar(
@@ -57,7 +69,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(16),color: kBlueLightColor,image:DecorationImage(image: NetworkImage(widget.product.featuredImage??'',),fit: BoxFit.cover)),
                   ),
                   Container(height: 20),
-                  Text('Nike Shop',style: TextStyle(fontSize: 15),),
+
+                  Consumer<HomeProvider>(builder:(context, value, child) =>Text(value.getPartnerNameByID(widget.product.vendor_id??0),style: TextStyle(fontSize: 15),)),
 
                   Text(widget.product.name??'',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
                   Container(height: 10,),

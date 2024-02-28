@@ -1,13 +1,18 @@
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../helpers/colors.dart';
+import '../model/notifications_response.dart';
+import '../providers/auth_provider.dart';
 
 class NotificationsScreen extends StatelessWidget {
   const NotificationsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<AuthProvider>(context,listen: false).getNotifications();
+
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -32,15 +37,17 @@ class NotificationsScreen extends StatelessWidget {
               style: TextStyle(color: kPurpleColor),
             )),
       ),
-      body: Container(
-        height: double.infinity,
-        padding: EdgeInsets.all(16),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children:
-              List.generate(3, (index) => NotificationItem())
+      body: Consumer<AuthProvider>(
+        builder:(context, value, child) => Container(
+          height: double.infinity,
+          padding: EdgeInsets.all(16),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children:
+                List.generate(value.notifications.length, (index) => NotificationItemWidget(notificationItem: value.notifications[index],))
 
+            ),
           ),
         ),
       ),
@@ -49,8 +56,10 @@ class NotificationsScreen extends StatelessWidget {
   }
 }
 
-class NotificationItem extends StatelessWidget {
-  const NotificationItem({super.key});
+class NotificationItemWidget extends StatelessWidget {
+   NotificationItemWidget({super.key,required this.notificationItem});
+
+  NotificationItem notificationItem;
 
   @override
   Widget build(BuildContext context) {
@@ -65,12 +74,12 @@ class NotificationItem extends StatelessWidget {
           backgroundImage: NetworkImage('https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png'),
         ),
         title: Text(
-          'Commitment ready to be payed:',
+          notificationItem.title??'',
           style: TextStyle(
               color: Colors.black),
         ),
         subtitle: Text(
-          'Netflix sub',
+          notificationItem.content??'',
           style: TextStyle(
             fontWeight: FontWeight.bold,
               fontSize: 18,

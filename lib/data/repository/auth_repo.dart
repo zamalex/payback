@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:payback/helpers/dio_error_helper.dart';
+import 'package:payback/model/notifications_response.dart';
 
 
 import '../../model/auth_response.dart';
@@ -177,6 +178,47 @@ class AuthRepository {
         //return {'message':e.message};
       } else {
         return {'message': 'unknown error',};
+      }
+    }
+  }
+
+
+
+  Future<Map> getNotifications() async {
+    try {
+      Response response =
+      await sl<DioClient>().get(Url.NOTIFICATIONS_URL,);
+
+      //final parsedJson = response.data;
+      final parsedJson = jsonDecode("""{
+  "notifications": [
+    {
+      "imageUrl": "https://example.com/image1.jpg",
+      "title": "Notification 1",
+      "content": "This is the content of Notification 1."
+    },
+    {
+      "imageUrl": "https://example.com/image2.jpg",
+      "title": "Notification 2",
+      "content": "This is the content of Notification 2."
+    }
+  ]
+}""");
+      
+      if (response.statusCode! < 400) {
+        NotificationsResponse loginModel = NotificationsResponse.fromJson(parsedJson);
+        return {'message': 'success', 'data': loginModel.notifications};
+      }
+
+      return {'message': 'Server Error','data':[]};
+    } catch (e) {
+      if (e is DioError) {
+        String error = e.response?.data['message']??
+            e.message;
+        return {'message': error,'data':[]};
+        //return {'message':e.message};
+      } else {
+        return {'message': 'unknown error','data':[]};
       }
     }
   }

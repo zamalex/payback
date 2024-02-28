@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:payback/model/categories_response.dart';
 import 'package:payback/model/cities_response.dart';
 import 'package:payback/model/onboarding_response.dart';
+import 'package:payback/model/partner_custom_fields_response.dart';
 
 
 import '../../model/auth_response.dart';
@@ -84,6 +85,26 @@ class HomeRepository {
         return {'message': e.message};
       } else {
         return {'message': 'Unknown error'};
+      }
+    }
+  }
+
+  Future<Map<String, dynamic>> reOrderCommitments(List<int> sort) async {
+    try {
+      Response response = await sl<DioClient>().post(Url.SORT_COMMIMENTS_URL,data: jsonEncode({'sort':sort}));
+
+      final parsedJson = response.data;
+      if (response.statusCode! < 400) {
+
+        return {'message': 'Commitments sorted successfully', 'data': true};
+      }
+
+      return {'message': 'Not found','data':false};
+    } catch (e) {
+      if (e is DioError) {
+        return {'message': e.message,'data':false};
+      } else {
+        return {'message': 'Unknown error','data':false};
       }
     }
   }
@@ -203,6 +224,24 @@ class HomeRepository {
       }
     }
   }
+  Future<Map<String, dynamic>> getPartnerCustomFields(int id) async {
+    try {
+      Response response = await  sl<DioClient>().get('${Url.PARTNERS_CUSTOM_FIELDS_URL}${id}/fields');
 
+      final parsedJson = response.data;
+      if (response.statusCode! < 400) {
+        PartnerCustomFieldsResponse partner = PartnerCustomFieldsResponse.fromJson(parsedJson['data']as Map<String,dynamic>);
+        return {'message': 'Partner retrieved successfully', 'data': partner.customFields};
+      }
+
+      return {'message': 'Not found','data':[]};
+    } catch (e) {
+      if (e is DioError) {
+        return {'message': e.message,'data':[]};
+      } else {
+        return {'message': 'Unknown error','data':[]};
+      }
+    }
+  }
 
 }

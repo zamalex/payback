@@ -1,11 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/model/partner_model.dart';
+import 'package:provider/provider.dart';
 import 'package:slide_switcher/slide_switcher.dart';
 import '../helpers/custom_widgets.dart';
+import '../providers/home_provider.dart';
 
 class PartnerDetailsScreen extends StatefulWidget {
-  PartnerDetailsScreen({Key? key}) : super(key: key);
+  PartnerDetailsScreen({Key? key,required this.partner}) : super(key: key);
+
+  Partner partner;
 
   @override
   State<PartnerDetailsScreen> createState() => _PartnerDetailsScreenState();
@@ -98,13 +103,13 @@ class _PartnerDetailsScreenState extends State<PartnerDetailsScreen> {
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: NetworkImage(
-                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuCxMPJwglskH6j6jQhCmJGqIr9kR6_iMPng&usqp=CAU',
+                                 widget.partner.image??'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuCxMPJwglskH6j6jQhCmJGqIr9kR6_iMPng&usqp=CAU',
                                 ),
                                 fit: BoxFit.cover),
                             borderRadius: BorderRadius.circular(10)),
                       ),
                       title: Text(
-                        'Partner name goes here',
+                        widget.partner.name??'',
                         style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
@@ -115,7 +120,7 @@ class _PartnerDetailsScreenState extends State<PartnerDetailsScreen> {
                       height: 10,
                     ),
                     Text(
-                        'A trattoria is an Italian-style eating establishment that is generally much less formal than a ristorante, but more formal than an osteria.')
+                        widget.partner.description??'')
                   ],
                 ),
               ),
@@ -127,37 +132,14 @@ class _PartnerDetailsScreenState extends State<PartnerDetailsScreen> {
               Container(
                 height: 10,
               ),
-              Container(
-                height: 100,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 5,
-                  itemBuilder: (c, i) {
-                    return Container(
-                      margin: EdgeInsets.symmetric(horizontal: 8),
-                      child: Column(
-                        children: [
-                          CircleAvatar(
-                            backgroundColor: kBlueLightColor,
-                            child: Image.network(
-                              'https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png',
-                              width: 35,
-                            ),
-                            radius: 35,
-                          ),
-                          SizedBox(height: 8),
-                          Text(
-                            'Image 2',
-                            style: TextStyle(
-                              color: kBlueColor,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+              Consumer<HomeProvider>(
+                builder:(context, value, child) => Container(
+                  height: 100,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount:value.categories==null?0:value.categories!.length,itemBuilder: (c,i){
+                    return  CategoryWidget(category: value.categories![i],isSelected: value.selectedVendoDetailsIndex==i,onTap: (){value.selectVendorDetailsIndex(i);},);
+                  }),
                 ),
               ),
               Container(height: 20),

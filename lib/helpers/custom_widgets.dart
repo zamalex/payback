@@ -540,7 +540,7 @@ class PartnerWidget extends StatelessWidget {
       partner = Partner.fromJson(jsonDecode(Url.PARTNER_JSON));
     return InkWell(
       onTap: (){
-        Get.to(PartnerDetailsScreen());
+        Get.to(PartnerDetailsScreen(partner: partner!,));
       },
       child: Padding(
         padding: const EdgeInsets.all(0.0),
