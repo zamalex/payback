@@ -17,6 +17,7 @@ class Url {
   static const CREATE_COMMIMENTS_URL = '/admin/commitments/create';
   static const COMMIMENTS_CATEGORIES_URL = '/admin/commitment-categories';
   static const ONBOARDING_URL = '/admin/screens';
+  static const CITIES_URL = '/admin/cities';
 
   static String TOKEN = '';
   static String LOCALE = 'ar';

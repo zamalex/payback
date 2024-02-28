@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:payback/model/categories_response.dart';
+import 'package:payback/model/cities_response.dart';
 import 'package:payback/model/onboarding_response.dart';
 
 
@@ -87,7 +88,28 @@ class HomeRepository {
     }
   }
 
+  Future<List<City>> getCities() async {
+    try {
+      Response response = await sl<DioClient>().get(Url.CITIES_URL);
 
+      final parsedJson = response.data;
+      if (response.statusCode! < 400) {
+        List<City> cities = (parsedJson['data'] as List)
+            .map((json) => City.fromJson(json))
+            .toList();
+
+        return cities;
+      }
+
+      return [];
+    } catch (e) {
+      if (e is DioError) {
+        return [];
+      } else {
+        return [];
+      }
+    }
+  }
   Future getOnBoarding() async {
 
     /*var json = """{

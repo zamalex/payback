@@ -9,6 +9,7 @@ import 'package:payback/model/partner_model.dart';
 
 import '../data/repository/auth_repo.dart';
 import '../data/service_locator.dart';
+import '../model/cities_response.dart';
 import '../model/product_model.dart';
 
 
@@ -127,6 +128,18 @@ class HomeProvider extends ChangeNotifier{
     return response;
   }
 
+   List<City> cities=[];
 
+
+  Future<List<City>> getCities() async {
+
+
+    final response = await sl<HomeRepository>().getCities();
+
+      cities = response;
+
+    notifyListeners();
+    return response;
+  }
 
 }
