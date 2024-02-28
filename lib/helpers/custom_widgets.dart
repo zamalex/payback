@@ -185,7 +185,7 @@ class CustomButton extends StatelessWidget {
           if (onTap != null) onTap!();
         },
         style: ElevatedButton.styleFrom(
-          primary: buttonColor, // Custom color for the button
+          backgroundColor: buttonColor, // Custom color for the button
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.0),
           ),
@@ -225,7 +225,7 @@ class CustomIconButton extends StatelessWidget {
        onTap!();
       },
       style: ElevatedButton.styleFrom(
-        primary: buttonColor, // Custom color for the button
+        backgroundColor: buttonColor, // Custom color for the button
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16.0),
         ),
