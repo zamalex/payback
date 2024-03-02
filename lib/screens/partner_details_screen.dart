@@ -81,6 +81,7 @@ class _PartnerDetailsScreenState extends State<PartnerDetailsScreen> {
     super.initState();
 
     Future.delayed(Duration.zero).then((value){
+      Provider.of<HomeProvider>(context,listen: false).initSearchControllerVendor();
       getVendorProducts();
     });
   }
@@ -89,7 +90,6 @@ class _PartnerDetailsScreenState extends State<PartnerDetailsScreen> {
     Provider.of<HomeProvider>(context,listen: false).getProducts(location: 'VENDOR');
   }
 
-  TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -161,7 +161,8 @@ class _PartnerDetailsScreenState extends State<PartnerDetailsScreen> {
                 ),
                 Container(height: 20),
                 CustomTextField(
-                  controller: controller,
+                  controller:       Provider.of<HomeProvider>(context,listen: false).searchControllerVendor
+                  ,
                   hintText: 'search...',
                   icon: Icon(Icons.search, color: Colors.grey),
                 ),

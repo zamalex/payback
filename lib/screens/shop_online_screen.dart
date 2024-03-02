@@ -130,23 +130,22 @@ class _ShopOnlineScreenState extends State<ShopOnlineScreen> {
   }
 
   getProducts(){
-    Map<String,dynamic> filters = {
-      'search':controller.text.toString()
-    };
+
     Provider.of<HomeProvider>(context,listen: false
-    ).getProducts(location: 'SHOPPING',filters: filters);
+    ).getProducts(location: 'SHOPPING',);
   }
 
   @override
   void initState() {
     // TODO: implement initState
     Future.delayed(Duration.zero).then((value){
+      Provider.of<HomeProvider>(context,listen: false).initSearchControllerShopping();
+
       Provider.of<HomeProvider>(context,listen: false).resetFilters();
       getPartners();
       getProducts();
     });
   }
-TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -207,7 +206,7 @@ TextEditingController controller = TextEditingController();
                   ),
                   Container(height: 20),
                   CustomTextField(
-                    controller: controller,
+                    controller:       Provider.of<HomeProvider>(context,listen: false).searchControllerShopping,
                     hintText: 'search...',
                     icon: InkWell(
                         onTap: (){

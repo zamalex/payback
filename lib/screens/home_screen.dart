@@ -38,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     Future.delayed(Duration.zero).then((value){
+
       Provider.of<HomeProvider>(context,listen: false).getCategories();
       Provider.of<HomeProvider>(context,listen: false).getProducts(isHotDeals: true);
       Provider.of<HomeProvider>(context,listen: false).getProducts(isSuggested: true);

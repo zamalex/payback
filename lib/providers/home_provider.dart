@@ -19,10 +19,23 @@ enum AVAILABILITY { ALL, AVAILABLE, UNAVAILABLE }
 class HomeProvider extends ChangeNotifier {
   AVAILABILITY availability = AVAILABILITY.ALL;
 
+  TextEditingController searchControllerShopping = TextEditingController();
+  TextEditingController searchControllerVendor = TextEditingController();
   changeAvailability(AVAILABILITY a) {
     availability = a;
     notifyListeners();
   }
+
+  initSearchControllerShopping(){
+    searchControllerShopping.clear();
+    notifyListeners();
+  }
+   initSearchControllerVendor(){
+    searchControllerVendor.clear();
+    notifyListeners();
+  }
+
+
 
   double minPrice = 0;
   double maxPrice = 10000;
@@ -188,6 +201,7 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
     List<int> vendorIds = [];
     filters ??= {};
+
     if (location == 'HOME') {
       if (isHotDeals != null && isHotDeals)
         filters.putIfAbsent('hot_deal', () => 1);
@@ -199,6 +213,10 @@ class HomeProvider extends ChangeNotifier {
             'category_id', () => categories[selectedHomeIndex].id);
       }
     } else if (location == 'SHOPPING') {
+      if(searchControllerShopping.text.isNotEmpty){
+        filters.putIfAbsent('search', () => searchControllerShopping.text.toString());
+      }
+
       vendors.forEach((element) {
         if (element.isChecked) {
           vendorIds.add(element.id);
@@ -215,6 +233,11 @@ class HomeProvider extends ChangeNotifier {
             'category_id', () => categories[selectedShoppingIndex].id);
       }
     } else if (location == 'VENDOR') {
+
+      if(searchControllerVendor.text.isNotEmpty){
+      filters.putIfAbsent('search', () => searchControllerVendor.text.toString());
+    }
+
       if (selectedVendoDetailsIndex != -1) {
         filters.putIfAbsent(
             'category_id', () => categories[selectedVendoDetailsIndex].id);
