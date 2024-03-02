@@ -215,7 +215,7 @@ class HomeProvider extends ChangeNotifier{
     print(filters.toString());
 
 
-    final response = await sl<HomeRepository>().getProducts();
+    final response = await sl<HomeRepository>().getProducts(filters);
     if (response.containsKey('data')) {
       if(location=='HOME') {
         products = response['data'];

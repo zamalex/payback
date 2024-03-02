@@ -42,7 +42,7 @@ class HomeRepository {
       }
     }
   }
-  Future<Map<String, dynamic>> getProducts() async {
+  Future<Map<String, dynamic>> getProducts(Map<String,dynamic>filters) async {
     try {
       Response response = await sl<DioClient>().get(Url.PRODUCTS_URL);
 
