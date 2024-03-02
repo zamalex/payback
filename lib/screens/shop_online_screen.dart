@@ -17,6 +17,8 @@ class ShopOnlineScreen extends StatefulWidget {
 }
 
 class _ShopOnlineScreenState extends State<ShopOnlineScreen> {
+
+
   int selected = 0;
 
   sortProducts() {
@@ -127,12 +129,24 @@ class _ShopOnlineScreenState extends State<ShopOnlineScreen> {
     ).getVendors();
   }
 
+  getProducts(){
+    Map<String,dynamic> filters = {
+      'search':controller.text.toString()
+    };
+    Provider.of<HomeProvider>(context,listen: false
+    ).getProducts(location: 'SHOPPING',filters: filters);
+  }
+
   @override
   void initState() {
     // TODO: implement initState
-    Future.delayed(Duration.zero).then((value) => getPartners());
+    Future.delayed(Duration.zero).then((value){
+      Provider.of<HomeProvider>(context,listen: false).resetFilters();
+      getPartners();
+      getProducts();
+    });
   }
-
+TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -193,8 +207,14 @@ class _ShopOnlineScreenState extends State<ShopOnlineScreen> {
                   ),
                   Container(height: 20),
                   CustomTextField(
+                    controller: controller,
                     hintText: 'search...',
-                    icon: Icon(Icons.search, color: Colors.grey),
+                    icon: InkWell(
+                        onTap: (){
+                          getProducts();
+                          getPartners();
+                        },
+                        child: Icon(Icons.search, color: Colors.grey)),
                   ),
                   SizedBox(height: 20),
                   Row(
@@ -241,8 +261,8 @@ class _ShopOnlineScreenState extends State<ShopOnlineScreen> {
                                     crossAxisSpacing: 0,
                                     crossAxisCount: 2),
                             children: List.generate(
-                                provider.products.length,
-                                (index) => ProductWidget(product: provider.products[index],)),
+                                provider.shoppingProducts.length,
+                                (index) => ProductWidget(product: provider.shoppingProducts[index],)),
                           )
                         : GridView(
                             physics: NeverScrollableScrollPhysics(),

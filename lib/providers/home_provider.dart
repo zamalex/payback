@@ -17,11 +17,36 @@ import '../model/product_model.dart';
 
 class HomeProvider extends ChangeNotifier{
 
+  double minPrice=0;
+  double maxPrice = 10000;
+
+  changeRange(double min,double max){
+    minPrice = min;
+    maxPrice = max;
+    notifyListeners();
+  }
+
+  resetFilters(){
+     minPrice=0;
+     maxPrice = 10000;
+     vendors.forEach((element) {element.isChecked=false;});
+
+     notifyListeners();
+    }
+
   bool isLoading=false;
 
   int selectedVendoDetailsIndex = -1;
   int selectedHomeIndex = -1;
   int selectedShoppingIndex = -1;
+
+
+  List<int> checkedVendors= [];
+
+  checkVendorInFilter(int id){
+    vendors.firstWhere((element) => element.id==id).isChecked=!vendors.firstWhere((element) => element.id==id).isChecked;
+    notifyListeners();
+  }
 
 
   String getPartnerNameByID(int id){
@@ -61,11 +86,15 @@ class HomeProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  List<Category>? categories = [];
+  List<Category> categories = [];
   List<Data>? onBoarding = [];
 
 
    List<Product> products=[];
+   List<Product> hotDealsProducts=[];
+   List<Product> suggestedProducts=[];
+   List<Product> shoppingProducts=[];
+   List<Product> vendorProducts=[];
    List<Commitment> commitments=[];
    List<Partner> vendors=[];
    List<Partner> partners=[];
@@ -149,11 +178,57 @@ class HomeProvider extends ChangeNotifier{
   }
 
 
-  Future<Map<String, dynamic>> getProducts() async {
+  Future<Map<String, dynamic>> getProducts({String location='HOME',Map<String,dynamic>? filters,bool? isHotDeals,bool? isSuggested}) async {
+
+    List<int> vendorIds =[];
+    filters ??= {};
+    if(location=='HOME'){
+      if(isHotDeals!=null&&isHotDeals)
+      filters.putIfAbsent('hot_deals', () => true);
+
+      else if(isSuggested!=null&&isSuggested)
+      filters.putIfAbsent('suggested', () => true);
+
+      if(selectedHomeIndex!=-1){
+        filters.putIfAbsent('category_id', () => categories[selectedHomeIndex].id);
+      }
+    }else if(location=='SHOPPING'){
+      vendors.forEach((element) {
+        if(element.isChecked){
+          vendorIds.add(element.id);
+        }
+      });
+      if(vendorIds.isNotEmpty){
+        filters.putIfAbsent('vendors', () => vendorIds);
+
+      }
+      filters.putIfAbsent('min_price', () => minPrice);
+      filters.putIfAbsent('max_price', () => maxPrice);
+      if(selectedShoppingIndex!=-1){
+        filters.putIfAbsent('category_id', () => categories[selectedShoppingIndex].id);
+      }
+    }else if(location=='VENDOR'){
+      if(selectedVendoDetailsIndex!=-1){
+        filters.putIfAbsent('category_id', () => categories[selectedVendoDetailsIndex].id);
+      }
+    }
+    print(filters.toString());
+
 
     final response = await sl<HomeRepository>().getProducts();
     if (response.containsKey('data')) {
-      products = response['data'];
+      if(location=='HOME') {
+        products = response['data'];
+        if(isHotDeals!=null&&isHotDeals)
+          hotDealsProducts = products;
+
+        else if(isSuggested!=null&&isSuggested)
+          suggestedProducts = products;
+      }
+      else if(location=='SHOPPING')
+        shoppingProducts= response['data'];
+      else
+        vendorProducts = response['data'];
     }
 
 
@@ -161,7 +236,6 @@ class HomeProvider extends ChangeNotifier{
     notifyListeners();
     return response;
   }
-
 
 
   Future<Map> getOnBoarding()async{

@@ -39,7 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     Future.delayed(Duration.zero).then((value){
       Provider.of<HomeProvider>(context,listen: false).getCategories();
-      Provider.of<HomeProvider>(context,listen: false).getProducts();
+      Provider.of<HomeProvider>(context,listen: false).getProducts(isHotDeals: true);
+      Provider.of<HomeProvider>(context,listen: false).getProducts(isSuggested: true);
       if(sl.isRegistered<AuthResponse>()){
         Provider.of<HomeProvider>(context,listen: false).getCommitments();
         Provider.of<authProvider.AuthProvider>(context,listen: false).getNotifications();
@@ -199,8 +200,8 @@ class _HomeScreenState extends State<HomeScreen> {
                  child: ListView.builder(
                    scrollDirection: Axis.horizontal,
                    itemBuilder: (c,i){
-                     return ProductWidget(product: v.products[i]);
-                   },itemCount: v.products.length,),
+                     return ProductWidget(product: v.hotDealsProducts[i]);
+                   },itemCount: v.hotDealsProducts.length,),
                ),
              ),
              SizedBox(height: 20,),
@@ -220,8 +221,8 @@ class _HomeScreenState extends State<HomeScreen> {
                  child: ListView.builder(
                    scrollDirection: Axis.horizontal,
                    itemBuilder: (c,i){
-                     return ProductWidget(product: v.products[i],);
-                   },itemCount: v.products.length,),
+                     return ProductWidget(product: v.suggestedProducts[i],);
+                   },itemCount: v.suggestedProducts.length,),
                ),
              )
 

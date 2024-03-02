@@ -76,110 +76,129 @@ class _PartnerDetailsScreenState extends State<PartnerDetailsScreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    Future.delayed(Duration.zero).then((value){
+      getVendorProducts();
+    });
+  }
+
+  getVendorProducts(){
+    Provider.of<HomeProvider>(context,listen: false).getProducts(location: 'VENDOR');
+  }
+
+  TextEditingController controller = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        padding: EdgeInsets.all(16),
-        child: SingleChildScrollView(
-          child: Wrap(
-            children: [
-              SizedBox(height: 20),
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: kBlueLightColor),
-                child: Column(
+      body: Consumer<HomeProvider>(
+        builder:(context, value, child) => Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          padding: EdgeInsets.all(16),
+          child: SingleChildScrollView(
+            child: Wrap(
+              children: [
+                SizedBox(height: 20),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: kBlueLightColor),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        leading: Container(
+                          width: 56,
+                          height: 56,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                   widget.partner.image??'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuCxMPJwglskH6j6jQhCmJGqIr9kR6_iMPng&usqp=CAU',
+                                  ),
+                                  fit: BoxFit.cover),
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                        title: Text(
+                          widget.partner.name??'',
+                          style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                          widget.partner.description??'')
+                    ],
+                  ),
+                ),
+                Container(height: 20),
+                Text(
+                  'Partner products',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                Container(
+                  height: 10,
+                ),
+                Consumer<HomeProvider>(
+                  builder:(context, value, child) => Container(
+                    height: 100,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount:value.categories==null?0:value.categories!.length,itemBuilder: (c,i){
+                      return  CategoryWidget(category: value.categories![i],isSelected: value.selectedVendoDetailsIndex==i,onTap: (){value.selectVendorDetailsIndex(i);},);
+                    }),
+                  ),
+                ),
+                Container(height: 20),
+                CustomTextField(
+                  controller: controller,
+                  hintText: 'search...',
+                  icon: Icon(Icons.search, color: Colors.grey),
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: Container(
-                        width: 56,
-                        height: 56,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: NetworkImage(
-                                 widget.partner.image??'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuCxMPJwglskH6j6jQhCmJGqIr9kR6_iMPng&usqp=CAU',
-                                ),
-                                fit: BoxFit.cover),
-                            borderRadius: BorderRadius.circular(10)),
-                      ),
-                      title: Text(
-                        widget.partner.name??'',
-                        style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      ),
+                    TextButton.icon(
+                      onPressed: () {
+                        showActionsheet();
+                      },
+                      icon: Icon(Icons.sort, color: kBlueColor),
+                      label: Text('Best cashback'),
                     ),
-                    SizedBox(
-                      height: 10,
+                    TextButton.icon(
+                      onPressed: () {},
+                      icon: Icon(Icons.filter_alt_sharp, color: kBlueColor),
+                      label: Text('Filter'),
                     ),
-                    Text(
-                        widget.partner.description??'')
                   ],
                 ),
-              ),
-              Container(height: 20),
-              Text(
-                'Partner products',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              Container(
-                height: 10,
-              ),
-              Consumer<HomeProvider>(
-                builder:(context, value, child) => Container(
-                  height: 100,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount:value.categories==null?0:value.categories!.length,itemBuilder: (c,i){
-                    return  CategoryWidget(category: value.categories![i],isSelected: value.selectedVendoDetailsIndex==i,onTap: (){value.selectVendorDetailsIndex(i);},);
-                  }),
-                ),
-              ),
-              Container(height: 20),
-              CustomTextField(
-                hintText: 'search...',
-                icon: Icon(Icons.search, color: Colors.grey),
-              ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton.icon(
-                    onPressed: () {
-                      showActionsheet();
-                    },
-                    icon: Icon(Icons.sort, color: kBlueColor),
-                    label: Text('Best cashback'),
-                  ),
-                  TextButton.icon(
-                    onPressed: () {},
-                    icon: Icon(Icons.filter_alt_sharp, color: kBlueColor),
-                    label: Text('Filter'),
-                  ),
-                ],
-              ),
-              Container(
-                child: Container(
-                    child: GridView(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: .6,
-                      crossAxisSpacing: 8,
-                      crossAxisCount: 2),
-                  children: List.generate(
-                      5,
-                      (index) => ProductWidget()),
-                )),
-              )
-            ],
+                Container(
+                  child: Container(
+                      child: GridView(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        childAspectRatio: .6,
+                        crossAxisSpacing: 8,
+                        crossAxisCount: 2),
+                    children: List.generate(
+                        value.vendorProducts.length,
+                        (index) => ProductWidget(product: value.vendorProducts[index],)),
+                  )),
+                )
+              ],
+            ),
           ),
         ),
       ),

@@ -3,6 +3,7 @@ class Partner {
   late String? name;
   late String? description;
   late String? image;
+  bool isChecked = false;
 
   Partner({
     required this.id,

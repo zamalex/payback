@@ -6,12 +6,17 @@ import 'package:payback/providers/home_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../helpers/custom_widgets.dart';
+import '../model/partner_model.dart';
 
 class FilterProducts extends StatelessWidget {
    FilterProducts({super.key});
 
+
   @override
   Widget build(BuildContext context) {
+    TextEditingController minController=TextEditingController(text: Provider.of<HomeProvider>(context).minPrice.toString());
+    TextEditingController maxController=TextEditingController(text: Provider.of<HomeProvider>(context).maxPrice.toString());
+
     return  Container(
       margin: EdgeInsets.only(top: 0),
       decoration: BoxDecoration(color: kBackgroundColor,borderRadius: BorderRadius.circular(8)),
@@ -36,7 +41,11 @@ class FilterProducts extends StatelessWidget {
                     SizedBox(height: 5,),
                     Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,children: [
                       Text('Filter products',style:TextStyle(fontWeight: FontWeight.bold,fontSize: 25)),
-                      Text('Reset all',style: TextStyle(color: Colors.red,fontSize: 18),)
+                      InkWell(
+                          onTap: (){
+                            i.resetFilters();
+                          },
+                          child: Text('Reset all',style: TextStyle(color: Colors.red,fontSize: 18),))
                     ],),
                     SizedBox(height: 10,),
                     Text('Price range(SAR)',style:TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.black54)),
@@ -45,11 +54,11 @@ class FilterProducts extends StatelessWidget {
                     Row(children: [
                       Expanded(child: Column(crossAxisAlignment:CrossAxisAlignment.start,children: [Text('From'),
                         SizedBox(height: 5,),
-                        CustomTextField(hintText: '')],)),
+                        CustomTextField(hintText: '',editable: false,controller: minController,)],)),
                       SizedBox(width: 15,),
                       Expanded(child: Column(crossAxisAlignment:CrossAxisAlignment.start,children: [Text('To'),
                         SizedBox(height: 5,),
-                        CustomTextField(hintText: '')],))
+                        CustomTextField(hintText: '',controller: maxController,editable: false,)],))
                     ],),
                     SizedBox(height: 10,),
 
@@ -58,11 +67,11 @@ class FilterProducts extends StatelessWidget {
                       child: RangeSlider(
                         inactiveColor: Colors.grey.shade300,
                         //activeColor: Colors.blue,
-                        values: RangeValues(234, 700),
-                        max: 1000,
+                        values: RangeValues(i.minPrice, i.maxPrice),
+                        max: 10000,
 
                         onChanged: (RangeValues values) {
-
+                          i.changeRange(values.start, values.end);
                         },
                       ),
                     ),
@@ -76,7 +85,7 @@ class FilterProducts extends StatelessWidget {
                     Text('Show partners products',style:TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.black54)),
                     SizedBox(height: 10,),
 
-                    SingleChildScrollView(scrollDirection: Axis.horizontal,child: Row(children: List.generate(i.vendors.length, (index) => PartnerFilterWidget(index: index, selectedIndex: selectedIndex)),),)
+                    SingleChildScrollView(scrollDirection: Axis.horizontal,child: Row(children: List.generate(i.vendors.length, (index) => PartnerFilterWidget(vendor: i.vendors[index],)),),)
 
 
 
@@ -100,19 +109,23 @@ class FilterProducts extends StatelessWidget {
 }
 
 class PartnerFilterWidget extends StatelessWidget {
-   PartnerFilterWidget({super.key,required this.index,required this.selectedIndex});
+   PartnerFilterWidget({super.key,required this.vendor});
 
-   int index;
-   List<int> selectedIndex;
+   Partner vendor;
 
   @override
   Widget build(BuildContext context) {
-    return Opacity(
-      opacity: selectedIndex.contains(index)?1:.5,
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 4),
-        width: 70,height: 70,
-        decoration: BoxDecoration(image:DecorationImage(image: NetworkImage('https://www.fontshut.com/wp-content/uploads/2022/02/0e4375219499a25c04752312dac1b314.jpeg',),fit: BoxFit.cover),borderRadius: BorderRadius.circular(12),border: Border.all(color: selectedIndex.contains(index)?Colors.blue:Colors.transparent,width: 2)),
+    return InkWell(
+      onTap: (){
+        Provider.of<HomeProvider>(context,listen: false).checkVendorInFilter(vendor.id);
+      },
+      child: Opacity(
+        opacity: vendor.isChecked?1:.5,
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 4),
+          width: 70,height: 70,
+          decoration: BoxDecoration(image:DecorationImage(image: NetworkImage(vendor.image??'',),fit: BoxFit.cover),borderRadius: BorderRadius.circular(12),border: Border.all(color: vendor.isChecked?Colors.blue:Colors.transparent,width: 2)),
+        ),
       ),
     );
   }
