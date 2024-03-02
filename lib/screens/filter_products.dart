@@ -103,8 +103,11 @@ class FilterProducts extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.only(topLeft: Radius.circular(16),topRight: Radius.circular(16))),
-              child: Container(
-                  width:double.infinity,child: CustomButton(buttonText: 'Apply filters', buttonColor: kPurpleColor)),
+              child:i.isLoading?Center(child: CircularProgressIndicator(),): Container(
+                  width:double.infinity,child: CustomButton(buttonText: 'Apply filters', buttonColor: kPurpleColor,onTap: (){
+                    i.getProducts(location: 'SHOPPING').then((value) => Navigator.pop(context));
+                    
+              },)),
             )
           ],
         ),

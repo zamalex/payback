@@ -196,6 +196,8 @@ class HomeProvider extends ChangeNotifier{
 
   Future<Map<String, dynamic>> getProducts({String location='HOME',Map<String,dynamic>? filters,bool? isHotDeals,bool? isSuggested}) async {
 
+    isLoading = true;
+    notifyListeners();
     List<int> vendorIds =[];
     filters ??= {};
     if(location=='HOME'){
@@ -247,7 +249,7 @@ class HomeProvider extends ChangeNotifier{
         vendorProducts = response['data'];
     }
 
-
+    isLoading = false;
 
     notifyListeners();
     return response;
