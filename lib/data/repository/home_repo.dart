@@ -55,12 +55,12 @@ class HomeRepository {
         return {'message': 'Products retrieved successfully', 'data': products};
       }
 
-      return {'message': 'Not found'};
+      return {'message': 'Not found','data':[] as List<Product>};
     } catch (e) {
       if (e is DioError) {
-        return {'message': e.message};
+        return {'message': e.message,'data':[] as List<Product>};
       } else {
-        return {'message': 'Unknown error'};
+        return {'message': 'Unknown error','data':[] as List<Product>};
       }
     }
   }
