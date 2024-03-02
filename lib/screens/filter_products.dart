@@ -14,8 +14,8 @@ class FilterProducts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController minController=TextEditingController(text: Provider.of<HomeProvider>(context).minPrice.toString());
-    TextEditingController maxController=TextEditingController(text: Provider.of<HomeProvider>(context).maxPrice.toString());
+    TextEditingController minController=TextEditingController(text: Provider.of<HomeProvider>(context).minPrice.toPrecision(0).toString());
+    TextEditingController maxController=TextEditingController(text: Provider.of<HomeProvider>(context).maxPrice.toPrecision(0).toString());
 
     return  Container(
       margin: EdgeInsets.only(top: 0),
@@ -78,9 +78,17 @@ class FilterProducts extends StatelessWidget {
                     SizedBox(height: 10,),
                     Text('Availability',style:TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.black54)),
                     SizedBox(height: 10,),
-                    RadioListTile(value: 0, groupValue: 1, onChanged: (v){},title: Text('All',style: TextStyle(fontSize:20,fontWeight: FontWeight.bold),),contentPadding: EdgeInsets.zero,activeColor: kBlueColor,)
-                    ,RadioListTile(value: 1, groupValue: 1, onChanged: (v){},title: Text('In stock',style: TextStyle(fontSize:20,fontWeight: FontWeight.bold),),contentPadding: EdgeInsets.zero,activeColor: kBlueColor,)
-                    ,RadioListTile(value: 2, groupValue: 1, onChanged: (v){},title: Text('Out of stock',style: TextStyle(fontSize:20,fontWeight: FontWeight.bold),),contentPadding: EdgeInsets.zero,activeColor: kBlueColor,)
+                    RadioListTile(value: AVAILABILITY.ALL, groupValue: i.availability, onChanged: (v){
+                      i.changeAvailability(v!);
+                    },title: Text('All',style: TextStyle(fontSize:20,fontWeight: FontWeight.bold),),contentPadding: EdgeInsets.zero,activeColor: kBlueColor,)
+                    ,RadioListTile(value: AVAILABILITY.AVAILABLE, groupValue: i.availability, onChanged: (v){
+                      i.changeAvailability(v!);
+
+                    },title: Text('In stock',style: TextStyle(fontSize:20,fontWeight: FontWeight.bold),),contentPadding: EdgeInsets.zero,activeColor: kBlueColor,)
+                    ,RadioListTile(value: AVAILABILITY.UNAVAILABLE, groupValue: i.availability, onChanged: (v){
+                      i.changeAvailability(v!);
+
+                    },title: Text('Out of stock',style: TextStyle(fontSize:20,fontWeight: FontWeight.bold),),contentPadding: EdgeInsets.zero,activeColor: kBlueColor,)
                     ,SizedBox(height: 10,),
                     Text('Show partners products',style:TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.black54)),
                     SizedBox(height: 10,),

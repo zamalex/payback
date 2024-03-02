@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:payback/data/repository/home_repo.dart';
 import 'package:payback/model/categories_response.dart';
 import 'package:payback/model/commitment_model.dart';
@@ -13,9 +14,21 @@ import '../data/service_locator.dart';
 import '../model/cities_response.dart';
 import '../model/product_model.dart';
 
+enum AVAILABILITY{
+  ALL,
+  AVAILABLE,
+  UNAVAILABLE
 
+}
 
 class HomeProvider extends ChangeNotifier{
+
+  AVAILABILITY availability = AVAILABILITY.ALL;
+
+  changeAvailability(AVAILABILITY a){
+    availability = a;
+    notifyListeners();
+  }
 
   double minPrice=0;
   double maxPrice = 10000;
@@ -27,6 +40,9 @@ class HomeProvider extends ChangeNotifier{
   }
 
   resetFilters(){
+
+    selectedShoppingIndex = -1;
+    availability = AVAILABILITY.ALL;
      minPrice=0;
      maxPrice = 10000;
      vendors.forEach((element) {element.isChecked=false;});
@@ -202,8 +218,8 @@ class HomeProvider extends ChangeNotifier{
         filters.putIfAbsent('vendors', () => vendorIds);
 
       }
-      filters.putIfAbsent('min_price', () => minPrice);
-      filters.putIfAbsent('max_price', () => maxPrice);
+      filters.putIfAbsent('min_price', () => minPrice.toPrecision(0));
+      filters.putIfAbsent('max_price', () => maxPrice.toPrecision(0));
       if(selectedShoppingIndex!=-1){
         filters.putIfAbsent('category_id', () => categories[selectedShoppingIndex].id);
       }
