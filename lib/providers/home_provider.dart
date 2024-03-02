@@ -190,9 +190,9 @@ class HomeProvider extends ChangeNotifier {
     filters ??= {};
     if (location == 'HOME') {
       if (isHotDeals != null && isHotDeals)
-        filters.putIfAbsent('hot_deals', () => true);
+        filters.putIfAbsent('hot_deal', () => 1);
       else if (isSuggested != null && isSuggested)
-        filters.putIfAbsent('suggested', () => true);
+        filters.putIfAbsent('suggested', () => 1);
 
       if (selectedHomeIndex != -1) {
         filters.putIfAbsent(
@@ -206,7 +206,7 @@ class HomeProvider extends ChangeNotifier {
       });
       if (vendorIds.isNotEmpty) {
         filters.putIfAbsent(
-            'vendors[]', () => vendorIds.map((e) => e.toString()).join(','));
+            'vendor_ids[]', () => vendorIds);
       }
       filters.putIfAbsent('min_price', () => minPrice.toPrecision(0));
       filters.putIfAbsent('max_price', () => maxPrice.toPrecision(0));
