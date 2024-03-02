@@ -41,7 +41,7 @@ class HomeProvider extends ChangeNotifier{
 
   resetFilters(){
 
-    selectedShoppingIndex = -1;
+    //selectedShoppingIndex = -1;
     availability = AVAILABILITY.ALL;
      minPrice=0;
      maxPrice = 10000;
