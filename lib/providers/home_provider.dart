@@ -217,7 +217,7 @@ class HomeProvider extends ChangeNotifier{
         }
       });
       if(vendorIds.isNotEmpty){
-        filters.putIfAbsent('vendors', () => vendorIds);
+        filters.putIfAbsent('vendors[]', () => vendorIds.map((e) => e.toString()).join(','));
 
       }
       filters.putIfAbsent('min_price', () => minPrice.toPrecision(0));

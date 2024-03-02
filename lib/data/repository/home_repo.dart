@@ -44,7 +44,7 @@ class HomeRepository {
   }
   Future<Map<String, dynamic>> getProducts(Map<String,dynamic>filters) async {
     try {
-      Response response = await sl<DioClient>().get(Url.PRODUCTS_URL);
+      Response response = await sl<DioClient>().get(Url.PRODUCTS_URL,queryParameters: filters);
 
       final parsedJson = response.data;
       if (response.statusCode! < 400) {
@@ -68,7 +68,7 @@ class HomeRepository {
 
   Future<Map<String, dynamic>> getCommitments() async {
     try {
-      Response response = await sl<DioClient>().get(Url.COMMIMENTS_URL);
+      Response response = await sl<DioClient>().get(Url.COMMIMENTS_URL,);
 
       final parsedJson = response.data;
       if (response.statusCode! < 400) {
