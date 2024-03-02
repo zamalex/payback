@@ -40,6 +40,7 @@ class _PartnerInfoScreenState extends State<PartnerInfoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text('Partner data'),centerTitle: true,),
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -58,9 +59,7 @@ class _PartnerInfoScreenState extends State<PartnerInfoScreen> {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(
-                                height: 20,
-                              ),
+
                               Text(
                                 '${widget.partner!.name??""}',
                                 style: TextStyle(
