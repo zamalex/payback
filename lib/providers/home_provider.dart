@@ -14,62 +14,55 @@ import '../data/service_locator.dart';
 import '../model/cities_response.dart';
 import '../model/product_model.dart';
 
-enum AVAILABILITY{
-  ALL,
-  AVAILABLE,
-  UNAVAILABLE
+enum AVAILABILITY { ALL, AVAILABLE, UNAVAILABLE }
 
-}
-
-class HomeProvider extends ChangeNotifier{
-
+class HomeProvider extends ChangeNotifier {
   AVAILABILITY availability = AVAILABILITY.ALL;
 
-  changeAvailability(AVAILABILITY a){
+  changeAvailability(AVAILABILITY a) {
     availability = a;
     notifyListeners();
   }
 
-  double minPrice=0;
+  double minPrice = 0;
   double maxPrice = 10000;
 
-  changeRange(double min,double max){
+  changeRange(double min, double max) {
     minPrice = min;
     maxPrice = max;
     notifyListeners();
   }
 
-  resetFilters(){
-
+  resetFilters() {
     //selectedShoppingIndex = -1;
     availability = AVAILABILITY.ALL;
-     minPrice=0;
-     maxPrice = 10000;
-     vendors.forEach((element) {element.isChecked=false;});
+    minPrice = 0;
+    maxPrice = 10000;
+    vendors.forEach((element) {
+      element.isChecked = false;
+    });
 
-     notifyListeners();
-    }
+    notifyListeners();
+  }
 
-  bool isLoading=false;
+  bool isLoading = false;
 
   int selectedVendoDetailsIndex = -1;
   int selectedHomeIndex = -1;
   int selectedShoppingIndex = -1;
 
+  List<int> checkedVendors = [];
 
-  List<int> checkedVendors= [];
-
-  checkVendorInFilter(int id){
-    vendors.firstWhere((element) => element.id==id).isChecked=!vendors.firstWhere((element) => element.id==id).isChecked;
+  checkVendorInFilter(int id) {
+    vendors.firstWhere((element) => element.id == id).isChecked =
+        !vendors.firstWhere((element) => element.id == id).isChecked;
     notifyListeners();
   }
 
-
-  String getPartnerNameByID(int id){
+  String getPartnerNameByID(int id) {
     String name = '';
     vendors.forEach((element) {
-      if(element.id==id)
-        name= element.name??'';
+      if (element.id == id) name = element.name ?? '';
     });
     return name;
   }
@@ -79,24 +72,25 @@ class HomeProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  selectHomeIndex(int i){
-    if(selectedHomeIndex==i)
-      selectedHomeIndex=-1;
+  selectHomeIndex(int i) {
+    if (selectedHomeIndex == i)
+      selectedHomeIndex = -1;
     else
-    selectedHomeIndex = i;
+      selectedHomeIndex = i;
     notifyListeners();
   }
- selectVendorDetailsIndex(int i){
-    if(selectedVendoDetailsIndex==i)
-      selectedVendoDetailsIndex=-1;
+
+  selectVendorDetailsIndex(int i) {
+    if (selectedVendoDetailsIndex == i)
+      selectedVendoDetailsIndex = -1;
     else
       selectedVendoDetailsIndex = i;
     notifyListeners();
   }
 
-  selectShoppingIndex(int i){
-    if(selectedShoppingIndex==i)
-      selectedShoppingIndex=-1;
+  selectShoppingIndex(int i) {
+    if (selectedShoppingIndex == i)
+      selectedShoppingIndex = -1;
     else
       selectedShoppingIndex = i;
     notifyListeners();
@@ -105,15 +99,14 @@ class HomeProvider extends ChangeNotifier{
   List<Category> categories = [];
   List<Data>? onBoarding = [];
 
-
-   List<Product> products=[];
-   List<Product> hotDealsProducts=[];
-   List<Product> suggestedProducts=[];
-   List<Product> shoppingProducts=[];
-   List<Product> vendorProducts=[];
-   List<Commitment> commitments=[];
-   List<Partner> vendors=[];
-   List<Partner> partners=[];
+  List<Product> products = [];
+  List<Product> hotDealsProducts = [];
+  List<Product> suggestedProducts = [];
+  List<Product> shoppingProducts = [];
+  List<Product> vendorProducts = [];
+  List<Commitment> commitments = [];
+  List<Partner> vendors = [];
+  List<Partner> partners = [];
 
   Future<Map<String, dynamic>> getVendors() async {
     // Implement your loading logic here if needed
@@ -123,7 +116,6 @@ class HomeProvider extends ChangeNotifier{
     if (response.containsKey('data')) {
       vendors = response['data'];
     }
-
 
     notifyListeners();
     return response;
@@ -138,14 +130,12 @@ class HomeProvider extends ChangeNotifier{
       partners = response['data'];
     }
 
-
     notifyListeners();
     return response;
   }
 
-  List<CustomField> partnerCustomFields=[];
+  List<CustomField> partnerCustomFields = [];
   Future<Map<String, dynamic>> getPartnerCustomFields(int id) async {
-
     isLoading = true;
     partnerCustomFields.clear();
     notifyListeners();
@@ -161,13 +151,10 @@ class HomeProvider extends ChangeNotifier{
   }
 
   Future<Map<String, dynamic>> getCommitments() async {
-
     final response = await sl<HomeRepository>().getCommitments();
     if (response.containsKey('data')) {
       commitments = response['data'];
     }
-
-
 
     notifyListeners();
     return response;
@@ -176,16 +163,15 @@ class HomeProvider extends ChangeNotifier{
   Future<Map<String, dynamic>> reOrderCommitments() async {
     isLoading = true;
     notifyListeners();
-    final response0 = await sl<HomeRepository>().reOrderCommitments(commitments.map((e) => e.id).toList());
+    final response0 = await sl<HomeRepository>()
+        .reOrderCommitments(commitments.map((e) => e.id).toList());
 
-    if(response0['data']){
+    if (response0['data']) {
       final response = await sl<HomeRepository>().getCommitments();
       if (response.containsKey('data')) {
         commitments = response['data'];
       }
-
     }
-
 
     isLoading = false;
 
@@ -193,58 +179,59 @@ class HomeProvider extends ChangeNotifier{
     return response0;
   }
 
-
-  Future<Map<String, dynamic>> getProducts({String location='HOME',Map<String,dynamic>? filters,bool? isHotDeals,bool? isSuggested}) async {
-
+  Future<Map<String, dynamic>> getProducts(
+      {String location = 'HOME',
+      Map<String, dynamic>? filters,
+      bool? isHotDeals,
+      bool? isSuggested}) async {
     isLoading = true;
     notifyListeners();
-    List<int> vendorIds =[];
+    List<int> vendorIds = [];
     filters ??= {};
-    if(location=='HOME'){
-      if(isHotDeals!=null&&isHotDeals)
-      filters.putIfAbsent('hot_deals', () => true);
+    if (location == 'HOME') {
+      if (isHotDeals != null && isHotDeals)
+        filters.putIfAbsent('hot_deals', () => true);
+      else if (isSuggested != null && isSuggested)
+        filters.putIfAbsent('suggested', () => true);
 
-      else if(isSuggested!=null&&isSuggested)
-      filters.putIfAbsent('suggested', () => true);
-
-      if(selectedHomeIndex!=-1){
-        filters.putIfAbsent('category_id', () => categories[selectedHomeIndex].id);
+      if (selectedHomeIndex != -1) {
+        filters.putIfAbsent(
+            'category_id', () => categories[selectedHomeIndex].id);
       }
-    }else if(location=='SHOPPING'){
+    } else if (location == 'SHOPPING') {
       vendors.forEach((element) {
-        if(element.isChecked){
+        if (element.isChecked) {
           vendorIds.add(element.id);
         }
       });
-      if(vendorIds.isNotEmpty){
-        filters.putIfAbsent('vendors[]', () => vendorIds.map((e) => e.toString()).join(','));
-
+      if (vendorIds.isNotEmpty) {
+        filters.putIfAbsent(
+            'vendors[]', () => vendorIds.map((e) => e.toString()).join(','));
       }
       filters.putIfAbsent('min_price', () => minPrice.toPrecision(0));
       filters.putIfAbsent('max_price', () => maxPrice.toPrecision(0));
-      if(selectedShoppingIndex!=-1){
-        filters.putIfAbsent('category_id', () => categories[selectedShoppingIndex].id);
+      if (selectedShoppingIndex != -1) {
+        filters.putIfAbsent(
+            'category_id', () => categories[selectedShoppingIndex].id);
       }
-    }else if(location=='VENDOR'){
-      if(selectedVendoDetailsIndex!=-1){
-        filters.putIfAbsent('category_id', () => categories[selectedVendoDetailsIndex].id);
+    } else if (location == 'VENDOR') {
+      if (selectedVendoDetailsIndex != -1) {
+        filters.putIfAbsent(
+            'category_id', () => categories[selectedVendoDetailsIndex].id);
       }
     }
     print(filters.toString());
 
-
     final response = await sl<HomeRepository>().getProducts(filters);
     if (response.containsKey('data')) {
-      if(location=='HOME') {
+      if (location == 'HOME') {
         products = response['data'];
-        if(isHotDeals!=null&&isHotDeals)
+        if (isHotDeals != null && isHotDeals)
           hotDealsProducts = products;
-
-        else if(isSuggested!=null&&isSuggested)
+        else if (isSuggested != null && isSuggested)
           suggestedProducts = products;
-      }
-      else if(location=='SHOPPING')
-        shoppingProducts= response['data'];
+      } else if (location == 'SHOPPING')
+        shoppingProducts = response['data'];
       else
         vendorProducts = response['data'];
     }
@@ -255,12 +242,11 @@ class HomeProvider extends ChangeNotifier{
     return response;
   }
 
-
-  Future<Map> getOnBoarding()async{
+  Future<Map> getOnBoarding() async {
     isLoading = true;
     notifyListeners();
 
-    Map response= await sl<HomeRepository>().getOnBoarding();
+    Map response = await sl<HomeRepository>().getOnBoarding();
     onBoarding = response['data'];
 
     isLoading = false;
@@ -269,11 +255,11 @@ class HomeProvider extends ChangeNotifier{
     return response;
   }
 
-  Future<Map> getCategories()async{
+  Future<Map> getCategories() async {
     isLoading = true;
     notifyListeners();
 
-    Map response= await sl<HomeRepository>().getCategories();
+    Map response = await sl<HomeRepository>().getCategories();
     categories = response['data'];
 
     isLoading = false;
@@ -282,18 +268,14 @@ class HomeProvider extends ChangeNotifier{
     return response;
   }
 
-   List<City> cities=[];
-
+  List<City> cities = [];
 
   Future<List<City>> getCities() async {
-
-
     final response = await sl<HomeRepository>().getCities();
 
-      cities = response;
+    cities = response;
 
     notifyListeners();
     return response;
   }
-
 }
