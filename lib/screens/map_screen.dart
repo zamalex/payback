@@ -9,8 +9,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/providers/home_provider.dart';
 import 'package:payback/screens/partners_screen.dart';
 import 'package:payback/screens/scanner_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../helpers/custom_widgets.dart';
 
@@ -33,6 +35,10 @@ class MapSampleState extends State<MapSample> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback;
+
+    Future.delayed(Duration.zero).then((value){
+      Provider.of<HomeProvider>(context,listen: false).getVendors();
+    });
 
     //_addCustomMarkers();
   }
@@ -300,24 +306,26 @@ class MapSampleState extends State<MapSample> {
           Get.to(PartnersScreen());
         }, icon: Icon(Icons.list,color: kPurpleColor,), label: Text('Show list',style: TextStyle(color: kPurpleColor),)),
       ),
-      body: CustomGoogleMapMarkerBuilder(
-        screenshotDelay: Duration(seconds: 4),
-        builder:(p0, markers) => markers==null? Center(child: CircularProgressIndicator()):GoogleMap(
-          markers: markers,
-          mapType: MapType.normal,
-            initialCameraPosition: const CameraPosition(
-              target: LatLng(37.42796133580664, -122.085749655962),
-              zoom: 14.4746,
-            ),
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
-        ), customMarkers: List.generate(locations.length, (index) => MarkerData(
-          marker: Marker(  markerId:  MarkerId('${locations[index].latitude}'), position: locations[index],onTap: (){
-            showStoreSheet(context);
+      body: Consumer<HomeProvider>(
+        builder:(context, value, child) => CustomGoogleMapMarkerBuilder(
+          screenshotDelay: Duration(seconds: 3),
+          builder:(p0, markers) => markers==null? Center(child: CircularProgressIndicator()):GoogleMap(
+            markers: markers,
+            mapType: MapType.normal,
+              initialCameraPosition: const CameraPosition(
+                target: LatLng(37.42796133580664, -122.085749655962),
+                zoom: 14.4746,
+              ),
+            onMapCreated: (GoogleMapController controller) {
+              _controller.complete(controller);
+            },
+          ), customMarkers: List.generate(value.vendors.length, (index) => MarkerData(
+            marker: Marker(  markerId:  MarkerId('${locations[index].latitude}'), position: index>value.vendors.length-1?locations[0]:locations[index],onTap: (){
+              showStoreSheet(context);
 
-          }),
-          child: _customMarker(images[index], Colors.white)))
+            }),
+            child: _customMarker(value.vendors[index].image??images[index], Colors.white)))
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),

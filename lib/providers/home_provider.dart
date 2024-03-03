@@ -17,6 +17,9 @@ import '../model/product_model.dart';
 enum AVAILABILITY { ALL, AVAILABLE, UNAVAILABLE }
 
 class HomeProvider extends ChangeNotifier {
+
+
+
   AVAILABILITY availability = AVAILABILITY.ALL;
 
   TextEditingController searchControllerShopping = TextEditingController();
@@ -242,6 +245,8 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
     return response0;
   }
+
+
 
 
   Future<Map<String, dynamic>> getSavedProducts() async {
