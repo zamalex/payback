@@ -317,7 +317,7 @@ class MapSampleState extends State<MapSample> {
             showStoreSheet(context);
 
           }),
-          child: _customMarker(images[index], Colors.black)))
+          child: _customMarker(images[index], Colors.white)))
       ),
       floatingActionButton: FloatingActionButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
@@ -340,7 +340,7 @@ class MapSampleState extends State<MapSample> {
     return Stack(
       children: [
         Icon(
-          Icons.add_location,
+          Icons.location_pin,
           color: color,
           size: 100,
         ),
@@ -348,7 +348,7 @@ class MapSampleState extends State<MapSample> {
           left: 25,
           top: 10,
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(35),
             child: CachedNetworkImage(
 
                imageUrl: symbol,
