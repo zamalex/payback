@@ -279,7 +279,7 @@ class HomeProvider extends ChangeNotifier {
       if (isHotDeals != null && isHotDeals)
         filters.putIfAbsent('hot_deal', () => 1);
       else if (isSuggested != null && isSuggested)
-        filters.putIfAbsent('suggested', () => 1);
+        filters.putIfAbsent('is_suggest', () => 1);
 
       if (selectedHomeIndex != -1) {
         filters.putIfAbsent(
