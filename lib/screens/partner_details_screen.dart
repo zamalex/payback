@@ -177,11 +177,11 @@ class _PartnerDetailsScreenState extends State<PartnerDetailsScreen> {
                       icon: Icon(Icons.sort, color: kBlueColor),
                       label: Text('Best cashback'),
                     ),
-                    TextButton.icon(
+                    /*TextButton.icon(
                       onPressed: () {},
                       icon: Icon(Icons.filter_alt_sharp, color: kBlueColor),
                       label: Text('Filter'),
-                    ),
+                    ),*/
                   ],
                 ),
                 Container(
