@@ -195,7 +195,7 @@ class _PartnerDetailsScreenState extends State<PartnerDetailsScreen> {
                         crossAxisCount: 2),
                     children: List.generate(
                         value.vendorProducts.length,
-                        (index) => ProductWidget(product: value.vendorProducts[index],)),
+                        (index) => ProductWidget(product: value.vendorProducts[index])),
                   )),
                 )
               ],

@@ -261,7 +261,7 @@ class _ShopOnlineScreenState extends State<ShopOnlineScreen> {
                                     crossAxisCount: 2),
                             children: List.generate(
                                 provider.shoppingProducts.length,
-                                (index) => ProductWidget(product: provider.shoppingProducts[index],)),
+                                (index) => ProductWidget(product: provider.shoppingProducts[index])),
                           )
                         : GridView(
                             physics: NeverScrollableScrollPhysics(),
@@ -273,7 +273,7 @@ class _ShopOnlineScreenState extends State<ShopOnlineScreen> {
                                     crossAxisCount: 2),
                             children: List.generate(
                                 provider.vendors.length,
-                                (index) => PartnerWidget(partner: provider.vendors[index],)),
+                                (index) => PartnerWidget(partner: provider.vendors[index])),
                           ),
                   )
                 ],

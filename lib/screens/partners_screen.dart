@@ -100,7 +100,7 @@ class _PartnersScreenState extends State<PartnersScreen> {
                         childAspectRatio: .7,
                         crossAxisSpacing: 8,
                         crossAxisCount: 2),
-                    children: List.generate(value.vendors.length, (index) => PartnerWidget(partner: value.vendors[index],)),
+                    children: List.generate(value.vendors.length, (index) => PartnerWidget(partner: value.vendors[index])),
                   ),
                 )
               ],

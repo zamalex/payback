@@ -7,9 +7,11 @@ import 'package:payback/helpers/colors.dart';
 import 'package:payback/model/categories_response.dart';
 import 'package:payback/model/product_model.dart';
 import 'package:payback/model/commitment_model.dart' as com;
+import 'package:payback/providers/home_provider.dart';
 import 'package:payback/screens/commitmetn_details_screen.dart';
 import 'package:payback/screens/partner_details_screen.dart';
 import 'package:payback/screens/product_details_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../model/partner_model.dart';
 
@@ -17,23 +19,23 @@ class CustomTextField extends StatefulWidget {
   final String hintText;
 
   bool obscureText = false;
-      TextInputType type =  TextInputType.text;
+  TextInputType type = TextInputType.text;
 
   Widget? icon = null;
-  bool editable =true;
+  bool editable = true;
 
-  bool isPassword=false;
-
+  bool isPassword = false;
 
   CustomTextField(
       {required this.hintText,
       this.obscureText = false,
-        this.type =  TextInputType.text,
+      this.type = TextInputType.text,
       this.controller,
       this.icon,
-        this.isPassword=false,
-        this.editable=true,
-      this.maxLines = 1,this.onSaved});
+      this.isPassword = false,
+      this.editable = true,
+      this.maxLines = 1,
+      this.onSaved});
 
   TextEditingController? controller;
   int maxLines = 1;
@@ -48,20 +50,18 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return Container(
       //height: widget.maxLines * 48.0,
       child: TextFormField(
-        validator: (text){
-          if(text!.isEmpty){
+        validator: (text) {
+          if (text!.isEmpty) {
             return 'Enter required data';
           }
 
-          if(widget.type==TextInputType.phone&&!text.startsWith('20')){
+          if (widget.type == TextInputType.phone && !text.startsWith('20')) {
             return 'Phone should start with 20';
-          }
-          else
+          } else
             return null;
         },
-        onSaved: (s){
-          if(widget.onSaved!=null)
-            widget.onSaved!(s);
+        onSaved: (s) {
+          if (widget.onSaved != null) widget.onSaved!(s);
         },
         readOnly: !widget.editable,
         maxLines: widget.maxLines,
@@ -81,20 +81,23 @@ class _CustomTextFieldState extends State<CustomTextField> {
           hintStyle: TextStyle(
             color: Colors.grey,
           ),
-          contentPadding: EdgeInsets.symmetric(vertical: widget.maxLines*(12), horizontal: 10),
+          contentPadding: EdgeInsets.symmetric(
+              vertical: widget.maxLines * (12), horizontal: 10),
           suffixIcon: IconButton(
-            icon: widget.isPassword?Icon(widget.obscureText
-                ? Icons.visibility
-                : Icons.visibility_off):widget.icon??Icon(null),
+            icon: widget.isPassword
+                ? Icon(widget.obscureText
+                    ? Icons.visibility
+                    : Icons.visibility_off)
+                : widget.icon ?? Icon(null),
             onPressed: () {
-              if(widget.isPassword)
-              setState(() {
-                widget.obscureText = !widget.obscureText;
-              });
+              if (widget.isPassword)
+                setState(() {
+                  widget.obscureText = !widget.obscureText;
+                });
             },
           ),
         ),
-        keyboardType:widget.type,
+        keyboardType: widget.type,
       ),
     );
   }
@@ -174,7 +177,10 @@ class CustomButton extends StatelessWidget {
   Color textColor = Colors.white;
 
   CustomButton(
-      {required this.buttonText, required this.buttonColor, this.onTap,this.textColor=Colors.white});
+      {required this.buttonText,
+      required this.buttonColor,
+      this.onTap,
+      this.textColor = Colors.white});
 
   @override
   Widget build(BuildContext context) {
@@ -213,7 +219,7 @@ class CustomIconButton extends StatelessWidget {
   CustomIconButton(
       {required this.buttonText,
       required this.iconData,
-        this.onTap,
+      this.onTap,
       this.buttonColor = Colors.white,
       this.iconColor = Colors.black});
 
@@ -221,8 +227,7 @@ class CustomIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       onPressed: () {
-        if(onTap!=null)
-       onTap!();
+        if (onTap != null) onTap!();
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: buttonColor, // Custom color for the button
@@ -232,7 +237,6 @@ class CustomIconButton extends StatelessWidget {
       ),
       icon: Image.asset(
         iconData,
-
       ),
       label: Text(
         buttonText,
@@ -285,18 +289,16 @@ class CustomThumbShape extends SliderComponentShape {
 }
 
 class Commitment extends StatelessWidget {
-   Commitment({super.key,this.commitment});
-
+  Commitment({super.key, this.commitment});
 
   com.Commitment? commitment;
 
   @override
   Widget build(BuildContext context) {
-    if(commitment==null)
+    if (commitment == null)
       commitment = com.Commitment.fromJson(jsonDecode(Url.COMMITMENT_JSON));
     return InkWell(
       onTap: () {
-
         Get.to(CommitmetDetails());
       },
       child: Container(
@@ -334,13 +336,13 @@ class Commitment extends StatelessWidget {
                       ),
                       SizedBox(width: 8),
                       Text(
-                        '${commitment!.name??''}',
+                        '${commitment!.name ?? ''}',
                         style: TextStyle(fontSize: 20, color: Colors.white),
                       ),
                     ],
                   )),
                   Text(
-                    '${commitment!.paymentTarget??'0'} SAR',
+                    '${commitment!.paymentTarget ?? '0'} SAR',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -403,7 +405,8 @@ AppBar mainAppBar() {
 }
 
 class CategoryWidget extends StatelessWidget {
-   CategoryWidget({super.key,required this.category,this.isSelected=false,this.onTap});
+  CategoryWidget(
+      {super.key, required this.category, this.isSelected = false, this.onTap});
   Category category;
 
   bool isSelected = false;
@@ -413,21 +416,26 @@ class CategoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
-        if(onTap!=null)
-        onTap!();},
-      child: Container(width:70,
+      onTap: () {
+        if (onTap != null) onTap!();
+      },
+      child: Container(
+        width: 70,
         margin: EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           children: [
             CircleAvatar(
-              backgroundColor: isSelected?kBlueColor:kBlueLightColor,
-              child: Image.network(category.image??'https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png',width: 35,),
+              backgroundColor: isSelected ? kBlueColor : kBlueLightColor,
+              child: Image.network(
+                category.image ??
+                    'https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png',
+                width: 35,
+              ),
               radius: 35,
             ),
             SizedBox(height: 8),
             Text(
-      category.name??'',
+              category.name ?? '',
               style: TextStyle(
                 overflow: TextOverflow.ellipsis,
                 color: kBlueColor,
@@ -442,20 +450,23 @@ class CategoryWidget extends StatelessWidget {
   }
 }
 
-
 class ProductWidget extends StatelessWidget {
-   ProductWidget({super.key,this.product});
+  ProductWidget({super.key, this.product,});
 
-  Product? product=Product.fromJson(jsonDecode(Url.PRODUCT_JSON));
+
+
+  Product? product = Product.fromJson(jsonDecode(Url.PRODUCT_JSON));
 
   @override
   Widget build(BuildContext context) {
-    if(product==null){
-      product=Product.fromJson(jsonDecode(Url.PRODUCT_JSON));
+    if (product == null) {
+      product = Product.fromJson(jsonDecode(Url.PRODUCT_JSON));
     }
     return InkWell(
-      onTap: (){
-        Get.to(ProductDetailsScreen(product: product!,));
+      onTap: () {
+        Get.to(ProductDetailsScreen(
+          product: product!,
+        ));
       },
       child: Padding(
         padding: const EdgeInsets.all(4.0),
@@ -472,7 +483,8 @@ class ProductWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         image: NetworkImage(
-                          product!.featuredImage??'https://cdn-images.buyma.com/imgdata/item/230807/0097589320/564300514/428.jpg',
+                          product!.featuredImage ??
+                              'https://cdn-images.buyma.com/imgdata/item/230807/0097589320/564300514/428.jpg',
                         ),
                         fit: BoxFit.cover),
                     borderRadius: BorderRadius.circular(15)),
@@ -487,17 +499,27 @@ class ProductWidget extends StatelessWidget {
                           color: Colors.purple,
                         ),
                       ),
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(15)),
                     ),
-                    CircleAvatar(
-                      radius: 15,
-                      child: Image.asset(
-                        'assets/images/save_inactive.png',
+                    InkWell(
+                      onTap: (){
+                        Provider.of<HomeProvider>(context,listen: false).saveProduct(product!);
+                      },
+                      child: Consumer<HomeProvider>(
+                        builder:(context, value, child) => CircleAvatar(
+                          radius: 15,
+                          child: value.isLoading?CircularProgressIndicator():Image.asset(
+                            value.savedProducts.any((element) => element.id==product!.id)||product!.isSaved
+                                ? 'assets/images/save_active.png'
+                                : 'assets/images/save_inactive.png',
+                          ),
+                          backgroundColor: Colors.white,
+                        ),
                       ),
-                      backgroundColor: Colors.white,
                     )
                   ],
                 ),
@@ -506,18 +528,18 @@ class ProductWidget extends StatelessWidget {
                 height: 5,
               ),
               Text(
-                '${product!.name??''}',
+                '${product!.name ?? ''}',
                 style: TextStyle(
                   color: Colors.grey,
                 ),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),
-              Text('${product!.price??'0'} SAR',
+              Text('${product!.price ?? '0'} SAR',
                   style: TextStyle(color: Colors.purple, fontSize: 16),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1),
-              Text(product!.description??'',
+              Text(product!.description ?? '',
                   style: TextStyle(color: Colors.grey),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1)
@@ -530,17 +552,19 @@ class ProductWidget extends StatelessWidget {
 }
 
 class PartnerWidget extends StatelessWidget {
-   PartnerWidget({super.key,this.partner});
+  PartnerWidget({super.key, this.partner});
 
   Partner? partner;
 
   @override
   Widget build(BuildContext context) {
-    if(partner==null)
+    if (partner == null)
       partner = Partner.fromJson(jsonDecode(Url.PARTNER_JSON));
     return InkWell(
-      onTap: (){
-        Get.to(PartnerDetailsScreen(partner: partner!,));
+      onTap: () {
+        Get.to(PartnerDetailsScreen(
+          partner: partner!,
+        ));
       },
       child: Padding(
         padding: const EdgeInsets.all(0.0),
@@ -556,8 +580,8 @@ class PartnerWidget extends StatelessWidget {
                 height: 200,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(
-                        partner!.image??'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuCxMPJwglskH6j6jQhCmJGqIr9kR6_iMPng&usqp=CAU'),
+                    image: NetworkImage(partner!.image ??
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuCxMPJwglskH6j6jQhCmJGqIr9kR6_iMPng&usqp=CAU'),
                     fit: BoxFit.cover,
                   ),
                   borderRadius: BorderRadius.circular(15),
@@ -585,17 +609,30 @@ class PartnerWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                    CircleAvatar(
-                      radius: 15,
-                      child: Image.asset('assets/images/save_inactive.png'),
-                      backgroundColor: Colors.white,
+                    InkWell(
+                      onTap: (){
+                        Provider.of<HomeProvider>(context,listen: false).saveVendor(partner!);
+
+                      },
+                      child: Consumer<HomeProvider>(
+                        builder:(context, value, child) => CircleAvatar(
+                          radius: 15,
+                          child: value.isLoading?CircularProgressIndicator():Image.asset(
+                            value.savedVendors.any((element) => element.id==partner!.id)||partner!.isSaved
+                                ? 'assets/images/save_active.png'
+                                : 'assets/images/save_inactive.png',
+                          ),
+                          backgroundColor:
+                              Colors.white,
+                        ),
+                      ),
                     )
                   ],
                 ),
               ),
               SizedBox(height: 5),
               Text(
-                '${partner!.name??''}',
+                '${partner!.name ?? ''}',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,

@@ -117,6 +117,8 @@ class HomeProvider extends ChangeNotifier {
   List<Product> suggestedProducts = [];
   List<Product> shoppingProducts = [];
   List<Product> vendorProducts = [];
+  List<Product> savedProducts = [];
+  List<Partner> savedVendors = [];
   List<Commitment> commitments = [];
   List<Partner> vendors = [];
   List<Partner> partners = [];
@@ -188,6 +190,77 @@ class HomeProvider extends ChangeNotifier {
 
     isLoading = false;
 
+    notifyListeners();
+    return response0;
+  }
+
+
+
+
+  Future<Map<String, dynamic>> saveProduct(Product p) async {
+    isLoading = true;
+
+    //hotDealsProducts
+    //suggestedProducts
+    //vendorProducts
+    //savedProducts
+    //products
+    //shoppingProducts
+   /* hotDealsProducts.firstWhere((element) => element.id==p.id).isSaved=!hotDealsProducts.firstWhere((element) => element.id==p.id).isSaved;
+    suggestedProducts.firstWhere((element) => element.id==p.id).isSaved=!suggestedProducts.firstWhere((element) => element.id==p.id).isSaved;
+    vendorProducts.firstWhere((element) => element.id==p.id).isSaved=!vendorProducts.firstWhere((element) => element.id==p.id).isSaved;
+    savedProducts.firstWhere((element) => element.id==p.id).isSaved=!savedProducts.firstWhere((element) => element.id==p.id).isSaved;
+    shoppingProducts.firstWhere((element) => element.id==p.id).isSaved=!shoppingProducts.firstWhere((element) => element.id==p.id).isSaved;
+    products.firstWhere((element) => element.id==p.id).isSaved=!products.firstWhere((element) => element.id==p.id).isSaved;
+   */ notifyListeners();
+
+    final response0 = await sl<HomeRepository>().getSavedProducts();
+    savedProducts = response0['data'];
+
+
+    isLoading = false;
+    notifyListeners();
+    return response0;
+  }
+
+  Future<Map<String, dynamic>> saveVendor(Partner p) async {
+    isLoading = true;
+
+
+   /* vendors.firstWhere((element) => element.id==p.id).isSaved=!vendors.firstWhere((element) => element.id==p.id).isSaved;
+    savedVendors.firstWhere((element) => element.id==p.id).isSaved=!savedVendors.firstWhere((element) => element.id==p.id).isSaved;
+    */notifyListeners();
+
+    final response0 = await sl<HomeRepository>().getSavedVendors();
+    savedVendors = response0['data'];
+
+
+    isLoading = false;
+    notifyListeners();
+    return response0;
+  }
+
+
+  Future<Map<String, dynamic>> getSavedProducts() async {
+    isLoading = true;
+    notifyListeners();
+    final response0 = await sl<HomeRepository>().getSavedProducts();
+    savedProducts = response0['data'];
+
+
+    isLoading = false;
+    notifyListeners();
+    return response0;
+  }
+
+  Future<Map<String, dynamic>> getSavedVendors() async {
+    isLoading = true;
+    notifyListeners();
+    final response0 = await sl<HomeRepository>().getSavedVendors();
+    savedVendors = response0['data'];
+
+
+    isLoading = false;
     notifyListeners();
     return response0;
   }

@@ -201,7 +201,7 @@ class _HomeScreenState extends State<HomeScreen> {
                  child: ListView.builder(
                    scrollDirection: Axis.horizontal,
                    itemBuilder: (c,i){
-                     return ProductWidget(product: v.hotDealsProducts[i]);
+                     return ProductWidget(product: v.hotDealsProducts[i],);
                    },itemCount: v.hotDealsProducts.length,),
                ),
              ),
@@ -222,7 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
                  child: ListView.builder(
                    scrollDirection: Axis.horizontal,
                    itemBuilder: (c,i){
-                     return ProductWidget(product: v.suggestedProducts[i],);
+                     return ProductWidget(product: v.suggestedProducts[i]);
                    },itemCount: v.suggestedProducts.length,),
                ),
              )

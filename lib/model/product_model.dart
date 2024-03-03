@@ -8,6 +8,7 @@ class Product {
   late String? featuredImage;
   late List? gallery;
   int cartQuantity=0;
+  bool isSaved =false;
 
   late String? categoryId;
 

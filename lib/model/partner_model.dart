@@ -4,6 +4,7 @@ class Partner {
   late String? description;
   late String? image;
   bool isChecked = false;
+  bool isSaved = false;
 
   Partner({
     required this.id,

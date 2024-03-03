@@ -66,6 +66,79 @@ class HomeRepository {
   }
 
 
+
+  Future<Map<String, dynamic>> getSavedProducts() async {
+    try {
+      Response response = await sl<DioClient>().get(Url.PRODUCTS_URL,);
+
+      final parsedJson = response.data;
+      if (response.statusCode! < 400) {
+        List<Product> products = (parsedJson['data'] as List)
+            .map((json) => Product.fromJson(json as Map<String, dynamic>))
+            .toList();
+
+        return {'message': 'Products retrieved successfully', 'data': products..forEach((element) {element.isSaved=true;})};
+      }
+
+      return {'message': 'Not found','data':[] as List<Product>};
+    } catch (e) {
+      if (e is DioError) {
+        return {'message': e.message,'data':[] as List<Product>};
+      } else {
+        return {'message': 'Unknown error','data':[] as List<Product>};
+      }
+    }
+  }
+
+
+  Future<Map<String, dynamic>> saveProduct(Product product) async {
+    try {
+      Response response = await sl<DioClient>().get(Url.PRODUCTS_URL,);
+
+      final parsedJson = response.data;
+      if (response.statusCode! < 400) {
+        List<Product> products = (parsedJson['data'] as List)
+            .map((json) => Product.fromJson(json as Map<String, dynamic>))
+            .toList();
+
+        return {'message': 'Products retrieved successfully', 'data': products..forEach((element) {element.isSaved=true;})};
+      }
+
+      return {'message': 'Not found','data':[] as List<Product>};
+    } catch (e) {
+      if (e is DioError) {
+        return {'message': e.message,'data':[] as List<Product>};
+      } else {
+        return {'message': 'Unknown error','data':[] as List<Product>};
+      }
+    }
+  }
+
+
+  Future<Map<String, dynamic>> savePartner(Partner partner) async {
+    try {
+      Response response = await sl<DioClient>().get(Url.PRODUCTS_URL,);
+
+      final parsedJson = response.data;
+      if (response.statusCode! < 400) {
+        List<Product> products = (parsedJson['data'] as List)
+            .map((json) => Product.fromJson(json as Map<String, dynamic>))
+            .toList();
+
+        return {'message': 'Products retrieved successfully', 'data': products..forEach((element) {element.isSaved=true;})};
+      }
+
+      return {'message': 'Not found','data':[] as List<Product>};
+    } catch (e) {
+      if (e is DioError) {
+        return {'message': e.message,'data':[] as List<Product>};
+      } else {
+        return {'message': 'Unknown error','data':[] as List<Product>};
+      }
+    }
+  }
+
+
   Future<Map<String, dynamic>> getCommitments() async {
     try {
       Response response = await sl<DioClient>().get(Url.COMMIMENTS_URL,);
@@ -180,7 +253,28 @@ class HomeRepository {
     }
   }
 
-  Future<Map<String, dynamic>> getVendors() async {
+  Future<Map<String, dynamic>> getSavedVendors() async {
+    try {
+      Response response = await sl<DioClient>().get(Url.Vendorrs_URL);
+
+      final parsedJson = response.data;
+      if (response.statusCode! < 400) {
+        List<Partner> partners = (parsedJson['data'] as List)
+            .map((json) => Partner.fromJson(json))
+            .toList();
+
+        return {'message': 'Partners retrieved successfully', 'data': partners..forEach((element) {element.isSaved=true;})};
+      }
+
+      return {'message': 'Not found','data':[]};
+    } catch (e) {
+      if (e is DioError) {
+        return {'message': e.message,'data':[]};
+      } else {
+        return {'message': 'Unknown error','data':[]};
+      }
+    }
+  }  Future<Map<String, dynamic>> getVendors() async {
     try {
       Response response = await sl<DioClient>().get(Url.Vendorrs_URL);
 
