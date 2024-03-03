@@ -338,6 +338,7 @@ class MapSampleState extends State<MapSample> {
 
   _customMarker(String symbol, Color color) {
     return Stack(
+      alignment: Alignment.center,
       children: [
         Icon(
           Icons.location_pin,
@@ -345,19 +346,22 @@ class MapSampleState extends State<MapSample> {
           size: 100,
         ),
         Positioned(
-          left: 25,
-          top: 10,
+          top: 5,
+          height: 60,
+          width: 60,
+       //   left: 25,
+        //  top: 10,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(35),
             child: CachedNetworkImage(
 
                imageUrl: symbol,
-              width: 50,
-              height: 50,
+              width: 60,
+              height: 60,
 
               fit: BoxFit.cover,
               placeholder: (context, url) => Image.asset('assets/images/payback_logo.png',color: Colors.blue,),
-            
+
             ),
           ),
         )
