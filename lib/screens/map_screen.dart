@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:custom_map_markers/custom_map_markers.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -30,7 +32,9 @@ class MapSampleState extends State<MapSample> {
   @override
   void initState() {
     super.initState();
-    _addCustomMarkers();
+    WidgetsBinding.instance.addPostFrameCallback;
+
+    //_addCustomMarkers();
   }
 
   void _addCustomMarkers() async {
@@ -41,7 +45,7 @@ class MapSampleState extends State<MapSample> {
       Marker(
         markerId: MarkerId('marker1'),
         position: c,
-       // icon: BitmapDescriptor.fromBytes(logoBytes),
+        icon: BitmapDescriptor.fromBytes(logoBytes),
         onTap: () {
           showStoreSheet(context);
           },
@@ -259,7 +263,19 @@ class MapSampleState extends State<MapSample> {
   }
 
   List cats= ['All','Sports','Clothes','Clothes','Electronics'];
+  final locations = const [
+    LatLng(37.42796133580664, -122.085749655962),
+    LatLng(37.41796133580664, -122.085749655962),
+    LatLng(37.43796133580664, -122.085749655962),
+    LatLng(37.42796133580664, -122.095749655962),
+  ];
 
+  final images = [
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrD9evOAc2Bj-rUWZ5I79EiHHGVNy7Wp3L9w&usqp=CAU',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAJ5hZ3dCotAy4FRZQT7THh5uPbYjeyQHexQ&usqp=CAU',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1V3l9fyk4IDnrc0TewVmAPM2C-d2TlhiyZQ&usqp=CAU',
+    'https://static.vecteezy.com/system/resources/previews/017/396/814/non_2x/netflix-mobile-application-logo-free-png.png'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -284,13 +300,24 @@ class MapSampleState extends State<MapSample> {
           Get.to(PartnersScreen());
         }, icon: Icon(Icons.list,color: kPurpleColor,), label: Text('Show list',style: TextStyle(color: kPurpleColor),)),
       ),
-      body: GoogleMap(
-        markers: _markers,
-        mapType: MapType.normal,
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
+      body: CustomGoogleMapMarkerBuilder(
+        screenshotDelay: Duration(seconds: 4),
+        builder:(p0, markers) => markers==null? Center(child: CircularProgressIndicator()):GoogleMap(
+          markers: markers,
+          mapType: MapType.normal,
+            initialCameraPosition: const CameraPosition(
+              target: LatLng(37.42796133580664, -122.085749655962),
+              zoom: 14.4746,
+            ),
+          onMapCreated: (GoogleMapController controller) {
+            _controller.complete(controller);
+          },
+        ), customMarkers: List.generate(locations.length, (index) => MarkerData(
+          marker: Marker(  markerId:  MarkerId('${locations[index].latitude}'), position: locations[index],onTap: (){
+            showStoreSheet(context);
+
+          }),
+          child: _customMarker(images[index], Colors.black)))
       ),
       floatingActionButton: FloatingActionButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
@@ -306,5 +333,35 @@ class MapSampleState extends State<MapSample> {
   Future<void> _goToTheLake() async {
    // final GoogleMapController controller = await _controller.future;
    // await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+  }
+
+
+  _customMarker(String symbol, Color color) {
+    return Stack(
+      children: [
+        Icon(
+          Icons.add_location,
+          color: color,
+          size: 100,
+        ),
+        Positioned(
+          left: 25,
+          top: 10,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(30),
+            child: CachedNetworkImage(
+
+               imageUrl: symbol,
+              width: 50,
+              height: 50,
+
+              fit: BoxFit.cover,
+              placeholder: (context, url) => Image.asset('assets/images/payback_logo.png',color: Colors.blue,),
+            
+            ),
+          ),
+        )
+      ],
+    );
   }
 }

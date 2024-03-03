@@ -81,7 +81,7 @@ class RegisterScreen extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 5,),
-                    CustomTextField(hintText: 'Enter your password',obscureText: true,controller: passwordController,),
+                    CustomTextField(hintText: 'Enter your password',isPassword:true,obscureText: true,controller: passwordController,),
                     SizedBox(height: 20,),
                     Consumer<AuthProvider>(
                       builder:(context, value, child) => value.isLoading?CircularProgressIndicator(): Container(

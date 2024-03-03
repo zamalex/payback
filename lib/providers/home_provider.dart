@@ -199,24 +199,20 @@ class HomeProvider extends ChangeNotifier {
 
   Future<Map<String, dynamic>> saveProduct(Product p) async {
     isLoading = true;
-
-    //hotDealsProducts
-    //suggestedProducts
-    //vendorProducts
-    //savedProducts
-    //products
-    //shoppingProducts
-   /* hotDealsProducts.firstWhere((element) => element.id==p.id).isSaved=!hotDealsProducts.firstWhere((element) => element.id==p.id).isSaved;
-    suggestedProducts.firstWhere((element) => element.id==p.id).isSaved=!suggestedProducts.firstWhere((element) => element.id==p.id).isSaved;
-    vendorProducts.firstWhere((element) => element.id==p.id).isSaved=!vendorProducts.firstWhere((element) => element.id==p.id).isSaved;
-    savedProducts.firstWhere((element) => element.id==p.id).isSaved=!savedProducts.firstWhere((element) => element.id==p.id).isSaved;
-    shoppingProducts.firstWhere((element) => element.id==p.id).isSaved=!shoppingProducts.firstWhere((element) => element.id==p.id).isSaved;
-    products.firstWhere((element) => element.id==p.id).isSaved=!products.firstWhere((element) => element.id==p.id).isSaved;
-   */ notifyListeners();
+     notifyListeners();
 
     final response0 = await sl<HomeRepository>().getSavedProducts();
-    savedProducts = response0['data'];
+   // savedProducts = response0['data'];
 
+
+    //mock ////////
+    if(savedProducts.any((element) => p.id==element.id)){
+      savedProducts.removeWhere((element) => element.id==p.id);
+    }
+    else{
+      savedProducts.add(p);
+    }
+////////////////////////
 
     isLoading = false;
     notifyListeners();
@@ -227,13 +223,20 @@ class HomeProvider extends ChangeNotifier {
     isLoading = true;
 
 
-   /* vendors.firstWhere((element) => element.id==p.id).isSaved=!vendors.firstWhere((element) => element.id==p.id).isSaved;
-    savedVendors.firstWhere((element) => element.id==p.id).isSaved=!savedVendors.firstWhere((element) => element.id==p.id).isSaved;
-    */notifyListeners();
+   notifyListeners();
 
     final response0 = await sl<HomeRepository>().getSavedVendors();
-    savedVendors = response0['data'];
+    //savedVendors = response0['data'];
 
+
+    //mock
+    if(savedVendors.any((element) => p.id==element.id)){
+      savedVendors.removeWhere((element) => element.id==p.id);
+    }
+    else{
+      savedVendors.add(p);
+    }
+/////////////////////////
 
     isLoading = false;
     notifyListeners();

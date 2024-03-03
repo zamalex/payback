@@ -139,6 +139,7 @@ class LoginScreen extends StatelessWidget {
                       hintText: 'Enter your password',
                       obscureText: true,
                       isPassword: true,
+
                       controller: passwordController,
                     ),
                     SizedBox(
