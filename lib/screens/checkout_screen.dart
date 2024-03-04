@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:payback/helpers/colors.dart';
@@ -36,12 +38,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   submitOrder(){
+    Map<String,dynamic> request = {};
+    List<Map<String,dynamic>> ordersArray=[];
+
     bool allowed = true;
     if(!_formKey.currentState!.validate()){
       return;
     }
+    _formKey.currentState!.save();
+    request.putIfAbsent('receiver_name', () => receiverName);
+    request.putIfAbsent('receiver_phone', () => receiverPhone);
 
     List<CheckoutObject> ordersList = Provider.of<CheckoutProvider>(context,listen: false).checkouts;
+    CheckoutProvider provider = Provider.of<CheckoutProvider>(context,listen: false);
 
     ordersList.forEach((order) {
       if(order.selectedPickup==0){
@@ -59,8 +68,36 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
     });
 
-    if(allowed)
-    Get.to(PaymentSuccessScreen());
+    if(allowed) {
+      ordersList.forEach((order) {
+        Map<String,dynamic> map = {};
+
+        map.putIfAbsent('shipping', () => provider.shippings[order.selectedDelivery].name);
+
+        if(order.selectedPickup==0){
+          order.selfFormKey.currentState!.save();
+          map.putIfAbsent('pickup', () => 'self');
+          map.putIfAbsent('office_address', () => order.officeAddress);
+        }else{
+          order.courierFormKey.currentState!.save();
+
+          map.putIfAbsent('pickup', () => 'courier');
+          map.putIfAbsent('city', () => order.city);
+          map.putIfAbsent('street', () => order.street);
+          map.putIfAbsent('building', () => order.building);
+          map.putIfAbsent('apartment', () => order.apartment);
+          map.putIfAbsent('comments', () => order.comments);
+
+        }
+
+        ordersArray.add(map);
+      });
+      request.putIfAbsent('orders', () => ordersArray);
+
+      print('request:${jsonEncode(request).toString()}');
+
+      Get.to(PaymentSuccessScreen());
+    }
     else{
       Get.snackbar('Alert', 'You must fill all required data to proceed',colorText: Colors.white,backgroundColor: Colors.red);
     }
