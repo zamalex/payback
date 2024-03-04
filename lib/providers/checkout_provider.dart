@@ -1,5 +1,6 @@
 
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:payback/data/preferences.dart';
 import 'package:payback/data/repository/checkout_repo.dart';
 import 'package:payback/model/product_model.dart';
@@ -34,8 +35,10 @@ class CheckoutProvider extends ChangeNotifier{
   List<Product> cart = [];
   List<ShippingMethod> shippings = [];
 
-  readCart()async{
+  readCart(List<Product>pros)async{
     cart = await sl<PreferenceUtils>().readCart();
+    syncCartProducts(pros);
+
     groupProductsByVendor();
   }
 
@@ -74,6 +77,20 @@ class CheckoutProvider extends ChangeNotifier{
 
     notifyListeners();
     return response;
+  }
+
+  syncCartProducts(List<Product> prods){
+    cart.forEach((c) {
+      Product? p = prods.firstWhereOrNull((element) => c.id==element.id,);
+
+      if(p!=null){
+        c=p..cartQuantity=c.cartQuantity;
+      }
+      else{
+        cart.removeWhere((element) => element.id==c.id);
+      }
+    });
+
   }
 
 }

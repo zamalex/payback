@@ -6,6 +6,7 @@ import 'package:payback/data/http/urls.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/helpers/custom_widgets.dart';
 import 'package:payback/providers/checkout_provider.dart';
+import 'package:payback/providers/home_provider.dart';
 import 'package:payback/screens/checkout_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -26,9 +27,15 @@ class _CartScreenState extends State<CartScreen> {
     // TODO: implement initState
     super.initState();
 
-    Future.delayed(Duration.zero).then((value){
-      Provider.of<CheckoutProvider>(context,listen: false).readCart();
-    });
+
+      Future.delayed(Duration.zero).then((value){
+        Provider.of<HomeProvider>(context,listen: false).getProducts().then((value){
+          Provider.of<CheckoutProvider>(context,listen: false).readCart(Provider.of<HomeProvider>(context,listen: false).products);
+
+        });
+      });
+
+
   }
 
   @override
