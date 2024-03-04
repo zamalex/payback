@@ -25,8 +25,8 @@ class _SavedScreenState extends State<SavedScreen> {
     super.initState();
 
     Future.delayed(Duration.zero).then((value){
-      Provider.of<HomeProvider>(context,listen: false).getSavedProducts();
-      Provider.of<HomeProvider>(context,listen: false).getSavedVendors();
+     // Provider.of<HomeProvider>(context,listen: false).getSavedProducts();
+    //  Provider.of<HomeProvider>(context,listen: false).getSavedVendors();
     });
   }
   @override
