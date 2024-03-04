@@ -40,6 +40,11 @@ class MapSampleState extends State<MapSample> {
       Provider.of<HomeProvider>(context,listen: false).getVendors();
     });
 
+
+    Future.delayed(Duration(seconds: 3)).then((value){
+      buildDone=true;
+    });
+
     //_addCustomMarkers();
   }
 
@@ -283,6 +288,7 @@ class MapSampleState extends State<MapSample> {
     'https://static.vecteezy.com/system/resources/previews/017/396/814/non_2x/netflix-mobile-application-logo-free-png.png'
   ];
 
+  bool buildDone = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -307,25 +313,28 @@ class MapSampleState extends State<MapSample> {
         }, icon: Icon(Icons.list,color: kPurpleColor,), label: Text('Show list',style: TextStyle(color: kPurpleColor),)),
       ),
       body: Consumer<HomeProvider>(
-        builder:(context, value, child) => CustomGoogleMapMarkerBuilder(
-          screenshotDelay: Duration(seconds: 3),
-          builder:(p0, markers) => markers==null? Center(child: CircularProgressIndicator()):GoogleMap(
-            markers: markers,
-            mapType: MapType.normal,
-              initialCameraPosition: const CameraPosition(
-                target: LatLng(37.42796133580664, -122.085749655962),
-                zoom: 14.4746,
-              ),
-            onMapCreated: (GoogleMapController controller) {
-              _controller.complete(controller);
-            },
-          ), customMarkers: List.generate(value.vendors.length, (index) => MarkerData(
-            marker: Marker(  markerId:  MarkerId('${locations[index].latitude}'), position: index>value.vendors.length-1?locations[0]:locations[index],onTap: (){
-              showStoreSheet(context);
+        builder:(context, value, child){
+          return CustomGoogleMapMarkerBuilder(
+              screenshotDelay: Duration(seconds: buildDone?0:3),
+              builder:(p0, markers) => markers==null? Center(child: CircularProgressIndicator()):GoogleMap(
+                markers: markers,
+                mapType: MapType.normal,
+                initialCameraPosition: const CameraPosition(
+                  target: LatLng(37.42796133580664, -122.085749655962),
+                  zoom: 14.4746,
+                ),
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
 
-            }),
-            child: _customMarker(value.vendors[index].image??images[index], Colors.white)))
-        ),
+                },
+              ), customMarkers: List.generate(value.vendors.length, (index) => MarkerData(
+              marker: Marker(  markerId:  MarkerId('${locations[index].latitude}'), position: index>value.vendors.length-1?locations[0]:locations[index],onTap: (){
+                showStoreSheet(context);
+
+              }),
+              child: _customMarker(value.vendors[index].image??images[index], Colors.white)))
+          );
+        }
       ),
       floatingActionButton: FloatingActionButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),

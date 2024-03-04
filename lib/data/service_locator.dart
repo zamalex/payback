@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:payback/data/repository/auth_repo.dart';
+import 'package:payback/data/repository/checkout_repo.dart';
 import 'package:payback/data/repository/commitments_repo.dart';
 import 'package:payback/data/repository/home_repo.dart';
 
@@ -28,5 +29,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => AuthRepository());
   sl.registerLazySingleton(() => HomeRepository());
   sl.registerLazySingleton(() => CommitmentsRepository());
+  sl.registerLazySingleton(() => CheckoutRepository());
 
 }

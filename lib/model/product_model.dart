@@ -34,7 +34,7 @@ class Product {
       price: json['price'],
       featuredImage: json['featured_image'],
       gallery: json['gallery'],
-      vendor_id: int.parse(json['vendor_id']??'0'),
+      vendor_id: int.parse(json['vendor_id']==null?'0':json['vendor_id'].toString()),
       cartQuantity: json['cartQuantity']??0,
 
       categoryId: json['category_id'],

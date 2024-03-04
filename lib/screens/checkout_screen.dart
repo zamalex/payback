@@ -8,10 +8,29 @@ import 'package:payback/screens/checkout_object.dart';
 import 'package:payback/screens/payment_success_screen.dart';
 import 'package:provider/provider.dart';
 
-class CheckoutScreen extends StatelessWidget {
+class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
 
+  @override
+  State<CheckoutScreen> createState() => _CheckoutScreenState();
+}
 
+class _CheckoutScreenState extends State<CheckoutScreen> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(Duration.zero).then((value) {
+      getShippings();
+    });
+
+  }
+
+
+  getShippings(){
+    Provider.of<CheckoutProvider>(context,listen: false).getShippingMethods();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +49,6 @@ class CheckoutScreen extends StatelessWidget {
       ),),
       body: Consumer<CheckoutProvider>(
         builder:(context, value, child){
-          Provider.of<CheckoutProvider>(context,listen: false).checkouts.forEach((element) {
-            element.products = Provider.of<CheckoutProvider>(context,listen: false).cart;
-
-          });
 
           return SafeArea(child: Column(
             children: [Expanded(child: Container(
@@ -125,13 +140,13 @@ class CheckoutItem extends StatelessWidget {
         Column(children:         List.generate(checkoutObject.products.length, (index) => CartItem(product: checkoutObject.products[index]),)
           ,),
         SizedBox(height: 15,),
-        Text('Delivery method',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+        Text('Delivery method',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,)),
 
         SizedBox(height: 15,),
 
         SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: Row(children: List.generate(4, (index) => DeliveryMethod(myIndex: index, selectedIndex: checkoutObject.selectedDelivery, txt: 'Method ${index+1}', onTap: (){
+            child: Row(children: List.generate( Provider.of<CheckoutProvider>(context).shippings.length, (index) => DeliveryMethod(myIndex: index, selectedIndex: checkoutObject.selectedDelivery, txt:Provider.of<CheckoutProvider>(context).shippings[index].name??'',img: Provider.of<CheckoutProvider>(context).shippings[index].logo??'', onTap: (){
               Provider.of<CheckoutProvider>(context,listen: false).updateDelivery(orderIndex, index);
             })),)),
 
@@ -217,11 +232,12 @@ class CheckoutItem extends StatelessWidget {
 
 
 class DeliveryMethod extends StatelessWidget {
-  DeliveryMethod({super.key, required this.myIndex,required this.selectedIndex,required this.txt,required this.onTap});
+  DeliveryMethod({super.key,required this.img, required this.myIndex,required this.selectedIndex,required this.txt,required this.onTap});
   Function onTap;
   int myIndex;
   int selectedIndex;
   String txt;
+  String img;
 
   @override
   Widget build(BuildContext context) {
@@ -240,10 +256,10 @@ class DeliveryMethod extends StatelessWidget {
                 margin: EdgeInsets.only(top: 10),
                 child: Column(
                   children: [
-                    Image.network('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPdRZh8TJiJxxdkvyg61IBHGiVQgQZhm62YXJb_YPeRQ&s',width: 60,height: 20,),
+                    Image.network(img,width: 60,height: 20,),
                     Container(
                         margin: EdgeInsets.all(10),
-                        child: Text(txt,textAlign: TextAlign.center,style: TextStyle(color: myIndex==selectedIndex?kBlueColor:Colors.grey),))
+                        child: Text(txt,textAlign: TextAlign.center,style: TextStyle(color: myIndex==selectedIndex?kBlueColor:Colors.grey,overflow: TextOverflow.ellipsis),maxLines: 1,))
                   ],
                 ),
               ),
