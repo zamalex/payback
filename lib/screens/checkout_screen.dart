@@ -159,7 +159,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
                   Text('Receiver phone number'),
                   SizedBox(height: 5,),
-                  CustomTextField(hintText: 'Receiver phone number or pre-filled',onSaved: (s){receiverPhone=s;},),
+                  CustomTextField(hintText: 'Receiver phone number or pre-filled',onSaved: (s){receiverPhone=s;},type: TextInputType.phone,),
                   SizedBox(height: 20,),
                   Column(
                     children: List.generate(value.checkouts.length, (index) => CheckoutItem(checkoutObject: value.checkouts[index],orderIndex: index,)),
