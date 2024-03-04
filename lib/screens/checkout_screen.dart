@@ -55,13 +55,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     ordersList.forEach((order) {
       if(order.selectedPickup==0){
         if(!order.selfFormKey.currentState!.validate()){
-          print('enter full self');
-
           allowed = false;
         }
       }else{
         if(!order.courierFormKey.currentState!.validate()){
-          print('enter full courier');
           allowed = false;
         }
       }
