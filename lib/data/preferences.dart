@@ -113,6 +113,27 @@ class PreferenceUtils{
 
     await sharedPreferences!.setString('user',jsonEncode(loginModel.toJson()));
   }
+
+  saveNotification()async{
+    if(sharedPreferences==null)
+      await initPrefs();
+
+
+
+    await sharedPreferences!.setString('notification','You have new notification');
+  }
+   Future<String?> readNotification()async{
+     if(sharedPreferences==null)
+       await initPrefs();
+
+     String? s = sharedPreferences!.getString('notification');
+
+     if(s==null)
+       return null;
+
+
+     return s;
+   }
   
   Future<AuthResponse?> readUser()async{
     if(sharedPreferences==null)

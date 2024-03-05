@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payback/helpers/colors.dart';
@@ -46,13 +47,58 @@ import 'data/preferences.dart';
 import 'data/service_locator.dart';
 import 'providers/auth_provider.dart';
 import 'screens/edit_name_screen.dart';
+void _configureFCMListeners() {
 
+
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    // Handle incoming data message when the app is in the foreground
+
+    print("foreground Data message received: ${message.data}");
+    // Extract data and perform custom actions
+  });
+
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    // Handle incoming data message when the app is in the background or terminated
+    print("background Data message opened: ${message.data}");
+
+    // Extract data and perform custom actions
+  });
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+
+}
+
+void _initializeFCM() {
+  FirebaseMessaging.instance.requestPermission();
+  FirebaseMessaging.instance.getToken().then((token) {
+    print("FCM Token: $token");
+    // Store the token on your server for sending targeted messages
+  });
+}
+
+bool hasNotification = false;
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("Handling a background message: ${message.data.toString()}");
+
+  /*init();
+
+  sl<PreferenceUtils>().saveNotification();*/
+}
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
   );
+  await FirebaseMessaging.instance.setAutoInitEnabled(true);
+  _initializeFCM();
 
   await init();
+
+  //sl<PreferenceUtils>().readNotification().then((value) => print('notifications main app is ${value}'));
+
+  _configureFCMListeners();
+
 
   AuthResponse? loginModel = await sl<PreferenceUtils>().readUser();
 
@@ -93,6 +139,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
