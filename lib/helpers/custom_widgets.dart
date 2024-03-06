@@ -299,7 +299,7 @@ class Commitment extends StatelessWidget {
       commitment = com.Commitment.fromJson(jsonDecode(Url.COMMITMENT_JSON));
     return InkWell(
       onTap: () {
-        Get.to(CommitmetDetails());
+        Get.to(CommitmetDetails(commitment: commitment!,));
       },
       child: Container(
         margin: EdgeInsets.all(0),

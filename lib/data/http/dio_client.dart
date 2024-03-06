@@ -118,6 +118,40 @@ class DioClient {
     }
   }
 
+
+
+  Future<Response> put(
+    String uri, {
+    data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    dio!.options.headers['Content-Type'] = 'application/json; charset=UTF-8';
+    dio!.options.headers['Accept'] = 'application/json';
+    dio!.options.headers['Authorization'] = 'Bearer ${Url.TOKEN}';
+    dio!.options.headers['Accept-Language'] = '${Url.LOCALE}';
+
+    try {
+      var response = await dio!.put(
+        uri,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onSendProgress: onSendProgress,
+        onReceiveProgress: onReceiveProgress,
+      );
+      return response;
+    } on FormatException catch (_) {
+      throw FormatException("Unable to process the data");
+    } catch (e) {
+      throw e;
+    }
+  }
+
   Future<Response> delete(
     String uri, {
     data,

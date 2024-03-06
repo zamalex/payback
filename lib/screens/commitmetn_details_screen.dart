@@ -1,15 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:payback/model/auth_response.dart';
+import 'package:payback/providers/CommitmentsProvider.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../data/service_locator.dart';
 import '../helpers/colors.dart';
 import '../helpers/custom_widgets.dart';
 import 'contributer_screen.dart';
+import 'package:payback/model/commitment_model.dart' as model;
 
 
 class CommitmetDetails extends StatelessWidget {
-  CommitmetDetails({super.key});
+  CommitmetDetails({super.key,required this.commitment});
+
+  model.Commitment commitment;
+
+
+
+
+  shareCommitment(BuildContext context){
+
+    int user = sl<AuthResponse>().data!.user!.id!;
+
+    Provider.of<CommitmentsProvider>(context,listen: false).sendInvitation({
+      'commitment_id':commitment.id,
+      'user_id':user
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

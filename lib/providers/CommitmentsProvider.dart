@@ -51,12 +51,26 @@ class CommitmentsProvider extends ChangeNotifier{
     return response;
   }
 
-  Future<Map<String, dynamic>> acceptRejectInvitation(Map<String,dynamic> body) async {
+  Future<Map<String, dynamic>> acceptRejectInvitation(Map<String,dynamic> body,int id) async {
    isLoading = true;
    notifyListeners();
 
     final response = await sl<CommitmentsRepository>()
-        .acceptRejectInvitation(body);
+        .acceptRejectInvitation(body,id);
+
+
+   isLoading = false;
+   notifyListeners();
+    return response;
+  }
+
+
+  Future<Map<String, dynamic>> sendInvitation(Map<String,dynamic> body) async {
+   isLoading = true;
+   notifyListeners();
+
+    final response = await sl<CommitmentsRepository>()
+        .sendInvitation(body);
 
 
    isLoading = false;

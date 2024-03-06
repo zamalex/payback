@@ -56,10 +56,33 @@ class CommitmentsRepository{
   }
 
 
-  Future acceptRejectInvitation(Map<String, dynamic> body) async {
+  Future acceptRejectInvitation(Map<String, dynamic> body,int id) async {
     try {
       Response response =
-      await sl<DioClient>().post(Url.CREATE_COMMIMENTS_URL, data: jsonEncode(body));
+      await sl<DioClient>().put('${Url.SHARE_INVITATION_URL}/$id', data: jsonEncode(body));
+
+      final parsedJson = response.data;
+      if (response.statusCode! < 400) {
+        return {'message': 'Done', 'data': true};
+      }
+
+      return {'message': 'Error', 'data': false};
+    } catch (e) {
+      if (e is DioError) {
+        return {'message':  DioErrorHelper.handleError(e), 'data': false};
+
+
+      } else {
+        return {'message': 'unknown error', 'data': false};
+      }
+    }
+  }
+
+
+  Future sendInvitation(Map<String, dynamic> body) async {
+    try {
+      Response response =
+      await sl<DioClient>().post(Url.SHARE_INVITATION_URL, data: jsonEncode(body));
 
       final parsedJson = response.data;
       if (response.statusCode! < 400) {
@@ -81,7 +104,7 @@ class CommitmentsRepository{
 
   Future<Map<String, dynamic>> getInvitationDetails(int id) async {
     try {
-      Response response = await sl<DioClient>().get(Url.COMMIMENTS_CATEGORIES_URL,queryParameters: {'id':id});
+      Response response = await sl<DioClient>().get('${Url.SHARE_INVITATION_URL}/$id',);
 
       final parsedJson = response.data;
       if (response.statusCode! < 400) {

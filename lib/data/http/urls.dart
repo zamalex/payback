@@ -18,6 +18,7 @@ class Url {
   static const COMMIMENTS_URL = '/admin/commitments';
   static const SORT_COMMIMENTS_URL = '/admin/commitments/sort';
   static const CREATE_COMMIMENTS_URL = '/admin/commitments/create';
+  static const SHARE_INVITATION_URL = '/admin/share-commitments';
   static const COMMIMENTS_CATEGORIES_URL = '/admin/commitment-categories';
   static const ONBOARDING_URL = '/admin/screens';
   static const DELIVERY_URL = '/admin/delivery-methods';

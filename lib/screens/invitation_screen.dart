@@ -45,6 +45,16 @@ class _InvitationScreenState extends State<InvitationScreen> {
     }
   }
 
+  acceptRejectInvitation(int decision){
+
+    Provider.of<CommitmentsProvider>(context,listen: false).acceptRejectInvitation({
+      'amount':decision==0?0:50,
+      'status':decision
+    },id).then((value){
+      Get.snackbar('Alert', value['message'],backgroundColor: Colors.red,colorText: Colors.white);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -166,7 +176,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
                       Expanded(
                           child: CustomButton(
                             onTap: (){
-                              Provider.of<CommitmentsProvider>(context,listen: false).acceptRejectInvitation({});
+                            acceptRejectInvitation(0);
 
                             },
                               buttonText: 'Decline', buttonColor: Colors.red)),
@@ -176,8 +186,8 @@ class _InvitationScreenState extends State<InvitationScreen> {
                       Expanded(
                           child: CustomButton(
                             onTap: (){
-                              Provider.of<CommitmentsProvider>(context,listen: false).acceptRejectInvitation({});
-                            },
+                              acceptRejectInvitation(1);
+                                                          },
                               buttonText: 'Accept & Share',
                               buttonColor: kPurpleColor)),
                     ],
