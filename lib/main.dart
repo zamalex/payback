@@ -12,6 +12,7 @@ import 'package:payback/model/auth_response.dart';
 import 'package:payback/providers/CommitmentsProvider.dart';
 import 'package:payback/providers/checkout_provider.dart';
 import 'package:payback/providers/home_provider.dart';
+import 'package:payback/screens/invitation_screen.dart';
 
 
 import 'package:payback/screens/splash.dart';
@@ -67,8 +68,14 @@ void _incomingLinkHandler() {
 
       debugPrint('Received URI: $uri');
 
-      if(uri!=null)
+      if(uri!=null) {
         sl<PreferenceUtils>().saveInvitation(uri.toString());
+        if (sl.isRegistered<AuthResponse>()) {
+          Get.to(InvitationScreen());
+        }
+      }
+
+
 
 
 
