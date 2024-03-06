@@ -275,7 +275,7 @@ class CommitmetDetails extends StatelessWidget {
                           ),
                           SizedBox(height: 20,),
                           Container(width:double.infinity,child: CustomButton(buttonText: 'Share commitment', buttonColor: kBlueColor,onTap: (){
-                            Share.share('check out my website https://payback.example.com?id=11');
+                            Share.share('check out my invitation to share my commitment https://payback.example.com?id=11');
                           },)),
                           SizedBox(height: 20,),
                           Text('Commitment contributors',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
