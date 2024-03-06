@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/model/auth_response.dart';
@@ -23,6 +27,7 @@ import 'package:payback/screens/help_community_screen.dart';
 import 'package:payback/screens/help_details_screen.dart';
 import 'package:payback/screens/history_screen.dart';
 import 'package:payback/screens/home_screen.dart';
+import 'package:payback/screens/invitation_screen.dart';
 import 'package:payback/screens/login.dart';
 import 'package:payback/screens/main_screen.dart';
 import 'package:payback/screens/my_orders_screen.dart';
@@ -41,15 +46,72 @@ import 'package:payback/screens/splash.dart';
 import 'package:payback/screens/subscription_screen.dart';
 
 import 'package:provider/provider.dart';
+import 'package:uni_links/uni_links.dart';
 
 import 'data/http/urls.dart';
 import 'data/preferences.dart';
 import 'data/service_locator.dart';
 import 'providers/auth_provider.dart';
 import 'screens/edit_name_screen.dart';
+
+
+bool _initialURILinkHandled = false;
+
+bool hasInvitation = false;
+
+StreamSubscription? _streamSubscription;
+
+Future<void> _initURIHandler() async {
+  // 1
+  if (!_initialURILinkHandled) {
+    _initialURILinkHandled = true;
+    // 2
+
+    try {
+      // 3
+      final initialURI = await getInitialUri();
+      // 4
+      if (initialURI != null) {
+        debugPrint("Initial URI received $initialURI with id ${initialURI.queryParameters.toString()}");
+
+        sl<PreferenceUtils>().saveInvitation(initialURI.toString());
+
+
+
+      } else {
+        debugPrint("Null Initial URI received");
+      }
+    } on PlatformException { // 5
+      debugPrint("Failed to receive initial uri");
+    } on FormatException catch (err) { // 6
+
+    }
+  }
+}
+
+void _incomingLinkHandler() {
+  // 1
+  if (!kIsWeb) {
+    // 2
+    _streamSubscription = uriLinkStream.listen((Uri? uri) {
+
+      debugPrint('Received URI: $uri');
+
+      if(uri!=null)
+        sl<PreferenceUtils>().saveInvitation(uri.toString());
+
+
+
+      // 3
+    }, onError: (Object err) {
+
+      debugPrint('Error occurred: $err');
+
+    });
+  }
+}
+
 void _configureFCMListeners() {
-
-
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     // Handle incoming data message when the app is in the foreground
 
@@ -133,10 +195,25 @@ void main() async {
   );
 }
 //AIzaSyAm_ZEJZ58IDAn9IjtGr3a9Y0UKKjOcWI0
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _initURIHandler();
+    _incomingLinkHandler();
+  }
+
   @override
   Widget build(BuildContext context) {
 

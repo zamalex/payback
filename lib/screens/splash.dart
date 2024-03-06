@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payback/data/preferences.dart';
 import 'package:payback/model/auth_response.dart';
 import 'package:payback/model/onboarding_response.dart';
 import 'package:payback/providers/home_provider.dart';
+import 'package:payback/screens/invitation_screen.dart';
 import 'package:payback/screens/login.dart';
 import 'package:payback/screens/main_screen.dart';
 import 'package:payback/screens/onboarding.dart';
@@ -17,35 +19,36 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
-
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    Future.delayed(Duration(seconds: 1)).then((value){
-        Provider.of<HomeProvider>(context,listen: false).getOnBoarding().then((value){
-          if(sl.isRegistered<AuthResponse>()){
-            Get.to(MainScreen());
+    Future.delayed(Duration(seconds: 1)).then((value) {
+      Provider.of<HomeProvider>(context, listen: false)
+          .getOnBoarding()
+          .then((value) {
+        if (sl.isRegistered<AuthResponse>()) {
+          sl<PreferenceUtils>().readInvitation().then((value) {
+            value == null ? Get.to(MainScreen()) : Get.to(InvitationScreen());
+          });
 
-            return;
-          }
+          return;
+        }
 
-          if(value['data']==null){
+        if (value['data'] == null) {
+          Get.to(LoginScreen());
+        } else {
+          if ((value['data'] as List).isEmpty) {
             Get.to(LoginScreen());
-          }else{
-            if((value['data'] as List).isEmpty){
-              Get.to(LoginScreen());
-            }
-            else{
-              Get.to(WelcomeScreen());
-            }
+          } else {
+            Get.to(WelcomeScreen());
           }
-        });
+        }
+      });
     });
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(

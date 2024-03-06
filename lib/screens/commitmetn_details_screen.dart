@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../helpers/colors.dart';
 import '../helpers/custom_widgets.dart';
@@ -273,7 +274,9 @@ class CommitmetDetails extends StatelessWidget {
                             ),
                           ),
                           SizedBox(height: 20,),
-                          Container(width:double.infinity,child: CustomButton(buttonText: 'Share commitment', buttonColor: kBlueColor)),
+                          Container(width:double.infinity,child: CustomButton(buttonText: 'Share commitment', buttonColor: kBlueColor,onTap: (){
+                            Share.share('check out my website https://payback.example.com?id=11');
+                          },)),
                           SizedBox(height: 20,),
                           Text('Commitment contributors',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
                           SizedBox(height: 20,),

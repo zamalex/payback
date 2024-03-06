@@ -134,6 +134,34 @@ class PreferenceUtils{
 
      return s;
    }
+
+
+
+   saveInvitation(String invitation)async{
+    if(sharedPreferences==null)
+      await initPrefs();
+
+
+
+    await sharedPreferences!.setString('invitation',invitation);
+  }
+   Future<String?> readInvitation()async{
+     if(sharedPreferences==null)
+       await initPrefs();
+
+     String? s = sharedPreferences!.getString('invitation');
+
+
+     return s;
+   }
+
+   Future deleteInvitation()async{
+     if(sharedPreferences==null)
+       await initPrefs();
+
+      sharedPreferences!.remove('invitation');
+
+   }
   
   Future<AuthResponse?> readUser()async{
     if(sharedPreferences==null)

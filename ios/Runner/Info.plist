@@ -40,6 +40,16 @@
             <string>com.googleusercontent.apps.772501374258-5qfspjfrcl851j91d8aom7o5l0ki2k97</string>
         </array>
     </dict>
+     <dict>
+          <key>CFBundleTypeRole</key>
+          <string>Editor</string>
+          <key>CFBundleURLName</key>
+          <string>payback.example.com</string>
+          <key>CFBundleURLSchemes</key>
+          <array>
+            <string>https</string>
+          </array>
+        </dict>
 </array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
