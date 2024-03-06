@@ -184,6 +184,28 @@ class AuthRepository {
 
 
 
+  Future<bool> sendFCMToken(Map<String, String> body) async {
+    try {
+      Response response =
+      await sl<DioClient>().post(Url.SEND_FCM_TOKEN_URL, data: jsonEncode(body));
+
+      if (response.statusCode! < 400) {
+        return true;
+      }
+
+      return false;
+    } catch (e) {
+      if (e is DioError) {
+
+        return false;        //return {'message':e.message};
+      } else {
+        return false;
+      }
+    }
+  }
+
+
+
   Future<Map> getNotifications() async {
     try {
       Response response =

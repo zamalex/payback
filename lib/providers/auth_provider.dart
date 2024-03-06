@@ -27,6 +27,20 @@ class AuthProvider extends ChangeNotifier{
   }
 
 
+
+  Future<bool> sendFCMToken(Map<String,String> body)async{
+
+
+    bool response= await sl<AuthRepository>().sendFCMToken(body);
+
+
+
+    return response;
+  }
+
+
+
+
   Future<Map> getNotifications()async{
     isLoading = true;
     notifyListeners();

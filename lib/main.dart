@@ -6,44 +6,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:payback/data/repository/auth_repo.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/model/auth_response.dart';
 import 'package:payback/providers/CommitmentsProvider.dart';
 import 'package:payback/providers/checkout_provider.dart';
 import 'package:payback/providers/home_provider.dart';
-import 'package:payback/screens/checkout_screen.dart';
-import 'package:payback/screens/commitment_category_received.dart';
-import 'package:payback/screens/commitment_category_spent_screen.dart';
-import 'package:payback/screens/commitments_details_another_screen.dart';
-import 'package:payback/screens/commitments_screen.dart';
-import 'package:payback/screens/commitmetn_details_screen.dart';
-import 'package:payback/screens/contributer_screen.dart';
-import 'package:payback/screens/edit_address_screen.dart';
-import 'package:payback/screens/edit_email_screen.dart';
-import 'package:payback/screens/edit_password_screen.dart';
-import 'package:payback/screens/email.dart';
-import 'package:payback/screens/filter_products.dart';
-import 'package:payback/screens/help_community_screen.dart';
-import 'package:payback/screens/help_details_screen.dart';
-import 'package:payback/screens/history_screen.dart';
-import 'package:payback/screens/home_screen.dart';
-import 'package:payback/screens/invitation_screen.dart';
-import 'package:payback/screens/login.dart';
-import 'package:payback/screens/main_screen.dart';
-import 'package:payback/screens/my_orders_screen.dart';
-import 'package:payback/screens/my_profile_screen.dart';
-import 'package:payback/screens/new_commitment_screen.dart';
-import 'package:payback/screens/notifications_screen.dart';
-import 'package:payback/screens/notifications_settings_screen.dart';
-import 'package:payback/screens/order_details_screen.dart';
-import 'package:payback/screens/partner_details_screen.dart';
-import 'package:payback/screens/partner_info_screen.dart';
-import 'package:payback/screens/partners_screen.dart';
-import 'package:payback/screens/phonenumber.dart';
-import 'package:payback/screens/product_details_screen.dart';
+
 
 import 'package:payback/screens/splash.dart';
-import 'package:payback/screens/subscription_screen.dart';
 
 import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
@@ -52,7 +23,6 @@ import 'data/http/urls.dart';
 import 'data/preferences.dart';
 import 'data/service_locator.dart';
 import 'providers/auth_provider.dart';
-import 'screens/edit_name_screen.dart';
 
 
 bool _initialURILinkHandled = false;
@@ -135,6 +105,16 @@ void _initializeFCM() {
   FirebaseMessaging.instance.requestPermission();
   FirebaseMessaging.instance.getToken().then((token) {
     print("FCM Token: $token");
+
+
+    Future.delayed(Duration.zero).then((value){
+      if(sl.isRegistered<AuthResponse>()&&sl.isRegistered<AuthRepository>()){
+        if(token!=null){
+          sl<AuthRepository>().sendFCMToken({'token':token});
+
+        }
+      }
+    });
     // Store the token on your server for sending targeted messages
   });
 }
@@ -167,6 +147,7 @@ void main() async {
   if (loginModel != null) {
     sl.registerSingleton(loginModel);
     Url.TOKEN = loginModel.data!.token!;
+
 
   }
 
@@ -212,6 +193,7 @@ class _MyAppState extends State<MyApp> {
 
     _initURIHandler();
     _incomingLinkHandler();
+
   }
 
   @override
