@@ -47,14 +47,17 @@ class _InvitationScreenState extends State<InvitationScreen> {
 
   acceptRejectInvitation(int decision){
 
+    FocusScope.of(context).requestFocus(FocusNode());
     Provider.of<CommitmentsProvider>(context,listen: false).acceptRejectInvitation({
-      'amount':decision==0?0:50,
+      'amount':decision==0?0:int.parse(controller.text.replaceAll('%','')),
       'status':decision
     },id).then((value){
       Get.snackbar('Alert', value['message'],backgroundColor: Colors.red,colorText: Colors.white);
     });
   }
 
+
+  TextEditingController controller = TextEditingController(text: '0%');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,15 +139,49 @@ class _InvitationScreenState extends State<InvitationScreen> {
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(16),
                                       color: kBlueColor.withOpacity(.2)),
-                                  padding: EdgeInsets.all(10),
+                                  padding: EdgeInsets.all(0),
                                   child: Center(
-                                    child: Text(
+                                    child: TextField(
+                                      keyboardType: TextInputType.number,
+                                      onChanged: (value){
+                                        String numericValue = value.replaceAll(RegExp(r'[^0-9.]'), '');
+
+                                        // Check if numericValue is not empty
+                                        if (numericValue.isNotEmpty) {
+                                          // Parse the numeric value
+                                          int numericDouble = int.parse(numericValue);
+
+                                          // Format the value with a percentage symbol
+                                          String formattedValue = '$numericDouble%';
+
+                                          // Update the controller's text
+                                          controller.value = controller.value.copyWith(
+                                            text: formattedValue,
+                                            selection: TextSelection.collapsed(offset: formattedValue.length),
+                                          );
+                                        }
+                                      },
+
+                                      style:  TextStyle(
+                                          color: kBlueColor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 40),
+                                      controller: controller,
+                                      textAlign: TextAlign.center, // Center-align the text
+                                      decoration: InputDecoration(
+                                        // Remove underline by setting `border` to `InputBorder.none`
+                                        border: InputBorder.none,
+                                        // Optionally, you can customize other properties like hintText, hintStyle, etc.
+                                        //hintText: 'Enter text',
+                                        hintStyle: TextStyle(color: Colors.grey),
+                                      ),
+                                    ), /*Text(
                                       '0%',
                                       style: TextStyle(
                                           color: kBlueColor,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 40),
-                                    ),
+                                    ),*/
                                   )),
                               SizedBox(
                                 height: 5,
