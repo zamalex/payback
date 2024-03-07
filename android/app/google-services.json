@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "772501374258",
+    "firebase_url": "https://payback-cd6da-default-rtdb.firebaseio.com",
     "project_id": "payback-cd6da",
     "storage_bucket": "payback-cd6da.appspot.com"
   },
@@ -19,6 +20,50 @@
           "android_info": {
             "package_name": "com.example.payback",
             "certificate_hash": "b1ba1da6d1204cf166b7adfe4bbb06afb2627f35"
+          }
+        },
+        {
+          "client_id": "772501374258-g0gk7h4d0kd4a7ksmk33kadlrjere8qf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1LfsEnaCxEwSmhldOs0rLZES7eLjdjko"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "772501374258-g0gk7h4d0kd4a7ksmk33kadlrjere8qf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "772501374258-5qfspjfrcl851j91d8aom7o5l0ki2k97.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.payback"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:772501374258:android:fd249455bee5027516032b",
+        "android_client_info": {
+          "package_name": "com.sahla.payback"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "772501374258-f2hfqqa5jm6ra2r3qfsq61fsoqc1v838.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sahla.payback",
+            "certificate_hash": "fcfdaead7a3fe82b84a3030f3c5d4fb11799040f"
           }
         },
         {
