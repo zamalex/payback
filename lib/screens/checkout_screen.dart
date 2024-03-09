@@ -95,7 +95,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
       print('request:${jsonEncode(request).toString()}');
 
-      //Get.to(PaymentSuccessScreen());
+      Get.to(PaymentSuccessScreen());
     } else {
       Get.snackbar('Alert', 'You must fill all required data to proceed',
           colorText: Colors.white, backgroundColor: Colors.red);

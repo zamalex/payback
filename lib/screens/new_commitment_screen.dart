@@ -217,7 +217,7 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
                           SizedBox(
                             height: 5,
                           ),
-                          CustomTextField(hintText: 'Minimum 10 SAR',onSaved: (v){payment_target=v;}),
+                          CustomTextField(hintText: 'Minimum 10 SAR',type: TextInputType.number,onSaved: (v){payment_target=v;}),
                           SizedBox(
                             height: 15,
                           ),
@@ -281,7 +281,7 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
                             height: 5,
                           ),
                           CustomTextField(
-                              hintText: 'Enter the date (YYYY-MM-dd)',onSaved: (v){date=v;},),
+                              hintText: 'Enter the date (YYYY-MM-dd)',onSaved: (v){date=v;},type: TextInputType.datetime,),
                           SizedBox(
                             height: 15,
                           ),
