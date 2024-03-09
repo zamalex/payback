@@ -1,6 +1,7 @@
 class Commitment {
   late int id;
   late String? name;
+  late String? image;
   late String? partnerId;
   late String? categoryId;
   late String? paymentTarget;
@@ -20,6 +21,7 @@ class Commitment {
      this.cashbackToCommitment,
      this.dueDate,
      this.type,
+     this.image,
      this.notify,
      this.createdAt,
      this.updatedAt,
@@ -29,6 +31,7 @@ class Commitment {
     return Commitment(
       id: json['id'],
       name: json['name'],
+      image: json['image'],
       partnerId: json['partner_id'],
       categoryId: json['category_id'],
       paymentTarget: json['payment_target'],
@@ -46,6 +49,7 @@ class Commitment {
       'id': id,
       'name': name,
       'partner_id': partnerId,
+      'image': image,
       'category_id': categoryId,
       'payment_target': paymentTarget,
       'cashback_to_commitment': cashbackToCommitment,

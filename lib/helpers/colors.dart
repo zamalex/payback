@@ -9,3 +9,20 @@ const kPurpleColor = Color.fromRGBO(131, 33, 97, 1);
 
 const kBackgroundColor = Color.fromRGBO(247, 247, 247, 1);
 const kWhitrColor = Color.fromRGBO(255, 255, 255, 1);
+
+ List<Color> shade0 = [
+  //Colors.purple.shade900,
+  Colors.blue.shade900,
+  //Colors.blueGrey.shade900,
+  //Colors.green.shade900,
+  //Colors.teal.shade900,
+
+];
+ List<Color> shade1=[
+  //Colors.purple.shade800,
+  Colors.blue.shade800,
+  //Colors.blueGrey.shade800,
+  //Colors.green.shade800,
+  //Colors.teal.shade800,
+
+];

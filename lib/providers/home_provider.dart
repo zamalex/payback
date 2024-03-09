@@ -155,6 +155,7 @@ class HomeProvider extends ChangeNotifier {
     final response = await sl<HomeRepository>().getPartners();
     if (response.containsKey('data')) {
       partners = response['data'];
+      partners = partners.where((element) => element.id!=1).toList();
     }
 
     notifyListeners();

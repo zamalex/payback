@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
@@ -293,6 +294,8 @@ class Commitment extends StatelessWidget {
 
   com.Commitment? commitment;
 
+  int i = Random().nextInt(shade0.length);
+
   @override
   Widget build(BuildContext context) {
     if (commitment == null)
@@ -314,8 +317,8 @@ class Commitment extends StatelessWidget {
             begin: Alignment.center,
             end: Alignment.centerRight,
             colors: [
-              Colors.blue.shade900,
-              Colors.blue.shade800,
+              shade0[i],//Colors.blue.shade900,
+              shade1[i]//Colors.blue.shade800,
             ],
           ),
         ),
@@ -328,8 +331,8 @@ class Commitment extends StatelessWidget {
                   Expanded(
                       child: Row(
                     children: [
-                      Image.asset(
-                        'assets/images/travel.png',
+                      commitment!.image==null?Icon(Icons.hourglass_empty,color: Colors.white,):Image.network(
+                        commitment!.image??'',
                         width: 25,
                         height: 25,
                         color: Colors.white,

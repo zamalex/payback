@@ -74,6 +74,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           order.selfFormKey.currentState!.save();
           map.putIfAbsent('pickup', () => 'self');
           map.putIfAbsent('office_address', () => order.officeAddress);
+          map.putIfAbsent('items', () => order.products);
+
         } else {
           order.courierFormKey.currentState!.save();
 
@@ -83,6 +85,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           map.putIfAbsent('building', () => order.building);
           map.putIfAbsent('apartment', () => order.apartment);
           map.putIfAbsent('comments', () => order.comments);
+          map.putIfAbsent('items', () => order.products);
+
         }
 
         ordersArray.add(map);
@@ -91,7 +95,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
       print('request:${jsonEncode(request).toString()}');
 
-      Get.to(PaymentSuccessScreen());
+      //Get.to(PaymentSuccessScreen());
     } else {
       Get.snackbar('Alert', 'You must fill all required data to proceed',
           colorText: Colors.white, backgroundColor: Colors.red);

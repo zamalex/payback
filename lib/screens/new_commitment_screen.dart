@@ -42,7 +42,7 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
 
     Map<String,dynamic> request={
       'name':name,
-      'partner_id':partner ==null?null:'${partner!.id}',
+      'partner_id':selected==0?1:partner ==null?null:'${partner!.id}',
       'category_id':category==null?null:'${category!.id}',
       'payment_target':payment_target,
       'cashback_to_commitment':((selectedPercentage+1)*10).toString(),
@@ -60,6 +60,14 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
       
       request.putIfAbsent("partner_required", () => partner_required);
     }
+    if(selected==0){
+      request['name'] = 'SADAD';
+      request.putIfAbsent("partner_required", () => {
+        'sadad_num':name
+      });
+
+    }
+
     print(request.toString());
     Provider.of<CommitmentsProvider>(context,listen: false).createCommitment(request).then((value) {}).then((value) {
       Provider.of<HomeProvider>(context,listen: false).getCommitments();

@@ -197,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
              Text('Best deals from Payback partners that might be interesting to you'),
              SizedBox(height: 10,),
              Consumer<HomeProvider>(
-               builder:(c,v,child)=> Container(
+               builder:(c,v,child)=>v.hotDealsProducts.isEmpty?Container(): Container(
                  height: 300,
                  width: double.infinity,
                  child: ListView.builder(
@@ -208,6 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
                ),
              ),
              SizedBox(height: 20,),
+
              Row(
                children: [
                  Expanded(child: Text('Suggested for you',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),)),
@@ -218,7 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
              Text('Check products with best cashback percentage to cover your commitments'),
              SizedBox(height: 10,),
              Consumer<HomeProvider>(
-               builder:(c,v,cc)=> Container(
+               builder:(c,v,cc)=> v.suggestedProducts.isEmpty?Container():Container(
                  height: 300,
                  width: double.infinity,
                  child: ListView.builder(
