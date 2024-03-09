@@ -94,14 +94,19 @@ class HomeProvider extends ChangeNotifier {
     else
       selectedHomeIndex = i;
     notifyListeners();
+
+    getProducts(location: 'HOME');
   }
 
-  selectVendorDetailsIndex(int i) {
+  selectVendorDetailsIndex(int i,List<int>?ids) {
     if (selectedVendoDetailsIndex == i)
       selectedVendoDetailsIndex = -1;
     else
       selectedVendoDetailsIndex = i;
     notifyListeners();
+
+    getProducts(location: 'VENDOR',vendorIDs: ids);
+
   }
 
   selectShoppingIndex(int i) {
@@ -110,6 +115,9 @@ class HomeProvider extends ChangeNotifier {
     else
       selectedShoppingIndex = i;
     notifyListeners();
+    getProducts(location: 'SHOPPING');
+
+
   }
 
   List<Category> categories = [];
@@ -204,17 +212,17 @@ class HomeProvider extends ChangeNotifier {
     isLoading = true;
      notifyListeners();
 
-    final response0 = await sl<HomeRepository>().getSavedProducts();
-   // savedProducts = response0['data'];
+    final response0 = await sl<HomeRepository>().saveProduct(p);
+    getSavedProducts();
 
 
-    //mock ////////
+   /* //mock ////////
     if(savedProducts.any((element) => p.id==element.id)){
       savedProducts.removeWhere((element) => element.id==p.id);
     }
     else{
       savedProducts.add(p);
-    }
+    }*/
 ////////////////////////
 
     isLoading = false;
@@ -228,17 +236,17 @@ class HomeProvider extends ChangeNotifier {
 
    notifyListeners();
 
-    final response0 = await sl<HomeRepository>().getSavedVendors();
+    final response0 = await sl<HomeRepository>().savePartner(p);
     //savedVendors = response0['data'];
-
+    getSavedVendors();
 
     //mock
-    if(savedVendors.any((element) => p.id==element.id)){
+   /* if(savedVendors.any((element) => p.id==element.id)){
       savedVendors.removeWhere((element) => element.id==p.id);
     }
     else{
       savedVendors.add(p);
-    }
+    }*/
 /////////////////////////
 
     isLoading = false;
@@ -275,12 +283,13 @@ class HomeProvider extends ChangeNotifier {
 
   Future<Map<String, dynamic>> getProducts(
       {String location = 'HOME',
+        List<int>? vendorIDs,
       Map<String, dynamic>? filters,
       bool? isHotDeals,
       bool? isSuggested}) async {
     isLoading = true;
     notifyListeners();
-    List<int> vendorIds = [];
+    List<int> vendorIds = vendorIDs??[];
     filters ??= {};
 
     if (location == 'HOME') {
@@ -323,6 +332,16 @@ class HomeProvider extends ChangeNotifier {
         filters.putIfAbsent(
             'category_id', () => categories[selectedVendoDetailsIndex].id);
       }
+
+      vendors.forEach((element) {
+        if (element.isChecked) {
+          vendorIds.add(element.id);
+        }
+      });
+      if (vendorIds.isNotEmpty) {
+        filters.putIfAbsent(
+            'vendor_ids[]', () => vendorIds);
+      }
     }
     print(filters.toString());
 
@@ -345,6 +364,44 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
     return response;
   }
+
+  Future<Map<String, dynamic>> getVendorProducts(int id) async {
+    isLoading = true;
+    vendorProducts.clear();
+    notifyListeners();
+    List<int> vendorIds = [];
+    Map<String,dynamic> filters= {};
+
+
+      if(searchControllerVendor.text.isNotEmpty){
+        filters.putIfAbsent('search', () => searchControllerVendor.text.toString());
+      }
+
+      if (selectedVendoDetailsIndex != -1) {
+        filters.putIfAbsent(
+            'category_id', () => categories[selectedVendoDetailsIndex].id);
+      }
+
+
+
+        filters.putIfAbsent(
+            'vendor_ids[]', () => [id]);
+
+
+    print(filters.toString());
+
+    final response = await sl<HomeRepository>().getProducts(filters);
+    if (response.containsKey('data')) {
+        vendorProducts = response['data'];
+    }
+
+    isLoading = false;
+
+    notifyListeners();
+    return response;
+  }
+
+
 
   Future<Map> getOnBoarding() async {
     isLoading = true;

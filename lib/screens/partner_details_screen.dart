@@ -80,14 +80,23 @@ class _PartnerDetailsScreenState extends State<PartnerDetailsScreen> {
     // TODO: implement initState
     super.initState();
 
+
+
     Future.delayed(Duration.zero).then((value){
+
+
       Provider.of<HomeProvider>(context,listen: false).initSearchControllerVendor();
+      
+      
       getVendorProducts();
     });
   }
 
   getVendorProducts(){
-    Provider.of<HomeProvider>(context,listen: false).getProducts(location: 'VENDOR');
+
+  
+
+    Provider.of<HomeProvider>(context,listen: false).getProducts(location: 'VENDOR',vendorIDs: [widget.partner.id]);
   }
 
 
@@ -155,7 +164,7 @@ class _PartnerDetailsScreenState extends State<PartnerDetailsScreen> {
                     child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount:value.categories==null?0:value.categories!.length,itemBuilder: (c,i){
-                      return  CategoryWidget(category: value.categories![i],isSelected: value.selectedVendoDetailsIndex==i,onTap: (){value.selectVendorDetailsIndex(i);},);
+                      return  CategoryWidget(category: value.categories![i],isSelected: value.selectedVendoDetailsIndex==i,onTap: (){value.selectVendorDetailsIndex(i,[widget.partner.id]);},);
                     }),
                   ),
                 ),

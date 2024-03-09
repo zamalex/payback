@@ -31,7 +31,9 @@ class _PartnerInfoScreenState extends State<PartnerInfoScreen> {
 
   savePartnerInfo(){
 
+
     if(_formKey.currentState!.validate()){
+      _formKey.currentState!.save();
       Get.back(result: Provider.of<HomeProvider>(context,listen: false).partnerCustomFields);
     }
 
@@ -89,7 +91,9 @@ class _PartnerInfoScreenState extends State<PartnerInfoScreen> {
                                       SizedBox(
                                         height: 5,
                                       ),
-                                      CustomTextField(hintText: '${provider.partnerCustomFields[index].displayName}'),
+                                      CustomTextField(hintText: '${provider.partnerCustomFields[index].displayName}',onSaved: (v){
+                                        provider.partnerCustomFields[index].value=v;
+                                      },),
                                       SizedBox(
                                         height: 15,
                                       ),

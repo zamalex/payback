@@ -69,7 +69,7 @@ class HomeRepository {
 
   Future<Map<String, dynamic>> getSavedProducts() async {
     try {
-      Response response = await sl<DioClient>().get(Url.PRODUCTS_URL,);
+      Response response = await sl<DioClient>().get(Url.PRODUCTS_URL,queryParameters: {'is_saved':1});
 
       final parsedJson = response.data;
       if (response.statusCode! < 400) {
@@ -77,7 +77,7 @@ class HomeRepository {
             .map((json) => Product.fromJson(json as Map<String, dynamic>))
             .toList();
 
-        return {'message': 'Products retrieved successfully', 'data': products..forEach((element) {element.isSaved=true;})};
+        return {'message': 'Products retrieved successfully', 'data': products};
       }
 
       return {'message': 'Not found','data':[] as List<Product>};
@@ -93,15 +93,15 @@ class HomeRepository {
 
   Future<Map<String, dynamic>> saveProduct(Product product) async {
     try {
-      Response response = await sl<DioClient>().get(Url.PRODUCTS_URL,);
+      Response response = await sl<DioClient>().post('${Url.PRODUCTS_URL}/${product.id}/add-to-save',data: {'product_id':product.id});
 
       final parsedJson = response.data;
       if (response.statusCode! < 400) {
-        List<Product> products = (parsedJson['data'] as List)
+       /* List<Product> products = (parsedJson['data'] as List)
             .map((json) => Product.fromJson(json as Map<String, dynamic>))
             .toList();
-
-        return {'message': 'Products retrieved successfully', 'data': products..forEach((element) {element.isSaved=true;})};
+*/
+        return {'message': 'Products retrieved successfully', 'data':[]};
       }
 
       return {'message': 'Not found','data':[] as List<Product>};
@@ -117,15 +117,15 @@ class HomeRepository {
 
   Future<Map<String, dynamic>> savePartner(Partner partner) async {
     try {
-      Response response = await sl<DioClient>().get(Url.PRODUCTS_URL,);
+      Response response = await sl<DioClient>().post('${Url.Vendorrs_URL}/${partner.id}/add-to-save',data: {
+        'vendor_id':partner.id
+      });
 
       final parsedJson = response.data;
       if (response.statusCode! < 400) {
-        List<Product> products = (parsedJson['data'] as List)
-            .map((json) => Product.fromJson(json as Map<String, dynamic>))
-            .toList();
 
-        return {'message': 'Products retrieved successfully', 'data': products..forEach((element) {element.isSaved=true;})};
+
+        return {'message': 'Products retrieved successfully', 'data': []};
       }
 
       return {'message': 'Not found','data':[] as List<Product>};
@@ -255,7 +255,7 @@ class HomeRepository {
 
   Future<Map<String, dynamic>> getSavedVendors() async {
     try {
-      Response response = await sl<DioClient>().get(Url.Vendorrs_URL);
+      Response response = await sl<DioClient>().get(Url.Vendorrs_URL,queryParameters: {'is_saved':1});
 
       final parsedJson = response.data;
       if (response.statusCode! < 400) {
@@ -263,7 +263,7 @@ class HomeRepository {
             .map((json) => Partner.fromJson(json))
             .toList();
 
-        return {'message': 'Partners retrieved successfully', 'data': partners..forEach((element) {element.isSaved=true;})};
+        return {'message': 'Partners retrieved successfully', 'data': partners};
       }
 
       return {'message': 'Not found','data':[]};

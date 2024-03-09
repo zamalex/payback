@@ -44,9 +44,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           padding: const EdgeInsets.all(8.0),
           child: CircleAvatar(child: Icon(Icons.share,color: kBlueColor,),backgroundColor: Colors.white,),
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CircleAvatar(child: Icon(Icons.save,color: kBlueColor,),backgroundColor: Colors.white,),
+        InkWell(
+          onTap: (){
+            Provider.of<HomeProvider>(context,listen: false).saveProduct(widget.product);
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CircleAvatar(child: Icon(Icons.save,color: kBlueColor,),backgroundColor: Colors.white,),
+          ),
         )
       ],
       leading: Container(width:100,child: TextButton.icon(onPressed: (){

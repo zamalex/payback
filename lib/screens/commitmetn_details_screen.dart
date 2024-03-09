@@ -9,6 +9,7 @@ import 'package:share_plus/share_plus.dart';
 import '../data/service_locator.dart';
 import '../helpers/colors.dart';
 import '../helpers/custom_widgets.dart';
+import '../providers/home_provider.dart';
 import 'contributer_screen.dart';
 import 'package:payback/model/commitment_model.dart' as model;
 
@@ -72,7 +73,16 @@ class CommitmetDetails extends StatelessWidget {
                                     Expanded(child: Text('Back',style: TextStyle(color: Colors.white),)),
                                     Icon(Icons.edit,color: Colors.white,),
                                     SizedBox(width: 5,),
-                                    Icon(Icons.delete,color: Colors.white,),
+                                    InkWell(
+                                        onTap: (){
+                                          Provider.of<CommitmentsProvider>(context,listen: false).deleteCommitment(commitment.id).then((value){
+                                            Provider.of<HomeProvider>(context,listen: false).getCommitments();
+                                            Get.back();
+                                            Get.snackbar(value['data']?'Success':'Error', value['message'],backgroundColor: value['data']?Colors.green:Colors.red,colorText: Colors.white,);
+
+                                          });
+                                        },
+                                        child: Icon(Icons.delete,color: Colors.white,)),
                                   ],
                                 ),
                               ),
@@ -95,12 +105,12 @@ class CommitmetDetails extends StatelessWidget {
                                               Icon(Icons.airplanemode_on_rounded, color: Colors.white),
                                               SizedBox(width: 8),
                                               Text(
-                                                'Amazon Prime',
+                                                commitment.name??'',
                                                 style: TextStyle(fontSize: 20, color: Colors.white),
                                               ),
                                             ],
                                           )
-                                      ),Text('20 SAR', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.white),)
+                                      ),Text('${commitment.paymentTarget??'0'} SAR', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.white),)
                                     ],
                                   ),
                                 ),

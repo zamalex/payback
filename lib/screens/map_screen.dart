@@ -9,7 +9,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/model/partner_model.dart';
 import 'package:payback/providers/home_provider.dart';
+import 'package:payback/screens/partner_details_screen.dart';
 import 'package:payback/screens/partners_screen.dart';
 import 'package:payback/screens/scanner_screen.dart';
 import 'package:provider/provider.dart';
@@ -58,7 +60,7 @@ class MapSampleState extends State<MapSample> {
         position: c,
         icon: BitmapDescriptor.fromBytes(logoBytes),
         onTap: () {
-          showStoreSheet(context);
+         // showStoreSheet(context);
           },
       ),
     );
@@ -188,7 +190,7 @@ class MapSampleState extends State<MapSample> {
       },
     );
   }
-  void showStoreSheet(BuildContext context) {
+  void showStoreSheet(BuildContext context,Partner partner) {
     showModalBottomSheet(
       isScrollControlled: true,
       backgroundColor: Colors.white,
@@ -212,57 +214,61 @@ class MapSampleState extends State<MapSample> {
           child: Column(
             children: [
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                          Text(
-                            'Partners details',
-                            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                            Text(
+                              'Partners details',
+                              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                            ),
+                            TextButton.icon(onPressed: (){}, icon:Text('Go to partner'),label: Icon(Icons.navigation_outlined,color: kBlueColor,),)
+                  
+                  
+                          ],),
+                          SizedBox(
+                            height: 10,
                           ),
-                          TextButton.icon(onPressed: (){}, icon:Text('Go to partner'),label: Icon(Icons.navigation_outlined,color: kBlueColor,),)
-
-
-                        ],),
-                        SizedBox(
-                          height: 10,
-                        ),
-
-                      ]..addAll([
-
-                        ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          leading: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 4),
-                          width: 56,height: 56,
-                          decoration: BoxDecoration(image:DecorationImage(image: NetworkImage('https://www.fontshut.com/wp-content/uploads/2022/02/0e4375219499a25c04752312dac1b314.jpeg',),fit: BoxFit.cover),borderRadius: BorderRadius.circular(12),),
-                        ),
-                        title:  Text(
-                          'Adidas shop',
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        ),
-                        SizedBox(height: 15,),
-                        Text(
-                          'Adidas AG is a German athletic apparel and footwear corporation headquartered in Herzogenaurach, Bavaria, Germany. 3 lines description limit',
-                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
-                        ),
-                        SizedBox(height: 15,),
-                       TextButton.icon(
-                         style: ButtonStyle(padding: MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.zero)),
-                         onPressed: (){}, icon: Icon(Icons.pin_drop_outlined,color: Colors.black,), label:  Text(
-                         'City, Street, Building number',
-                         style: TextStyle(fontSize: 15,color: Colors.black, fontWeight: FontWeight.bold),
-                       ),),
-                        SizedBox(height: 15,),
-                        Container(width: double.infinity,child: CustomButton(buttonColor: kPurpleColor,buttonText: 'View partner\'s shop',),)
-
-                      ])),
+                  
+                        ]..addAll([
+                  
+                          ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            leading: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 4),
+                            width: 56,height: 56,
+                            decoration: BoxDecoration(image:DecorationImage(image: NetworkImage(partner.image??'',),fit: BoxFit.cover),borderRadius: BorderRadius.circular(12),),
+                          ),
+                          title:  Text(
+                            partner.name??'',
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          ),
+                          SizedBox(height: 15,),
+                          Text(
+                            partner.description??'',
+                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
+                          ),
+                          SizedBox(height: 15,),
+                         TextButton.icon(
+                           style: ButtonStyle(padding: MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.zero)),
+                           onPressed: (){}, icon: Icon(Icons.pin_drop_outlined,color: Colors.black,), label:  Text(
+                           'City, Street, Building number',
+                           style: TextStyle(fontSize: 15,color: Colors.black, fontWeight: FontWeight.bold),
+                         ),),
+                          SizedBox(height: 15,),
+                          Container(width: double.infinity,child: CustomButton(buttonColor: kPurpleColor,buttonText: 'View partner\'s shop',onTap: (){
+                            Get.to(PartnerDetailsScreen(partner: partner));
+                          },),)
+                  
+                        ])),
+                  ),
                 ),
               ),
 
@@ -329,7 +335,7 @@ class MapSampleState extends State<MapSample> {
                 },
               ), customMarkers: List.generate(value.vendors.length, (index) => MarkerData(
               marker: Marker(  markerId:  MarkerId('${locations[index].latitude}'), position: index>value.vendors.length-1?locations[0]:locations[index],onTap: (){
-                showStoreSheet(context);
+                showStoreSheet(context,value.vendors[index]);
 
               }),
               child: _customMarker(value.vendors[index].image??images[index], Colors.white)))

@@ -26,11 +26,24 @@ class CommitmentsProvider extends ChangeNotifier{
   List<Partner> commitmentsCategories = [];
 
 
-  Future<Map> createCommitment(Map<String, String?> request) async {
+  Future<Map> createCommitment(Map<String, dynamic> request) async {
     isLoading = true;
     notifyListeners();
     final response = await sl<CommitmentsRepository>().createCommitment(
         request);
+    isLoading = false;
+    notifyListeners();
+
+
+    return response;
+  }
+
+
+  Future<Map> deleteCommitment(int id) async {
+    isLoading = true;
+    notifyListeners();
+    final response = await sl<CommitmentsRepository>().deleteCommitment(
+        id);
     isLoading = false;
     notifyListeners();
 

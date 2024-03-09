@@ -39,7 +39,7 @@ class CustomField {
   late String fieldName;
   late String component;
   late String type;
-  late String? value;
+  late dynamic value;
   late String? defaultValue;
   late dynamic options;
   late bool multiple;

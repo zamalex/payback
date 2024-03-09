@@ -45,6 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
       if(sl.isRegistered<AuthResponse>()){
         Provider.of<HomeProvider>(context,listen: false).getCommitments();
         Provider.of<authProvider.AuthProvider>(context,listen: false).getNotifications();
+        Provider.of<HomeProvider>(context,listen: false).getSavedProducts();
+        Provider.of<HomeProvider>(context,listen: false).getSavedVendors();
 
       }
 

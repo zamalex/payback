@@ -40,7 +40,7 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
     if(!isvalid)
       return;
 
-    Map<String,String?> request={
+    Map<String,dynamic> request={
       'name':name,
       'partner_id':partner ==null?null:'${partner!.id}',
       'category_id':category==null?null:'${category!.id}',
@@ -51,9 +51,20 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
       'notify':notify?'1':'0',
     };
 
+    List<CustomField> customFields = Provider.of<HomeProvider>(context,listen: false).partnerCustomFields;
+    if(customFields.isNotEmpty){
+      Map<String,dynamic> partner_required = {};
+      customFields.forEach((element) { 
+        partner_required.putIfAbsent(element.fieldName, () => element.value);
+      });
+      
+      request.putIfAbsent("partner_required", () => partner_required);
+    }
     print(request.toString());
     Provider.of<CommitmentsProvider>(context,listen: false).createCommitment(request).then((value) {}).then((value) {
-      Get.snackbar('Success', 'Commitment created',backgroundColor: Colors.green,colorText: Colors.white);
+      Provider.of<HomeProvider>(context,listen: false).getCommitments();
+      Get.snackbar('Success', 'Commitment created',backgroundColor: Colors.green,colorText: Colors.white,);
+
     });
 
   }
