@@ -29,6 +29,7 @@ class _CartScreenState extends State<CartScreen> {
 
 
       Future.delayed(Duration.zero).then((value){
+        Provider.of<HomeProvider>(context,listen: false).selectedHomeIndex=-1;
         Provider.of<HomeProvider>(context,listen: false).getProducts().then((value){
           Provider.of<CheckoutProvider>(context,listen: false).readCart(Provider.of<HomeProvider>(context,listen: false).products);
 
