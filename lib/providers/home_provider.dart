@@ -95,7 +95,8 @@ class HomeProvider extends ChangeNotifier {
       selectedHomeIndex = i;
     notifyListeners();
 
-    getProducts(location: 'HOME');
+    getProducts(location: 'HOME',isHotDeals: true);
+    getProducts(location: 'HOME',isSuggested: true);
   }
 
   selectVendorDetailsIndex(int i,List<int>?ids) {
