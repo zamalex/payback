@@ -7,6 +7,7 @@ class Commitment {
   late String? paymentTarget;
   late String? cashbackToCommitment;
   late String? dueDate;
+  late String? paid;
   late String? type;
   late String? notify;
   late String? createdAt;
@@ -24,7 +25,7 @@ class Commitment {
      this.image,
      this.notify,
      this.createdAt,
-     this.updatedAt,
+     this.updatedAt, this.paid,
   });
 
   factory Commitment.fromJson(Map<String, dynamic> json) {
@@ -38,6 +39,7 @@ class Commitment {
       cashbackToCommitment: json['cashback_to_commitment'],
       dueDate: json['due_date'],
       type: json['type'],
+      paid: json['paid']??'0',
       notify: json['notify'],
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
