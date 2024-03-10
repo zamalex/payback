@@ -24,6 +24,7 @@ class Url {
   static const DELIVERY_URL = '/admin/delivery-methods';
   static const CITIES_URL = '/admin/cities';
   static const SEND_FCM_TOKEN_URL = '/admin/send';
+  static const CREATE_ORDER_URL = '/admin/orders/create';
 
   static String TOKEN = '';
   static String LOCALE = 'ar';

@@ -128,7 +128,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
       print('request:${jsonEncode(request).toString()}');
 
-      Get.to(PaymentSuccessScreen());
+      provider.createOrder(request).then((value){
+        Get.snackbar(value['data']?'Success':'Failed',value['message'],colorText: Colors.white,backgroundColor: value['data']?Colors.green:Colors.red);
+
+        if(value['data']){
+          Get.to(PaymentSuccessScreen());
+        }
+
+      });
+
     } else {
       Get.snackbar('Alert', 'You must fill all required data to proceed',
           colorText: Colors.white, backgroundColor: Colors.red);
@@ -324,7 +332,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(16),
                               topRight: Radius.circular(16))),
-                      child: Container(
+                      child:value.isLoading?Center(child: CircularProgressIndicator(),): Container(
                           width: double.infinity,
                           child: CustomButton(
                             buttonText: 'Submit order',

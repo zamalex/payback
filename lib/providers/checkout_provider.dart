@@ -32,6 +32,8 @@ class CheckoutProvider extends ChangeNotifier{
     notifyListeners();
     return groupedMap;
   }
+
+  bool isLoading = false;
   List<Product> cart = [];
   List<ShippingMethod> shippings = [];
 
@@ -90,6 +92,24 @@ class CheckoutProvider extends ChangeNotifier{
         cart.removeWhere((element) => element.id==c.id);
       }
     });
+
+  }
+
+
+ Future<Map> createOrder(Map<String,dynamic> body)async{
+
+    isLoading = true;
+    notifyListeners();
+
+
+    final response = await sl<CheckoutRepository>().createOrder(body);
+
+
+    isLoading = false;
+    notifyListeners();
+
+    return response;
+
 
   }
 

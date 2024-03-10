@@ -37,4 +37,29 @@ class CheckoutRepository {
       }
     }
   }
+
+
+
+  Future createOrder(Map<String,dynamic> body) async {
+    try {
+      Response response = await sl<DioClient>().post(Url.CREATE_ORDER_URL,data: jsonEncode(body));
+
+      final parsedJson = response.data;
+      if (response.statusCode! < 400) {
+
+        return {
+          'message': 'order done',
+          'data': true
+        };
+      }
+
+      return {'message': 'Not found', 'data': false};
+    } catch (e) {
+      if (e is DioError) {
+        return {'message': e.message, 'data': false};
+      } else {
+        return {'message': 'Unknown error', 'data': false};
+      }
+    }
+  }
 }
