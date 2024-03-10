@@ -68,13 +68,43 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         Map<String, dynamic> map = {};
 
         map.putIfAbsent(
-            'shipping', () => provider.shippings[order.selectedDelivery].name);
+            'vendor_id', () => order.vendor);
+
+         map.putIfAbsent(
+            'delivery_method_id', () => provider.shippings[order.selectedDelivery].name);
+
+        map.putIfAbsent(
+            'payment_setting_id', () => 1);
+
+        map.putIfAbsent(
+            'status', () => 'pending');
+
+        map.putIfAbsent(
+            'tax_amount', () => 0);
+
+        map.putIfAbsent(
+            'shipping_amount', () => 0);
+
+        map.putIfAbsent(
+            'discount_amount', () => 0);
+        
+        map.putIfAbsent(
+            'sub_total', () => order.getTotalPrice());
+
+
+        map.putIfAbsent(
+            'amount', () => order.getTotalPrice());
+
+        map.putIfAbsent(
+            'coupon_code', () => null);
+
+        map.putIfAbsent('description', () => order.comments);
+
 
         if (order.selectedPickup == 0) {
           order.selfFormKey.currentState!.save();
           map.putIfAbsent('pickup', () => 'self');
           map.putIfAbsent('office_address', () => order.officeAddress);
-          map.putIfAbsent('items', () => order.products);
 
         } else {
           order.courierFormKey.currentState!.save();
@@ -84,10 +114,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           map.putIfAbsent('street', () => order.street);
           map.putIfAbsent('building', () => order.building);
           map.putIfAbsent('apartment', () => order.apartment);
-          map.putIfAbsent('comments', () => order.comments);
-          map.putIfAbsent('items', () => order.products);
 
         }
+
+        map.putIfAbsent('items', () => order.getItems());
+
+
+
 
         ordersArray.add(map);
       });
