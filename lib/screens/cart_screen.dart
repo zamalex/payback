@@ -14,7 +14,9 @@ import '../data/service_locator.dart';
 import '../model/product_model.dart';
 
 class CartScreen extends StatefulWidget {
-  CartScreen({super.key});
+  CartScreen({super.key,this.qrProducts});
+
+  List<Product>? qrProducts;
 
   @override
   State<CartScreen> createState() => _CartScreenState();
@@ -31,7 +33,7 @@ class _CartScreenState extends State<CartScreen> {
       Future.delayed(Duration.zero).then((value){
         Provider.of<HomeProvider>(context,listen: false).selectedHomeIndex=-1;
         Provider.of<HomeProvider>(context,listen: false).getProducts().then((value){
-          Provider.of<CheckoutProvider>(context,listen: false).readCart(Provider.of<HomeProvider>(context,listen: false).products);
+          Provider.of<CheckoutProvider>(context,listen: false).readCart(Provider.of<HomeProvider>(context,listen: false).products,widget.qrProducts);
 
         });
       });
@@ -41,144 +43,147 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Consumer<CheckoutProvider>(
-        builder:(c,provider,cc){
-          double total=0;
-
-          provider.cart.forEach((element) {
-            total = total+(element.cartQuantity*double.parse(element.price??'0'));
-          });
-
-          return Container(
-            height: MediaQuery.of(context).size.height,
-            padding: EdgeInsets.all(10),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    'My cart',
-                    style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'You will cover 12% of your commitments',
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
-                        Text(
-                          'by purchasing products that are in cart now',
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.normal,
-                              color: Colors.white),
-                        ),
-                      ],
+    return Scaffold(
+      body: SafeArea(
+        child: Consumer<CheckoutProvider>(
+          builder:(c,provider,cc){
+            double total=0;
+      
+            provider.cart.forEach((element) {
+              total = total+(element.cartQuantity*double.parse(element.price??'0'));
+            });
+      
+            return Container(
+              height: MediaQuery.of(context).size.height,
+              padding: EdgeInsets.all(10),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 20,
                     ),
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(colors: [
-                          Color.fromRGBO(10, 91, 148, 1),
-                          Color.fromRGBO(45, 133, 194, 1),
-                        ]),
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(20),
-                            bottomLeft: Radius.circular(20),
-                            topLeft: Radius.circular(5),
-                            bottomRight: Radius.circular(5))),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Column(
-                    children: List.generate(provider.cart.length, (index) => CartItem(product: provider.cart[index],)),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    'Summary',
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(11),
-                        color: kBlueLightColor),
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Total price'),
-                            Text(
-                              '${total.toStringAsFixed(2)} SAR',
-                              style: TextStyle(
-                                  color: kBlueColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Divider(),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Cashback'),
-                            Text(
-                              '0 SAR',
-                              style: TextStyle(
-                                  color: kBlueColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18),
-                            )
-                          ],
-                        )
-                      ],
+                    Text(
+                      'My cart',
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
                     ),
-                  ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  Visibility(child: Container(
-                    child: CustomButton(
-                        buttonText: 'Proceed to check out',
-                        buttonColor: kPurpleColor,
-                        onTap: () {
-                          Get.to(CheckoutScreen());
-                        }),
-                    width: double.infinity,
-                  ),visible: provider.cart.isNotEmpty,)
-                ],
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'You will cover 12% of your commitments',
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          Text(
+                            'by purchasing products that are in cart now',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(colors: [
+                            Color.fromRGBO(10, 91, 148, 1),
+                            Color.fromRGBO(45, 133, 194, 1),
+                          ]),
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(20),
+                              bottomLeft: Radius.circular(20),
+                              topLeft: Radius.circular(5),
+                              bottomRight: Radius.circular(5))),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Column(
+                      children: List.generate(provider.cart.length, (index) => CartItem(product: provider.cart[index],)),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      'Summary',
+                      style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(11),
+                          color: kBlueLightColor),
+                      padding: EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Total price'),
+                              Text(
+                                '${total.toStringAsFixed(2)} SAR',
+                                style: TextStyle(
+                                    color: kBlueColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18),
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Divider(),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Cashback'),
+                              Text(
+                                '0 SAR',
+                                style: TextStyle(
+                                    color: kBlueColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 25,
+                    ),
+                    Visibility(child: Container(
+                      child: CustomButton(
+                          buttonText: 'Proceed to check out',
+                          buttonColor: kPurpleColor,
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => CheckoutScreen(),));
+                            //Get.to(CheckoutScreen());
+                          }),
+                      width: double.infinity,
+                    ),visible: provider.cart.isNotEmpty,)
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

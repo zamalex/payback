@@ -130,6 +130,7 @@ class HomeProvider extends ChangeNotifier {
   List<Product> suggestedProducts = [];
   List<Product> shoppingProducts = [];
   List<Product> vendorProducts = [];
+  List<Product> QRProducts = [];
   List<Product> savedProducts = [];
   List<Partner> savedVendors = [];
   List<Commitment> commitments = [];
@@ -368,6 +369,14 @@ class HomeProvider extends ChangeNotifier {
             'vendor_ids[]', () => vendorIds);
       }
     }
+
+    else if (location == 'QR') {
+
+      if (vendorIds.isNotEmpty) {
+        filters.putIfAbsent(
+            'vendor_ids[]', () => vendorIds);
+      }
+    }
     print(filters.toString());
 
     final response = await sl<HomeRepository>().getProducts(filters);
@@ -380,6 +389,9 @@ class HomeProvider extends ChangeNotifier {
           suggestedProducts = products;
       } else if (location == 'SHOPPING')
         shoppingProducts = response['data'];
+
+      else if (location == 'QR')
+        QRProducts = response['data'];
       else
         vendorProducts = response['data'];
     }

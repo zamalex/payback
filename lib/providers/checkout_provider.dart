@@ -37,7 +37,17 @@ class CheckoutProvider extends ChangeNotifier{
   List<Product> cart = [];
   List<ShippingMethod> shippings = [];
 
-  readCart(List<Product>pros)async{
+  readCart(List<Product>pros,List<Product>?qrProducts)async{
+
+    if(qrProducts!=null){
+      cart = qrProducts;
+
+      cart.forEach((element) { element.cartQuantity=1;});
+      groupProductsByVendor();
+
+      notifyListeners();
+      return;
+    }
     cart = await sl<PreferenceUtils>().readCart();
     syncCartProducts(pros);
 

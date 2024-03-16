@@ -11,6 +11,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/model/partner_model.dart';
 import 'package:payback/providers/home_provider.dart';
+import 'package:payback/screens/cart_screen.dart';
 import 'package:payback/screens/partner_details_screen.dart';
 import 'package:payback/screens/partners_screen.dart';
 import 'package:payback/screens/scanner_screen.dart';
@@ -352,7 +353,12 @@ class MapSampleState extends State<MapSample> {
         backgroundColor: kPurpleColor,
         child: Icon(Icons.qr_code,color: Colors.white,),
         onPressed: (){
-          Get.to(ScannerScreen());
+
+          Provider.of<HomeProvider>(context,listen: false).getProducts(location: 'QR',vendorIDs: [1]).then((value){
+            Get.to(CartScreen(qrProducts: (value['data']as List).isEmpty?null:value['data'],));
+          });
+
+          //Get.to(ScannerScreen());
         },
       ),
     );
