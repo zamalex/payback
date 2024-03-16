@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:payback/data/http/urls.dart';
 import 'package:payback/helpers/colors.dart';
@@ -46,6 +47,12 @@ class CustomTextField extends StatefulWidget {
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
+
+  bool validateStructure(String value){
+    String  pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    RegExp regExp = new RegExp(pattern);
+    return regExp.hasMatch(value);
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -58,6 +65,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
           if (widget.type == TextInputType.phone && !text.startsWith('20')) {
             return 'Phone should start with 20';
+          }
+
+       if (widget.type == TextInputType.emailAddress && !GetUtils.isEmail(text)) {
+            return 'Enter valid email';
+          }
+
+          if (widget.isPassword&&!validateStructure(text)) {
+            return 'password should contain upper and lower case,\n numbers and special characters';
           } else
             return null;
         },
@@ -363,9 +378,9 @@ class Commitment extends StatelessWidget {
 
                   min: 0.0,
                   max: 100.0,
-                  value: 20,
+                  value: 100,
                   // divisions: 10,
-                  label: '20',
+                  label: '100',
                   onChanged: (value) {},
                 ),
               ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/helpers/custom_widgets.dart';
+import 'package:payback/helpers/functions.dart';
 import 'package:payback/providers/checkout_provider.dart';
 import 'package:payback/screens/cart_screen.dart';
 import 'package:payback/screens/checkout_object.dart';
@@ -71,7 +72,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             'vendor_id', () => order.vendor);
 
          map.putIfAbsent(
-            'delivery_method_id', () => provider.shippings[order.selectedDelivery].name);
+            'delivery_method_id', () => 1/*provider.shippings[order.selectedDelivery].name*/);
 
         map.putIfAbsent(
             'payment_setting_id', () => 1);
@@ -128,6 +129,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
       print('request:${jsonEncode(request).toString()}');
 
+
+
       provider.createOrder(request).then((value){
         Get.snackbar(value['data']?'Success':'Failed',value['message'],colorText: Colors.white,backgroundColor: value['data']?Colors.green:Colors.red);
 
@@ -165,6 +168,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         ),
         body: Consumer<CheckoutProvider>(
           builder: (context, value, child) {
+
+            if(value.checkouts.isEmpty){
+              Navigator.pop(context);
+            }
             return SafeArea(
               child: Form(
                 key: _formKey,
@@ -266,7 +273,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   children: [
                                     Text('Total orders price'),
                                     Text(
-                                      '20,000 SAR',
+                                      '${calculateCartTotal(value.cart)} SAR',
                                       style: TextStyle(
                                           color: kBlueColor,
                                           fontWeight: FontWeight.bold,
@@ -287,7 +294,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   children: [
                                     Text('Delivery'),
                                     Text(
-                                      '20,000 SAR',
+                                      '0 SAR',
                                       style: TextStyle(
                                           color: kBlueColor,
                                           fontWeight: FontWeight.bold,
@@ -308,7 +315,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   children: [
                                     Text('Total orders cashack'),
                                     Text(
-                                      '20,000 SAR',
+                                      '0 SAR',
                                       style: TextStyle(
                                           color: kBlueColor,
                                           fontWeight: FontWeight.bold,
@@ -395,9 +402,9 @@ class CheckoutItem extends StatelessWidget {
                   (index) => DeliveryMethod(
                       myIndex: index,
                       selectedIndex: checkoutObject.selectedDelivery,
-                      txt: Provider.of<CheckoutProvider>(context)
+                      txt:Provider.of<CheckoutProvider>(context).shippings.isNotEmpty? Provider.of<CheckoutProvider>(context)
                               .shippings[index]
-                              .name ??
+                              .name ??'':''
                           '',
                       img: Provider.of<CheckoutProvider>(context)
                               .shippings[index]
@@ -586,7 +593,7 @@ class CheckoutItem extends StatelessWidget {
                 children: [
                   Text('Price'),
                   Text(
-                    '20,000 SAR',
+                    '${checkoutObject.getTotalPrice()} SAR',
                     style: TextStyle(
                         color: kBlueColor,
                         fontWeight: FontWeight.bold,
@@ -606,7 +613,7 @@ class CheckoutItem extends StatelessWidget {
                 children: [
                   Text('Delivery'),
                   Text(
-                    'by company tarrifs',
+                    Provider.of<CheckoutProvider>(context).shippings.isNotEmpty?Provider.of<CheckoutProvider>(context).shippings[checkoutObject.selectedDelivery].name??'':'',
                     style: TextStyle(
                         color: kBlueColor,
                         fontWeight: FontWeight.bold,
@@ -626,7 +633,7 @@ class CheckoutItem extends StatelessWidget {
                 children: [
                   Text('Cashback'),
                   Text(
-                    '20,000 SAR',
+                    '0 SAR',
                     style: TextStyle(
                         color: kBlueColor,
                         fontWeight: FontWeight.bold,

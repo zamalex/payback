@@ -192,7 +192,7 @@ class HomeProvider extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     final response0 = await sl<HomeRepository>()
-        .reOrderCommitments(commitments.map((e) => e.id).toList());
+        .reOrderCommitments(commitments.map((e) => e.id!).toList());
 
     if (response0['data']) {
       final response = await sl<HomeRepository>().getCommitments();

@@ -73,7 +73,8 @@ class RegisterScreen extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 5,),
-                    CustomTextField(hintText: 'Enter your email',controller: emailController,),
+                    CustomTextField(hintText: 'Enter your email',controller: emailController,                      type: TextInputType.emailAddress,
+                    ),
                     SizedBox(height: 15,),
                     Row(
                       children: [

@@ -1,8 +1,8 @@
 class Commitment {
-  late int id;
+  late int? id=0;
   late String? name;
   late String? image;
-  late String? partnerId;
+  late int? partnerId;
   late String? categoryId;
   late String? paymentTarget;
   late String? cashbackToCommitment;
@@ -30,10 +30,11 @@ class Commitment {
 
   factory Commitment.fromJson(Map<String, dynamic> json) {
     return Commitment(
-      id: json['id'],
+      id: json['id']??0,
       name: json['name'],
-      image: json['image'],
-      partnerId: json['partner_id'],
+      image: json['partner']['image'],
+     // partnerId: json['partner_id'],
+      partnerId: json['partner']['id'],
       categoryId: json['category_id'],
       paymentTarget: json['payment_target'],
       cashbackToCommitment: json['cashback_to_commitment'],

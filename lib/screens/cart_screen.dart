@@ -151,7 +151,7 @@ class _CartScreenState extends State<CartScreen> {
                           children: [
                             Text('Cashback'),
                             Text(
-                              '20,000 SAR',
+                              '0 SAR',
                               style: TextStyle(
                                   color: kBlueColor,
                                   fontWeight: FontWeight.bold,

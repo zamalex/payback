@@ -75,7 +75,7 @@ class CommitmetDetails extends StatelessWidget {
                                     SizedBox(width: 5,),
                                     InkWell(
                                         onTap: (){
-                                          Provider.of<CommitmentsProvider>(context,listen: false).deleteCommitment(commitment.id).then((value){
+                                          Provider.of<CommitmentsProvider>(context,listen: false).deleteCommitment(commitment.id!).then((value){
                                             Provider.of<HomeProvider>(context,listen: false).getCommitments();
                                             Get.back();
                                             Get.snackbar(value['data']?'Success':'Error', value['message'],backgroundColor: value['data']?Colors.green:Colors.red,colorText: Colors.white,);
