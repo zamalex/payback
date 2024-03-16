@@ -305,7 +305,16 @@ class CommitmetDetails extends StatelessWidget {
                           ),
                           SizedBox(height: 20,),
                           Container(width:double.infinity,child: CustomButton(buttonText: 'Share commitment', buttonColor: kBlueColor,onTap: (){
-                            Share.share('check out my invitation to share my commitment https://payback.example.com?id=11');
+
+                            Provider.of<CommitmentsProvider>(context,listen: false).sendInvitation({
+                              'user_id':sl<AuthResponse>().data?.user?.id,
+                              'commitment_id':commitment.id
+                            }).then((value){
+                              if(value['data']!=null){
+                                Share.share('check out my invitation to share my commitment https://payback.example.com?id=${value['data']}');
+
+                              }
+                            });
                           },)),
                           SizedBox(height: 20,),
                           Text('Commitment contributors',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),

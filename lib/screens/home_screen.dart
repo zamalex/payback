@@ -47,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
         Provider.of<authProvider.AuthProvider>(context,listen: false).getNotifications();
         Provider.of<HomeProvider>(context,listen: false).getSavedProducts();
         Provider.of<HomeProvider>(context,listen: false).getSavedVendors();
+        Provider.of<HomeProvider>(context,listen: false).getBranches();
 
       }
 

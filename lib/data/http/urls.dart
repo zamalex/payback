@@ -13,6 +13,7 @@ class Url {
   static const CATEGORIES_URL = '/admin/categories';
   static const PRODUCTS_URL = '/admin/products';
   static const Vendorrs_URL = '/admin/vendors';
+  static const BRANCHES_URL = '/admin/branches';
   static const PARTNERS_URL = '/admin/partners';
   static const PARTNERS_CUSTOM_FIELDS_URL = '/admin/partners/';
   static const COMMIMENTS_URL = '/admin/commitments';

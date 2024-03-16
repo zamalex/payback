@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:payback/data/repository/home_repo.dart';
+import 'package:payback/model/banches_response.dart';
 import 'package:payback/model/categories_response.dart';
 import 'package:payback/model/commitment_model.dart';
 import 'package:payback/model/onboarding_response.dart';
@@ -134,6 +135,7 @@ class HomeProvider extends ChangeNotifier {
   List<Commitment> commitments = [];
   List<Partner> vendors = [];
   List<Partner> partners = [];
+  List<Branch> branches = [];
 
   Future<Map<String, dynamic>> getVendors() async {
     // Implement your loading logic here if needed
@@ -142,6 +144,27 @@ class HomeProvider extends ChangeNotifier {
     final response = await sl<HomeRepository>().getVendors();
     if (response.containsKey('data')) {
       vendors = response['data'];
+    }
+
+    notifyListeners();
+    return response;
+  }
+
+  Partner? getBranchVendor(int vendorId){
+    Partner? vendor;
+    vendor = vendors.firstWhereOrNull((element) => element.id==vendorId);
+
+    print(vendor?.id??'0');
+    return vendor;
+  }
+
+  Future<Map<String, dynamic>> getBranches() async {
+    // Implement your loading logic here if needed
+    // ...
+
+    final response = await sl<HomeRepository>().getBranches();
+    if (response.containsKey('data')) {
+      branches = response['data'];
     }
 
     notifyListeners();

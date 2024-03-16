@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:payback/data/preferences.dart';
+import 'package:payback/model/share_details_response.dart';
 import 'package:payback/providers/CommitmentsProvider.dart';
+import 'package:payback/screens/main_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../data/service_locator.dart';
@@ -30,6 +33,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
 
   }
 
+
   handleURI() {
     if (sl.isRegistered<AuthResponse>()) {
       sl<PreferenceUtils>().readInvitation().then((value) {
@@ -52,7 +56,8 @@ class _InvitationScreenState extends State<InvitationScreen> {
       'amount':decision==0?0:int.parse(controller.text.replaceAll('%','')),
       'status':decision
     },id).then((value){
-      Get.snackbar('Alert', value['message'],backgroundColor: Colors.red,colorText: Colors.white);
+      Get.snackbar('Alert', value['message'],backgroundColor:value['data']?Colors.green: Colors.red,colorText: Colors.white);
+      Get.to(MainScreen());
     });
   }
 
@@ -63,7 +68,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
     return Scaffold(
       body: SafeArea(
         child: Consumer<CommitmentsProvider>(
-          builder:(context, value, child) => Container(
+          builder:(context, value, child) =>value.shareDetailsResponse==null?Center(child: Text('No available data')): Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage('assets/images/auth_background.png'))),
@@ -94,7 +99,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
                                 height: 10,
                               ),
                               Text(
-                                'Mustafa Ezzeldin',
+                                value.shareDetailsResponse?.data?.user?.name??'',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 25),
                               ),
@@ -109,7 +114,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
                               SizedBox(
                                 height: 20,
                               ),
-                              _CommitmentOwner(),
+                              _CommitmentOwner(shareCommit: value.shareDetailsResponse?.data?.commitment,shareUser: value.shareDetailsResponse?.data?.user,),
                               SizedBox(
                                 height: 20,
                               ),
@@ -240,7 +245,10 @@ class _InvitationScreenState extends State<InvitationScreen> {
 }
 
 class _CommitmentOwner extends StatelessWidget {
-  const _CommitmentOwner({super.key});
+   _CommitmentOwner({super.key, this.shareCommit,this.shareUser});
+
+  ShareUser? shareUser;
+  ShareCommit? shareCommit;
 
   @override
   Widget build(BuildContext context) {
@@ -279,7 +287,7 @@ class _CommitmentOwner extends StatelessWidget {
                     ),
                     SizedBox(width: 8),
                     Text(
-                      'Netflix sub',
+                      shareCommit==null?'':shareCommit!.name??'',
                       style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
                   ],
@@ -295,7 +303,7 @@ class _CommitmentOwner extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Owner: Mustafa Ezzeldin Ahmad',
+                Text('Owner: ${shareUser==null?'':shareUser!.name}',
                     style: TextStyle(
                         fontSize: 12,
                         color: Colors.white,

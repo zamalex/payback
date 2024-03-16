@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import '../data/repository/commitments_repo.dart';
 import '../data/service_locator.dart';
 import '../model/partner_model.dart';
+import '../model/share_details_response.dart';
 
 class CommitmentsProvider extends ChangeNotifier{
 
@@ -92,12 +93,18 @@ class CommitmentsProvider extends ChangeNotifier{
   }
 
 
+  ShareDetailsResponse? shareDetailsResponse;
+
+
   Future<Map<String, dynamic>> getInvitationDetails(int id) async {
    isLoading = true;
    notifyListeners();
 
     final response = await sl<CommitmentsRepository>()
         .getInvitationDetails(id);
+
+
+    shareDetailsResponse = response['data'];
 
 
    isLoading = false;

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:payback/model/share_details_response.dart';
 
 import '../../helpers/dio_error_helper.dart';
 import '../../model/partner_model.dart';
@@ -86,10 +87,10 @@ class CommitmentsRepository{
 
       final parsedJson = response.data;
       if (response.statusCode! < 400) {
-        return {'message': 'Done', 'data': true};
+        return {'message': parsedJson['message'], 'data': true};
       }
 
-      return {'message': 'Error', 'data': false};
+      return {'message':  parsedJson['message'], 'data': false};
     } catch (e) {
       if (e is DioError) {
         return {'message':  DioErrorHelper.handleError(e), 'data': false};
@@ -109,17 +110,17 @@ class CommitmentsRepository{
 
       final parsedJson = response.data;
       if (response.statusCode! < 400) {
-        return {'message': 'Done', 'data': true};
+        return {'message': 'Done', 'data': parsedJson['data']};
       }
 
-      return {'message': 'Error', 'data': false};
+      return {'message': 'Error', };
     } catch (e) {
       if (e is DioError) {
-        return {'message':  DioErrorHelper.handleError(e), 'data': false};
+        return {'message':  DioErrorHelper.handleError(e),};
 
 
       } else {
-        return {'message': 'unknown error', 'data': false};
+        return {'message': 'unknown error',};
       }
     }
   }
@@ -131,11 +132,9 @@ class CommitmentsRepository{
 
       final parsedJson = response.data;
       if (response.statusCode! < 400) {
-        List<Partner> partners = (parsedJson['data'] as List)
-            .map((json) => Partner.fromJson(json))
-            .toList();
+        ShareDetailsResponse shareDetailsResponse= ShareDetailsResponse.fromJson(parsedJson);
 
-        return {'message': 'Partners retrieved successfully', 'data': partners};
+        return {'message': 'Partners retrieved successfully', 'data': shareDetailsResponse};
       }
 
       return {'message': 'Not found'};

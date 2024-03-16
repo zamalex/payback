@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:payback/model/banches_response.dart';
 import 'package:payback/model/categories_response.dart';
 import 'package:payback/model/cities_response.dart';
 import 'package:payback/model/onboarding_response.dart';
@@ -274,7 +275,30 @@ class HomeRepository {
         return {'message': 'Unknown error','data':[]};
       }
     }
-  }  Future<Map<String, dynamic>> getVendors() async {
+  }  Future<Map<String, dynamic>> getBranches() async {
+    try {
+      Response response = await sl<DioClient>().get(Url.BRANCHES_URL);
+
+      final parsedJson = response.data;
+      if (response.statusCode! < 400) {
+        List<Branch> partners = (parsedJson['data'] as List)
+            .map((json) => Branch.fromJson(json))
+            .toList();
+
+        return {'message': 'Partners retrieved successfully', 'data': partners};
+      }
+
+      return {'message': 'Not found'};
+    } catch (e) {
+      if (e is DioError) {
+        return {'message': e.message};
+      } else {
+        return {'message': 'Unknown error'};
+      }
+    }
+  }
+
+  Future<Map<String, dynamic>> getVendors() async {
     try {
       Response response = await sl<DioClient>().get(Url.Vendorrs_URL);
 

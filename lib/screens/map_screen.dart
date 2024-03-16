@@ -40,6 +40,7 @@ class MapSampleState extends State<MapSample> {
 
     Future.delayed(Duration.zero).then((value){
       Provider.of<HomeProvider>(context,listen: false).getVendors();
+      Provider.of<HomeProvider>(context,listen: false).getBranches();
     });
 
 
@@ -190,7 +191,7 @@ class MapSampleState extends State<MapSample> {
       },
     );
   }
-  void showStoreSheet(BuildContext context,Partner partner) {
+  void showStoreSheet(BuildContext context,Partner? partner) {
     showModalBottomSheet(
       isScrollControlled: true,
       backgroundColor: Colors.white,
@@ -202,7 +203,7 @@ class MapSampleState extends State<MapSample> {
         ),
       ),
       builder: (BuildContext context) {
-        return Container(
+        return partner==null?Container():Container(
           height: MediaQuery.of(context).size.height * 0.5,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -333,12 +334,16 @@ class MapSampleState extends State<MapSample> {
                   _controller.complete(controller);
 
                 },
-              ), customMarkers: List.generate(value.vendors.length, (index) => MarkerData(
+              ), customMarkers: List.generate(value.branches.length, (index) => MarkerData(
               marker: Marker(  markerId:  MarkerId('${locations[index].latitude}'), position: index>value.vendors.length-1?locations[0]:locations[index],onTap: (){
-                showStoreSheet(context,value.vendors[index]);
+
+                  showStoreSheet(context,value.getBranchVendor(int.parse(value.branches[index].vendorId??'0')));
+
+
+
 
               }),
-              child: _customMarker(value.vendors[index].image??images[index], Colors.white)))
+              child: _customMarker(/*value.branches[index].image??*/images[index], Colors.white)))
           );
         }
       ),
