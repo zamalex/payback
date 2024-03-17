@@ -1,5 +1,3 @@
-
-
 class Url {
   static const BASE_URL = 'https://payback.b1rincitech.com/api'; //test
   static const LOGIN_URL = '/login';
@@ -36,7 +34,7 @@ class Url {
             "description": "Partner",
             "image": "https://payback.b1rincitech.com/storage/10/01HPCZ31MECN1Y2WA3BYZSNG7D.png"
         }""";
-  static String PRODUCT_JSON ="""{
+  static String PRODUCT_JSON = """{
             "id": 1,
             "name": "tea",
             "description": "tea",
@@ -49,13 +47,15 @@ class Url {
             "category_id": null
         }""";
 
-
-  static String COMMITMENT_JSON ="""{
+  static String COMMITMENT_JSON = """{
             "id": 1,
             "name": "asdasdasd",
             "partner_id": "1",
             "category_id": "1",
             "payment_target": "123.00",
+            "partner":{            
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrD9evOAc2Bj-rUWZ5I79EiHHGVNy7Wp3L9w&usqp=CAU"
+            },
             "cashback_to_commitment": "10.00",
             "due_date": "2024-02-11",
             "type": "repeatable",
@@ -64,7 +64,7 @@ class Url {
             "updated_at": "2024-02-11T20:54:25.000000Z"
         }""";
 
-static String mocCategories = """{
+  static String mocCategories = """{
    "categories":[
       {
          "id":2,

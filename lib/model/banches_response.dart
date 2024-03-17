@@ -1,68 +1,84 @@
+import 'package:payback/model/partner_model.dart';
+
 class BranchesResponse {
   List<Branch>? branches;
 
   BranchesResponse({this.branches});
 
-  BranchesResponse.fromJson(Map<String, dynamic> json) {
-    if (json['data'] != null) {
-      branches = <Branch>[];
-      json['data'].forEach((v) {
-        branches!.add(new Branch.fromJson(v));
-      });
-    }
+  factory BranchesResponse.fromJson(Map<String, dynamic> json) {
+    final List<dynamic>? data = json['data'];
+    return BranchesResponse(
+      branches: data != null
+          ? data.map((branchJson) => Branch.fromJson(branchJson)).toList()
+          : null,
+    );
   }
-
 }
 
 class Branch {
   int? id;
   String? name;
-  Location? location;
-  String? cityId;
-  String? countryId;
-  String? vendorId;
+  int? vendorId;
+  String? vendorName;
+  String? vendorDescription;
+  String? vendorImage;
+
+  Partner? vendor;
+
+  int? categoryId;
+  int? countryId;
+  String? countryName;
+
+  int? cityId;
+  String? cityName;
+
+  double? locationLat;
+  double? locationLng;
   String? address;
-  String? createdAt;
-  String? updatedAt;
 
-  Branch(
-      {this.id,
-        this.name,
-        this.location,
-        this.cityId,
-        this.countryId,
-        this.vendorId,
-        this.address,
-        this.createdAt,
-        this.updatedAt});
+  Branch({
+    this.id,
+    this.name,
+    this.vendorId,
+    this.vendorName,
+    this.vendorDescription,
+    this.vendorImage,
+    this.vendor,
+    this.categoryId,
+    this.countryId,
+    this.countryName,
+    this.cityId,
+    this.cityName,
+    this.locationLat,
+    this.locationLng,
+    this.address,
+  });
 
-  Branch.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    location = json['location'] != null
-        ? new Location.fromJson(json['location'])
-        : null;
-    cityId = json['city_id'];
-    countryId = json['country_id'];
-    vendorId = json['vendor_id'];
-    address = json['address'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
+  factory Branch.fromJson(Map<String, dynamic> json) {
+    return Branch(
+      id: json['id'],
+      name: json['name'],
+      vendorId: json['vendor_id'] != null ? json['vendor_id']['id'] : null,
+      vendorName:
+      json['vendor_id'] != null ? json['vendor_id']['name'] : null,
+      vendorDescription: json['vendor_id'] != null
+          ? json['vendor_id']['description']
+          : null,
+      vendorImage:
+      json['vendor_id'] != null ? json['vendor_id']['image'] : null,
+      vendor: json['vendor_id'] != null
+          ? Partner.fromJson(json['vendor_id'])
+          : null,
+      categoryId: json['category_id'],
+      countryId:
+      json['country_id'] != null ? json['country_id']['id'] : null,
+      countryName:
+      json['country_id'] != null ? json['country_id']['name'] : null,
+      cityId: json['city_id'] != null ? json['city_id']['id'] : null,
+      cityName: json['city_id'] != null ? json['city_id']['name'] : null,
+      locationLat: json['location'] != null ? json['location']['lat'] : null,
+      locationLng: json['location'] != null ? json['location']['lng'] : null,
+      address: json['address'],
+    );
   }
-
-
-}
-
-class Location {
-  double? lat;
-  double? lng;
-
-  Location({this.lat, this.lng});
-
-  Location.fromJson(Map<String, dynamic> json) {
-    lat = json['lat'];
-    lng = json['lng'];
-  }
-
-
 }

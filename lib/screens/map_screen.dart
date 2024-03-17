@@ -9,6 +9,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/model/banches_response.dart';
 import 'package:payback/model/partner_model.dart';
 import 'package:payback/providers/home_provider.dart';
 import 'package:payback/screens/cart_screen.dart';
@@ -192,7 +193,7 @@ class MapSampleState extends State<MapSample> {
       },
     );
   }
-  void showStoreSheet(BuildContext context,Partner? partner) {
+  void showStoreSheet(BuildContext context,Branch? partner) {
     showModalBottomSheet(
       isScrollControlled: true,
       backgroundColor: Colors.white,
@@ -245,7 +246,7 @@ class MapSampleState extends State<MapSample> {
                             leading: Container(
                             margin: EdgeInsets.symmetric(horizontal: 4),
                             width: 56,height: 56,
-                            decoration: BoxDecoration(image:DecorationImage(image: NetworkImage(partner.image??'',),fit: BoxFit.cover),borderRadius: BorderRadius.circular(12),),
+                            decoration: BoxDecoration(image:DecorationImage(image: NetworkImage(partner.vendor?.image??'',),fit: BoxFit.cover),borderRadius: BorderRadius.circular(12),),
                           ),
                           title:  Text(
                             partner.name??'',
@@ -254,19 +255,19 @@ class MapSampleState extends State<MapSample> {
                           ),
                           SizedBox(height: 15,),
                           Text(
-                            partner.description??'',
+                            partner.vendor?.description??'',
                             style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
                           ),
                           SizedBox(height: 15,),
                          TextButton.icon(
                            style: ButtonStyle(padding: MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.zero)),
                            onPressed: (){}, icon: Icon(Icons.pin_drop_outlined,color: Colors.black,), label:  Text(
-                           'City, Street, Building number',
+                           partner.address??'',
                            style: TextStyle(fontSize: 15,color: Colors.black, fontWeight: FontWeight.bold),
                          ),),
                           SizedBox(height: 15,),
                           Container(width: double.infinity,child: CustomButton(buttonColor: kPurpleColor,buttonText: 'View partner\'s shop',onTap: (){
-                            Get.to(PartnerDetailsScreen(partner: partner));
+                            Get.to(PartnerDetailsScreen(partner: partner.vendor!));
                           },),)
                   
                         ])),
@@ -327,8 +328,8 @@ class MapSampleState extends State<MapSample> {
               builder:(p0, markers) => markers==null? Center(child: CircularProgressIndicator()):GoogleMap(
                 markers: markers,
                 mapType: MapType.normal,
-                initialCameraPosition: const CameraPosition(
-                  target: LatLng(37.42796133580664, -122.085749655962),
+                initialCameraPosition:  CameraPosition(
+                  target: LatLng(value.branches.last.locationLat!, value.branches.last.locationLng!),
                   zoom: 14.4746,
                 ),
                 onMapCreated: (GoogleMapController controller) {
@@ -336,9 +337,9 @@ class MapSampleState extends State<MapSample> {
 
                 },
               ), customMarkers: List.generate(value.branches.length, (index) => MarkerData(
-              marker: Marker(  markerId:  MarkerId('${locations[index].latitude}'), position: index>value.vendors.length-1?locations[0]:locations[index],onTap: (){
+              marker: Marker(  markerId:  MarkerId('${value.branches[index].locationLat}'), position: LatLng(value.branches[index].locationLat!,value.branches[index].locationLng!),onTap: (){
 
-                  showStoreSheet(context,value.getBranchVendor(int.parse(value.branches[index].vendorId??'0')));
+                  showStoreSheet(context,value.branches[index]);
 
 
 
@@ -354,11 +355,9 @@ class MapSampleState extends State<MapSample> {
         child: Icon(Icons.qr_code,color: Colors.white,),
         onPressed: (){
 
-          Provider.of<HomeProvider>(context,listen: false).getProducts(location: 'QR',vendorIDs: [1]).then((value){
-            Get.to(CartScreen(qrProducts: (value['data']as List).isEmpty?null:value['data'],));
-          });
 
-          //Get.to(ScannerScreen());
+
+          Get.to(ScannerScreen());
         },
       ),
     );

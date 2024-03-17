@@ -43,15 +43,21 @@ class CheckoutProvider extends ChangeNotifier{
       cart = qrProducts;
 
       cart.forEach((element) { element.cartQuantity=1;});
-      groupProductsByVendor();
 
-      notifyListeners();
+
+      await sl<PreferenceUtils>().saveCart(cart);
+
+      readCart(pros, null);
+
       return;
     }
-    cart = await sl<PreferenceUtils>().readCart();
-    syncCartProducts(pros);
+    else{
+      cart = await sl<PreferenceUtils>().readCart();
+      syncCartProducts(pros);
 
-    groupProductsByVendor();
+      groupProductsByVendor();
+    }
+
   }
 
   addToCart(Product product) async{

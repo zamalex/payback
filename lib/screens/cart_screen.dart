@@ -14,9 +14,8 @@ import '../data/service_locator.dart';
 import '../model/product_model.dart';
 
 class CartScreen extends StatefulWidget {
-  CartScreen({super.key,this.qrProducts});
+  CartScreen({super.key});
 
-  List<Product>? qrProducts;
 
   @override
   State<CartScreen> createState() => _CartScreenState();
@@ -33,7 +32,10 @@ class _CartScreenState extends State<CartScreen> {
       Future.delayed(Duration.zero).then((value){
         Provider.of<HomeProvider>(context,listen: false).selectedHomeIndex=-1;
         Provider.of<HomeProvider>(context,listen: false).getProducts().then((value){
-          Provider.of<CheckoutProvider>(context,listen: false).readCart(Provider.of<HomeProvider>(context,listen: false).products,widget.qrProducts);
+          Provider.of<CheckoutProvider>(context,listen: false).readCart(Provider.of<HomeProvider>(context,listen: false).products,null);
+
+
+
 
         });
       });
