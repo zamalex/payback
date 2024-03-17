@@ -69,7 +69,7 @@ class Branch {
       vendor: json['vendor_id'] != null
           ? Partner.fromJson(json['vendor_id'])
           : null,
-      categoryId: json['category_id'],
+      categoryId: json['category_id']['id'],
       countryId:
       json['country_id'] != null ? json['country_id']['id'] : null,
       countryName:

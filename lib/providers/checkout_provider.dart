@@ -97,18 +97,18 @@ class CheckoutProvider extends ChangeNotifier{
     return response;
   }
 
-  syncCartProducts(List<Product> prods){
-    cart.forEach((c) {
-      Product? p = prods.firstWhereOrNull((element) => c.id==element.id,);
+  syncCartProducts(List<Product> prods) {
+    List<Product> cartCopy = List.from(cart); // Create a copy of the cart list
 
-      if(p!=null){
-        c=p..cartQuantity=c.cartQuantity;
-      }
-      else{
-        cart.removeWhere((element) => element.id==c.id);
+    cartCopy.forEach((c) {
+      Product? p = prods.firstWhereOrNull((element) => c.id == element.id);
+
+      if (p != null) {
+        c = p..cartQuantity = c.cartQuantity; // Update the original cart list
+      } else {
+        cart.removeWhere((element) => element.id == c.id); // Modify the original cart list
       }
     });
-
   }
 
 

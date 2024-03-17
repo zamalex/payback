@@ -21,7 +21,14 @@ class ScannerScreen extends StatelessWidget {
           width: double.infinity,
           height: double.infinity,
           child: Stack(children: [
-            MobileScanner(onDetect: (BarcodeCapture barcodes) {
+            MobileScanner(
+              overlay:Image.asset('assets/images/qr.png',color:Colors.white,width: MediaQuery.of(context).size.width-100,height: MediaQuery.of(context).size.width-100,),
+          controller: MobileScannerController(
+          detectionSpeed: DetectionSpeed.noDuplicates,
+            //facing: CameraFacing.front,
+           // torchEnabled: true,
+          ),
+              onDetect: (BarcodeCapture barcodes) {
               Provider.of<HomeProvider>(context,listen: false).getProducts(location: 'QR',vendorIDs: [1]).then((value){
                 Provider.of<CheckoutProvider>(context,listen: false).readCart(Provider.of<HomeProvider>(context,listen: false).products,(value['data']as List).isEmpty?null:value['data'],);
 

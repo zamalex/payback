@@ -336,7 +336,7 @@ class MapSampleState extends State<MapSample> {
                   _controller.complete(controller);
 
                 },
-              ), customMarkers: List.generate(value.branches.length, (index) => MarkerData(
+              ), customMarkers: value.branches.isEmpty?[]:List.generate(value.branches.length, (index) => MarkerData(
               marker: Marker(  markerId:  MarkerId('${value.branches[index].locationLat}'), position: LatLng(value.branches[index].locationLat!,value.branches[index].locationLng!),onTap: (){
 
                   showStoreSheet(context,value.branches[index]);
