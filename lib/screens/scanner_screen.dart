@@ -22,7 +22,7 @@ class ScannerScreen extends StatelessWidget {
           height: double.infinity,
           child: Stack(children: [
             MobileScanner(
-              overlay:Image.asset('assets/images/qr.png',color:Colors.white,width: MediaQuery.of(context).size.width-100,height: MediaQuery.of(context).size.width-100,),
+              overlay:Icon(Icons.fullscreen,color:Colors.white,size: MediaQuery.of(context).size.width),//Image.asset('assets/images/qr.png',color:Colors.white,width: MediaQuery.of(context).size.width-100,height: MediaQuery.of(context).size.width-100,),
           controller: MobileScannerController(
           detectionSpeed: DetectionSpeed.noDuplicates,
             //facing: CameraFacing.front,
