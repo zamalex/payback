@@ -32,12 +32,18 @@ class LoginScreen extends StatelessWidget {
       final User? user = authResult.user;
       if(user!=null)
       print('user ${user?.email}');
-      print('token ${googleSignInAuthentication.accessToken}');
-      print('id token ${googleSignInAuthentication.idToken}');
+     // print('token ${googleSignInAuthentication.accessToken}');
+     // print('id token ${googleSignInAuthentication.idToken}');
 
       Provider.of<a.AuthProvider>(context, listen: false)
-          .socialLogin({'provider':'google','access_token':googleSignInAuthentication.accessToken!})
-          .then((value){});
+          .socialLogin({'provider':'google','name':user?.displayName??'','email':user?.email??''})
+          .then((value){
+        value['data'] == null
+            ?Get.snackbar('Alert', value['message'],backgroundColor: Colors.red,colorText: Colors.white): Get.to(MainScreen());
+        if (value['data'] != null) {
+          sl<PreferenceUtils>().saveUser(value['data']);
+        }
+      });
       return user;
     } catch (error) {
       print(error);

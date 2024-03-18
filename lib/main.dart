@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -23,7 +24,7 @@ import 'package:uni_links/uni_links.dart';
 import 'data/http/urls.dart';
 import 'data/preferences.dart';
 import 'data/service_locator.dart';
-import 'providers/auth_provider.dart';
+import 'providers/auth_provider.dart' as a;
 
 
 bool _initialURILinkHandled = false;
@@ -143,7 +144,10 @@ void main() async {
   _initializeFCM();
 
   await init();
+  final  user = FirebaseAuth.instance.currentUser;
+  final uid = user?.uid;
 
+  print('uid ${uid}');
   //sl<PreferenceUtils>().readNotification().then((value) => print('notifications main app is ${value}'));
 
   _configureFCMListeners();
@@ -161,7 +165,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
+        ChangeNotifierProvider<a.AuthProvider>(create: (_) => a.AuthProvider()),
         ChangeNotifierProvider<HomeProvider>(create: (_) => HomeProvider()),
         ChangeNotifierProvider<CheckoutProvider>(
             create: (_) => CheckoutProvider()),

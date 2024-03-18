@@ -18,6 +18,8 @@ class AuthProvider extends ChangeNotifier{
     isLoading = true;
     notifyListeners();
 
+    print(body.toString());
+
     Map response= await sl<AuthRepository>().socialLogin(body);
 
     isLoading = false;

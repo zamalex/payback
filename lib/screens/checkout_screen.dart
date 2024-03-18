@@ -72,7 +72,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             'vendor_id', () => order.vendor);
 
          map.putIfAbsent(
-            'delivery_method_id', () => 1/*provider.shippings[order.selectedDelivery].name*/);
+            'delivery_method_id', () => provider.shippings[order.selectedDelivery].id);
 
         map.putIfAbsent(
             'payment_setting_id', () => 1);

@@ -69,23 +69,24 @@ class AuthRepository {
   }
 
 
-  Future socialLogin(Map<String, String> body) async {
+  Future<Map> socialLogin(Map<String, String> body) async {
     try {
       Response response =
       await sl<DioClient>().post(Url.SOCIAL_LOGIN_URL, data: jsonEncode(body));
 
       final parsedJson = response.data;
       if (response.statusCode! < 400) {
-        return {'message': 'Done', 'data': true};
+        AuthResponse loginModel = AuthResponse.fromJson(parsedJson);
+        return {'message': 'Welcome', 'data': loginModel};
       }
 
-      return {'message': 'Error', 'data': false};
+      return {'message': 'Error', 'data': null};
     } catch (e) {
       if (e is DioError) {
-        return {'message':  DioErrorHelper.handleError(e), 'data': false};
+        return {'message':  DioErrorHelper.handleError(e), 'data': null};
 
       } else {
-        return {'message': 'unknown error', 'data': false};
+        return {'message': 'unknown error', 'data': null};
       }
     }
   }

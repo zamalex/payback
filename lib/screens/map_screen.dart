@@ -330,7 +330,7 @@ class MapSampleState extends State<MapSample> {
                 mapType: MapType.normal,
                 initialCameraPosition:  CameraPosition(
                   target: LatLng(value.branches.last.locationLat!, value.branches.last.locationLng!),
-                  zoom: 14.4746,
+                  zoom: 11,
                 ),
                 onMapCreated: (GoogleMapController controller) {
                   _controller.complete(controller);
