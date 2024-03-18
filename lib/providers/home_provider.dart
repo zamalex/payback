@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -68,6 +69,7 @@ class HomeProvider extends ChangeNotifier {
   int selectedHomeIndex = -1;
   int selectedShoppingIndex = -1;
 
+
   List<int> checkedVendors = [];
 
   checkVendorInFilter(int id) {
@@ -122,7 +124,13 @@ class HomeProvider extends ChangeNotifier {
 
   }
 
+ selectMapIndex(int i) {
+    mapCategories[i].isMapSelected =!mapCategories[i].isMapSelected;
+    notifyListeners();
+  }
+
   List<Category> categories = [];
+  List<Category> mapCategories = [];
   List<Data>? onBoarding = [];
 
   List<Product> products = [];
@@ -137,6 +145,7 @@ class HomeProvider extends ChangeNotifier {
   List<Partner> vendors = [];
   List<Partner> partners = [];
   List<Branch> branches = [];
+  List<Branch> filterBranches = [];
 
   Future<Map<String, dynamic>> getVendors() async {
     // Implement your loading logic here if needed
@@ -167,6 +176,34 @@ class HomeProvider extends ChangeNotifier {
     if (response.containsKey('data')) {
       branches = response['data'];
     }
+
+    mapCategories.forEach((element) {print(element.id);});
+
+    print('branches');
+    branches.forEach((element) {print(element.categoryId);});
+
+    if(!mapCategories[0].isMapSelected)
+    branches = branches.where((element) => mapCategories.map((category) => category).toList().where((element) => element.isMapSelected).map((e) => e.id).toList().contains(element.categoryId)).toList();
+
+    notifyListeners();
+    return response;
+  }
+
+  Future<Map<String, dynamic>> getFilterBranches(int? id) async {
+
+    isLoading = true;
+    notifyListeners();
+
+    final response = await sl<HomeRepository>().getBranches();
+    if (response.containsKey('data')) {
+      filterBranches = response['data'];
+    }
+
+    if(id!=null){
+      filterBranches = filterBranches.where((element) => element.cityId==id).toList();
+    }
+
+    isLoading = false;
 
     notifyListeners();
     return response;
@@ -460,6 +497,7 @@ class HomeProvider extends ChangeNotifier {
     Map response = await sl<HomeRepository>().getCategories();
     categories = response['data'];
 
+    mapCategories = [Category(image: '',description: '',id: 0,isFeatured: '0',name: 'All',isMapSelected: true)]..addAll(categories);
     isLoading = false;
     notifyListeners();
 

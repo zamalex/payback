@@ -97,97 +97,98 @@ class MapSampleState extends State<MapSample> {
         ),
       ),
       builder: (BuildContext context) {
-        return Container(
-          height: MediaQuery.of(context).size.height * 0.95,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(16.0),
-                topRight: Radius.circular(16.0),
-              ),
-              color: kBackgroundColor),
-          padding: EdgeInsets.all(0.0),
-          child: Column(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: Icon(
-                                Icons.close,
-                                color: Colors.red,
-                              ),
-                            )
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                          Text(
-                            'Partners categories',
-                            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            'Reset all',
-                            style: TextStyle(fontSize: 18,color: Colors.red, fontWeight: FontWeight.bold),
-                          ),
-
-                        ],),
-                        SizedBox(
-                          height: 10,
-                        ),
-
-                      ]..addAll([
-                        Expanded(
-                          child: ListView.builder(
-
-                            itemCount: cats.length,
-                            itemBuilder: (context, index) {
-                              return Row(
-                                children: [
-                                  Checkbox(
-
-                                    checkColor: Colors.white,
-                                    fillColor: MaterialStatePropertyAll<Color>(kBlueColor),
-                                    value: true,
-                                    shape: CircleBorder(),
-                                    onChanged: (bool? value) {
-                                      setState(() {
-                                      });
-                                    },
-                                  ),
-                                  Text(cats[index],style: TextStyle(color: Colors.black),)
-                                ],
-                              );
-                            },
-                          ),
-                        ),
-
-                      ])),
+        return Consumer<HomeProvider>(
+          builder:(context, value, child) => Container(
+            height: MediaQuery.of(context).size.height * 0.95,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(16.0),
+                  topRight: Radius.circular(16.0),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(16),
-                        topRight: Radius.circular(16))),
-                child: Container(
-                    width: double.infinity,
-                    child: CustomButton(
-                        buttonText: 'Create', buttonColor: kPurpleColor)),
-              )
-            ],
+                color: kBackgroundColor),
+            padding: EdgeInsets.all(0.0),
+            child: Column(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Icon(
+                                  Icons.close,
+                                  color: Colors.red,
+                                ),
+                              )
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                            Text(
+                              'Partners categories',
+                              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              'Reset all',
+                              style: TextStyle(fontSize: 18,color: Colors.red, fontWeight: FontWeight.bold),
+                            ),
+
+                          ],),
+                          SizedBox(
+                            height: 10,
+                          ),
+
+                        ]..addAll([
+                          Expanded(
+                            child: ListView.builder(
+
+                              itemCount: value.mapCategories.length,
+                              itemBuilder: (context, index) {
+                                return Row(
+                                  children: [
+                                    Checkbox(
+
+                                      checkColor: Colors.white,
+                                      fillColor: MaterialStatePropertyAll<Color>(kBlueColor),
+                                      value: value.mapCategories[index].isMapSelected,
+                                      shape: CircleBorder(),
+                                      onChanged: (bool? v) {
+                                        value.selectMapIndex(index);
+                                      },
+                                    ),
+                                    Text(value.mapCategories[index].name??'',style: TextStyle(color: Colors.black),)
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+
+                        ])),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(16),
+                          topRight: Radius.circular(16))),
+                  child: Container(
+                      width: double.infinity,
+                      child: CustomButton(
+                          buttonText: 'Apply', buttonColor: kPurpleColor,onTap: (){value.getBranches();Navigator.pop(context);},)),
+                )
+              ],
+            ),
           ),
         );
       },
@@ -282,7 +283,6 @@ class MapSampleState extends State<MapSample> {
     );
   }
 
-  List cats= ['All','Sports','Clothes','Clothes','Electronics'];
   final locations = const [
     LatLng(37.42796133580664, -122.085749655962),
     LatLng(37.41796133580664, -122.085749655962),
@@ -290,12 +290,12 @@ class MapSampleState extends State<MapSample> {
     LatLng(37.42796133580664, -122.095749655962),
   ];
 
-  final images = [
+  /*final images = [
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrD9evOAc2Bj-rUWZ5I79EiHHGVNy7Wp3L9w&usqp=CAU',
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAJ5hZ3dCotAy4FRZQT7THh5uPbYjeyQHexQ&usqp=CAU',
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1V3l9fyk4IDnrc0TewVmAPM2C-d2TlhiyZQ&usqp=CAU',
     'https://static.vecteezy.com/system/resources/previews/017/396/814/non_2x/netflix-mobile-application-logo-free-png.png'
-  ];
+  ];*/
 
   bool buildDone = false;
   @override
@@ -323,7 +323,7 @@ class MapSampleState extends State<MapSample> {
       ),
       body: Consumer<HomeProvider>(
         builder:(context, value, child){
-          return CustomGoogleMapMarkerBuilder(
+          return value.branches.isEmpty?Container(child: Center(child: Text('No available branches'),),):CustomGoogleMapMarkerBuilder(
               screenshotDelay: Duration(seconds: buildDone?0:3),
               builder:(p0, markers) => markers==null? Center(child: CircularProgressIndicator()):GoogleMap(
                 markers: markers,
@@ -345,7 +345,7 @@ class MapSampleState extends State<MapSample> {
 
 
               }),
-              child: _customMarker(/*value.branches[index].image??*/images[index], Colors.white)))
+              child: _customMarker(/*value.branches[index].image??*/value.branches[index].vendor!.image!, Colors.white)))
           );
         }
       ),

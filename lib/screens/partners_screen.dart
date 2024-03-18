@@ -24,7 +24,7 @@ class _PartnersScreenState extends State<PartnersScreen> {
 
     Future.delayed(Duration.zero).then((value){
       Provider.of<HomeProvider>(context,listen: false).getCities();
-      Provider.of<HomeProvider>(context,listen: false).getVendors();
+      Provider.of<HomeProvider>(context,listen: false).getFilterBranches(null);
     });
   }
 
@@ -92,7 +92,7 @@ class _PartnersScreenState extends State<PartnersScreen> {
                           border: Border.all(color: Colors.grey, width: 1)),
                     )),
                 Container(height: 20),
-                Container(
+                value.isLoading?Center(child: CircularProgressIndicator(),):Container(
                   child: GridView(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
@@ -100,7 +100,7 @@ class _PartnersScreenState extends State<PartnersScreen> {
                         childAspectRatio: .7,
                         crossAxisSpacing: 8,
                         crossAxisCount: 2),
-                    children: List.generate(value.vendors.length, (index) => PartnerWidget(partner: value.vendors[index])),
+                    children: List.generate(value.filterBranches.length, (index) => PartnerWidget(branch: value.filterBranches[index])),
                   ),
                 )
               ],
@@ -154,8 +154,9 @@ class _PartnersScreenState extends State<PartnersScreen> {
                           style: TextStyle(fontSize: 15),
                         ),
                         onTap: () {
-                          // Handle settings tile tap
-                        },
+                          Provider.of<HomeProvider>(context,listen: false).getFilterBranches(cities[index].id);
+                          Navigator.pop(context);
+                          },
                       ),
                       index < cities.length-1 ? Divider() : Container()
                     ],

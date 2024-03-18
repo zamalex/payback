@@ -15,6 +15,7 @@ import 'package:payback/screens/partner_details_screen.dart';
 import 'package:payback/screens/product_details_screen.dart';
 import 'package:provider/provider.dart';
 
+import '../model/banches_response.dart';
 import '../model/partner_model.dart';
 
 class CustomTextField extends StatefulWidget {
@@ -570,14 +571,19 @@ class ProductWidget extends StatelessWidget {
 }
 
 class PartnerWidget extends StatelessWidget {
-  PartnerWidget({super.key, this.partner});
+  PartnerWidget({super.key, this.partner,this.branch});
 
   Partner? partner;
+
+  Branch? branch;
 
   @override
   Widget build(BuildContext context) {
     if (partner == null)
       partner = Partner.fromJson(jsonDecode(Url.PARTNER_JSON));
+
+    if(branch!=null)
+      partner = branch!.vendor;
     return InkWell(
       onTap: () {
         Get.to(PartnerDetailsScreen(

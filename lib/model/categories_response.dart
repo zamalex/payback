@@ -21,6 +21,7 @@ class Category{
   String? description;
   String? image;
   String? isFeatured;
+  bool isMapSelected = false;
 
   Category(
       {this.id,
@@ -28,6 +29,7 @@ class Category{
         this.description,
         this.image,
         this.isFeatured,
+        this.isMapSelected=false,
      });
 
   Category.fromJson(Map<String, dynamic> json) {
