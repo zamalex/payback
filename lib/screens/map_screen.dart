@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:custom_map_markers/custom_map_markers.dart';
@@ -296,7 +297,23 @@ class MapSampleState extends State<MapSample> {
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1V3l9fyk4IDnrc0TewVmAPM2C-d2TlhiyZQ&usqp=CAU',
     'https://static.vecteezy.com/system/resources/previews/017/396/814/non_2x/netflix-mobile-application-logo-free-png.png'
   ];*/
+  Map<String, double> getRandomLatLong() {
+    // Define the range for latitude and longitude
+    const double minLat = -90;
+    const double maxLat = 90;
+    const double minLong = -180;
+    const double maxLong = 180;
 
+    // Generate random latitude and longitude
+    double latitude = Random().nextDouble() * (maxLat - minLat) + minLat;
+    double longitude = Random().nextDouble() * (maxLong - minLong) + minLong;
+
+    // Round latitude and longitude to 6 decimal places
+    latitude = double.parse(latitude.toStringAsFixed(6));
+    longitude = double.parse(longitude.toStringAsFixed(6));
+
+    return {'latitude': latitude, 'longitude': longitude};
+  }
   bool buildDone = false;
   @override
   Widget build(BuildContext context) {
@@ -329,7 +346,7 @@ class MapSampleState extends State<MapSample> {
                 markers: markers,
                 mapType: MapType.normal,
                 initialCameraPosition:  CameraPosition(
-                  target: LatLng(value.branches.last.locationLat!, value.branches.last.locationLng!),
+                  target: LatLng(value.branches.last.locationLat??getRandomLatLong()['latitude']!, value.branches.last.locationLng??getRandomLatLong()['longitude']!),
                   zoom: 11,
                 ),
                 onMapCreated: (GoogleMapController controller) {
@@ -337,7 +354,7 @@ class MapSampleState extends State<MapSample> {
 
                 },
               ), customMarkers: value.branches.isEmpty?[]:List.generate(value.branches.length, (index) => MarkerData(
-              marker: Marker(  markerId:  MarkerId('${value.branches[index].locationLat}'), position: LatLng(value.branches[index].locationLat!,value.branches[index].locationLng!),onTap: (){
+              marker: Marker(  markerId:  MarkerId('${value.branches[index].locationLat??getRandomLatLong()['latitude']!}'), position: LatLng(value.branches[index].locationLat??getRandomLatLong()['latitude']!,value.branches[index].locationLng??getRandomLatLong()['longitude']!),onTap: (){
 
                   showStoreSheet(context,value.branches[index]);
 

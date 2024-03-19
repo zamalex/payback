@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:payback/model/partner_model.dart';
 
 class BranchesResponse {
@@ -55,6 +57,7 @@ class Branch {
   });
 
   factory Branch.fromJson(Map<String, dynamic> json) {
+
     return Branch(
       id: json['id'],
       name: json['name'],
@@ -81,4 +84,6 @@ class Branch {
       address: json['address'],
     );
   }
+
+
 }

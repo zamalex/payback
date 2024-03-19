@@ -8,6 +8,7 @@ class Url {
   static const CHECK_TOKEN_URL = '/check-token';
   static const RESET_PASSWORD_URL = '/reset-password';
   static const NOTIFICATIONS_URL = '/admin/products';
+  static const SETTINGS_URL = '/admin/settings';
   static const CATEGORIES_URL = '/admin/categories';
   static const PRODUCTS_URL = '/admin/products';
   static const Vendorrs_URL = '/admin/vendors';
@@ -24,6 +25,7 @@ class Url {
   static const CITIES_URL = '/admin/cities';
   static const SEND_FCM_TOKEN_URL = '/admin/send';
   static const CREATE_ORDER_URL = '/admin/orders/create';
+  static const CORDERS_URL = '/admin/orders';
 
   static String TOKEN = '';
   static String LOCALE = 'ar';

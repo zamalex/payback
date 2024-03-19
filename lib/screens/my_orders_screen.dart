@@ -1,7 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payback/model/orders_model.dart';
+import 'package:payback/providers/checkout_provider.dart';
 import 'package:payback/screens/order_details_screen.dart';
+import 'package:provider/provider.dart';
 import 'package:slide_switcher/slide_switcher.dart';
 
 import '../helpers/colors.dart';
@@ -15,11 +17,23 @@ class MyOrdersScreen extends StatefulWidget {
 
 class _MyOrdersScreenState extends State<MyOrdersScreen> {
   int selected = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    Future.delayed(Duration.zero).then((value) => getOrders());
+  }
+
+  getOrders() {
+    Provider.of<CheckoutProvider>(context, listen: false).loadOrders();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
         centerTitle: true,
         title: Text(
           'My orders',
@@ -39,10 +53,10 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
               style: TextStyle(color: kPurpleColor),
             )),
       ),
-      body: Container(
-        padding: EdgeInsets.all(8),
-        child: Column(
-          children:[
+      body: Consumer<CheckoutProvider>(
+        builder: (context, value, child) => Container(
+          padding: EdgeInsets.all(8),
+          child: Column(children: [
             SlideSwitcher(
               containerColor: Colors.white,
               slidersColors: const [
@@ -74,10 +88,20 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
               containerHeight: 45,
               containerWight: MediaQuery.of(context).size.width - 32 - 10,
             ),
-            SizedBox(height: 20,),
-
-          ]..addAll(List.generate(2, (index) =>MyOrderItem()))
-
+            SizedBox(
+              height: 20,
+            ),
+            Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                                children: List.generate(
+                    value.orders.length,
+                    (index) => MyOrderItem(
+                          order: value.orders[index],
+                        )),
+                              ),
+                ))
+          ]),
         ),
       ),
     );
@@ -85,54 +109,64 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
 }
 
 class MyOrderItem extends StatelessWidget {
-  const MyOrderItem({super.key});
+  MyOrderItem({super.key, required this.order});
+
+  Order order;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){Get.to(OrderDetails());},
+      onTap: () {
+        Get.to(OrderDetails());
+      },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 4),
-        decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(15)),
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(15)),
         padding: EdgeInsets.all(10),
-        child: const Column(
+        child:  Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-          MyOrderSubItem(),
-          Padding(
-            padding: EdgeInsets.only(left:8.0,top: 10),
-            child: Text(
-              'Order №1299932',
-              maxLines: 1,
-              style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  overflow: TextOverflow.ellipsis,
-                  color: Colors.black),
-            ),
-          ),
+            MyOrderSubItem(),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0,vertical: 4),
-              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [
-                Text('Time & date'), Text('05.06.2023; 17:32')
-              ],),
-            ),Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0,vertical: 4),
-              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [
-                Text('Total price'), Text('9999 SAR')
-              ],),
-            ),Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0,vertical: 4),
-              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [
-                Text('Cashback'), Text('500 SAR')
-              ],),
+              padding: EdgeInsets.only(left: 8.0, top: 10),
+              child: Text(
+                'Order №${order.id??''}',
+                maxLines: 1,
+                style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    overflow: TextOverflow.ellipsis,
+                    color: Colors.black),
+              ),
             ),
-        ],),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [Text('Time & date'), Text(order.createdAt??'-- --')],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [Text('Total price'), Text('${order.amount??''} SAR')],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [Text('Cashback'), Text('0 SAR')],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
-
 
 class MyOrderSubItem extends StatelessWidget {
   const MyOrderSubItem({super.key});
@@ -140,8 +174,9 @@ class MyOrderSubItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),color: kWhitrColor),
-      width: double.infinity,//MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15), color: kWhitrColor),
+      width: double.infinity, //MediaQuery.of(context).size.width,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15),
         child: Card(
@@ -177,10 +212,8 @@ class MyOrderSubItem extends StatelessWidget {
                                     overflow: TextOverflow.ellipsis,
                                     color: Colors.grey)),
                           ),
-
                         ],
                       ),
-
                       Row(
                         children: [
                           Expanded(
@@ -196,7 +229,6 @@ class MyOrderSubItem extends StatelessWidget {
                           ),
                         ],
                       ),
-                    
                     ],
                   ),
                 ),

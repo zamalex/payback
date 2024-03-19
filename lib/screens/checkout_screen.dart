@@ -175,6 +175,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             if(value.checkouts.isEmpty){
               Navigator.pop(context);
             }
+
+            double allTotal = 0;
+            value.checkouts.forEach((element) {
+              allTotal+= element.getTotalPrice();
+            });
+
             return SafeArea(
               child: Form(
                 key: _formKey,
@@ -276,7 +282,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   children: [
                                     Text('Total orders price'),
                                     Text(
-                                      '${calculateCartTotal(value.cart)} SAR',
+                                      '${allTotal} SAR',
                                       style: TextStyle(
                                           color: kBlueColor,
                                           fontWeight: FontWeight.bold,

@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+
 class Product {
   late int id;
   late String? name;
@@ -32,7 +34,7 @@ class Product {
       description: json['description'],
       quantity: json['quantity'],
       price: json['price'],
-      featuredImage: json['featured_image'],
+      featuredImage: (json['featured_image']==null||json['featured_image']=='')?'https://www.huber-online.com/daisy_website_files/_processed_/8/0/csm_no-image_d5c4ab1322.jpg':json['featured_image'],
       gallery: json['gallery'],
       vendor_id: int.parse(json['vendor_id']==null?'0':json['vendor_id'].toString()),
       cartQuantity: json['cartQuantity']??0,

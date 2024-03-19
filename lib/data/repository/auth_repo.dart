@@ -7,6 +7,7 @@ import 'package:payback/model/notifications_response.dart';
 
 
 import '../../model/auth_response.dart';
+import '../../model/settings_response.dart';
 import '../http/dio_client.dart';
 import '../http/urls.dart';
 import '../service_locator.dart';
@@ -246,5 +247,18 @@ class AuthRepository {
     }
   }
 
+  Future<Map> getSettings() async {
+    try {
+      Response response =
+      await sl<DioClient>().get(Url.SETTINGS_URL,);
+      if (response.statusCode == 200) {
+        return {'data':SettingsResponse.fromJson(response.data)};
+      } else {
+        return {'data':null};
+      }
+    } catch (e) {
+      return {'data':null};
 
+    }
+  }
 }

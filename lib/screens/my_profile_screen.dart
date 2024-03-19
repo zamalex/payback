@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payback/data/preferences.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/model/auth_response.dart';
 import 'package:payback/screens/edit_address_screen.dart';
 import 'package:payback/screens/login.dart';
 import 'package:payback/screens/my_orders_screen.dart';
@@ -18,6 +19,8 @@ class MyProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    User user = sl<AuthResponse>().data!.user!;
+
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -103,7 +106,7 @@ class MyProfileScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.max,children: [
-                    Text('Mustafa Ezzeldin',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.grey.shade800),),
+                    Text(user.name??'',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.grey.shade800),),
                     Text('Free user',style: TextStyle(fontSize: 18,color: Colors.grey),)
                   ],),
                 )

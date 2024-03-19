@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:payback/model/notifications_response.dart';
+import 'package:payback/model/settings_response.dart';
 
 import '../data/repository/auth_repo.dart';
 import '../data/service_locator.dart';
@@ -13,6 +14,26 @@ class AuthProvider extends ChangeNotifier{
   bool isLoading=false;
 
   List<NotificationItem> notifications= [];
+
+  SettingsResponse? settingsResponse;
+
+  Future<Map> getSettings()async{
+    isLoading = true;
+    notifyListeners();
+
+
+
+    Map response= await sl<AuthRepository>().getSettings();
+
+    settingsResponse = response['data'];
+
+    isLoading = false;
+    notifyListeners();
+
+    return response;
+  }
+
+
 
   Future<Map> socialLogin(Map<String,String> body)async{
     isLoading = true;

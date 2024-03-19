@@ -656,7 +656,7 @@ class PartnerWidget extends StatelessWidget {
               ),
               SizedBox(height: 5),
               Text(
-                '${partner!.name ?? ''}',
+                branch==null?'${partner!.name ?? ''}':branch!.name??'',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,

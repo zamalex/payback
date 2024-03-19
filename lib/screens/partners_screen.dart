@@ -131,37 +131,39 @@ class _PartnersScreenState extends State<PartnersScreen> {
               ),
               color: Colors.white),
           padding: EdgeInsets.all(16.0),
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Select your city',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: 10,
-                )
-              ]..addAll(List.generate(
-                  cities.length,
-                  (index) => Column(
-                    children: [
-                      ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        dense: true,
-                        title: Text(
-                          cities[index].name,
-                          style: TextStyle(fontSize: 15),
-                        ),
-                        onTap: () {
-                          Provider.of<HomeProvider>(context,listen: false).getFilterBranches(cities[index].id);
-                          Navigator.pop(context);
-                          },
-                      ),
-                      index < cities.length-1 ? Divider() : Container()
-                    ],
+          child: SingleChildScrollView(
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Select your city',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                ))),
+                  SizedBox(
+                    height: 10,
+                  )
+                ]..addAll(List.generate(
+                    cities.length,
+                    (index) => Column(
+                      children: [
+                        ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          dense: true,
+                          title: Text(
+                            cities[index].name,
+                            style: TextStyle(fontSize: 15),
+                          ),
+                          onTap: () {
+                            Provider.of<HomeProvider>(context,listen: false).getFilterBranches(cities[index].id);
+                            Navigator.pop(context);
+                            },
+                        ),
+                        index < cities.length-1 ? Divider() : Container()
+                      ],
+                    ),
+                  ))),
+          ),
         );
       },
     );

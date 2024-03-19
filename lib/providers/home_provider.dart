@@ -175,6 +175,10 @@ class HomeProvider extends ChangeNotifier {
     final response = await sl<HomeRepository>().getBranches();
     if (response.containsKey('data')) {
       branches = response['data'];
+
+      branches.forEach((element) {
+
+      });
     }
 
     mapCategories.forEach((element) {print(element.id);});

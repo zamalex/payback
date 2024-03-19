@@ -8,6 +8,7 @@ import 'package:payback/model/shipping_model.dart';
 import 'package:payback/screens/checkout_object.dart';
 
 import '../data/service_locator.dart';
+import '../model/orders_model.dart';
 
 class CheckoutProvider extends ChangeNotifier{
 
@@ -36,6 +37,21 @@ class CheckoutProvider extends ChangeNotifier{
   bool isLoading = false;
   List<Product> cart = [];
   List<ShippingMethod> shippings = [];
+  List<Order> orders=[];
+  Future loadOrders() async {
+    isLoading = true;
+    notifyListeners();
+
+    try {
+      final response = await sl<CheckoutRepository>().getOrders();
+      orders = response['data'];
+    } catch (e) {
+      orders=[];
+    }
+
+    isLoading = false;
+    notifyListeners();
+  }
 
   readCart(List<Product>pros,List<Product>?qrProducts)async{
 

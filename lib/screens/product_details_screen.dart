@@ -1,3 +1,5 @@
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,11 +34,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     ).getVendors());
   }
 
-
+  int _currentIndex = 0;
    @override
   Widget build(BuildContext context) {
     return Scaffold(appBar:AppBar(
-      title: Text('Product details'),
+     // title: Text('Product details'),
       leadingWidth: 100,
       centerTitle: true,
       actions: [
@@ -67,13 +69,50 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+
+                  CarouselSlider(
+
+                    options: CarouselOptions(height: 224.0,
+                      viewportFraction:1,
+                      autoPlay: true,
+                      autoPlayInterval: Duration(seconds: 6),
+                      autoPlayAnimationDuration: Duration(milliseconds: 2000),
+                    ),
+
+                    items: [1,2,3,4,5].map((i) {
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return   Container(
+                            margin: EdgeInsets.symmetric(horizontal: 2),
+                            height: 224,
+                            width: double.infinity,
+                            padding: EdgeInsets.all(16),
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(16),color: kBlueLightColor,image:DecorationImage(image: NetworkImage(widget.product.featuredImage??'',),fit: BoxFit.cover)),
+                          );
+                        },
+                      );
+                    }).toList(),
+
+                  ),
+    /*  Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: List.generate(5, (index) {
+          return Container(
+            width: 8.0,
+            height: 8.0,
+            margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: _currentIndex == index ? Colors.blueAccent : Colors.grey,
+            ),
+          );
+        }),),*/
+                 /* Container(
                     height: 224,
                     width: double.infinity,
                     padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(16),color: kBlueLightColor,image:DecorationImage(image: NetworkImage(widget.product.featuredImage??'',),fit: BoxFit.cover)),
-                  ),
-                  Container(height: 20),
+                  ),*/
 
                   Consumer<HomeProvider>(builder:(context, value, child) =>Text(value.getPartnerNameByID(widget.product.vendor_id??0),style: TextStyle(fontSize: 15),)),
 

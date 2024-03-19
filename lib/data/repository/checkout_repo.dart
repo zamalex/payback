@@ -6,6 +6,7 @@ import 'package:payback/helpers/dio_error_helper.dart';
 import 'package:payback/model/notifications_response.dart';
 
 import '../../model/auth_response.dart';
+import '../../model/orders_model.dart';
 import '../../model/shipping_model.dart';
 import '../http/dio_client.dart';
 import '../http/urls.dart';
@@ -62,6 +63,23 @@ class CheckoutRepository {
       } else {
         return {'message': 'Unknown error', 'data': false};
       }
+    }
+  }
+
+
+  Future<Map> getOrders() async {
+    try {
+      Response response = await sl<DioClient>().get(Url.CORDERS_URL,);
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = response.data['data'];
+        List<Order> orders = data.map((json) => Order.fromJson(json)).toList();
+        return {'data':orders};
+      } else {
+        return {'data':[]};
+      }
+    } catch (e) {
+      return {'data':[]};
     }
   }
 }

@@ -35,15 +35,13 @@ class Data {
   String? title;
   String? description;
   String? image;
-  int? sort;
-  int? isActive;
+  String? isActive;
 
   Data(
       {this.id,
         this.title,
         this.description,
         this.image,
-        this.sort,
         this.isActive});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -51,7 +49,6 @@ class Data {
     title = json['title'];
     description = json['description'];
     image = json['image'];
-    sort = json['sort'];
     isActive = json['is_active'];
   }
 
@@ -61,7 +58,6 @@ class Data {
     data['title'] = this.title;
     data['description'] = this.description;
     data['image'] = this.image;
-    data['sort'] = this.sort;
     data['is_active'] = this.isActive;
     return data;
   }

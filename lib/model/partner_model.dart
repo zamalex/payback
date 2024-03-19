@@ -18,7 +18,7 @@ class Partner {
       id: json['id'],
       name: json['name'],
       description: json['description'],
-      image: json['image'],
+      image: json['image']??'https://www.huber-online.com/daisy_website_files/_processed_/8/0/csm_no-image_d5c4ab1322.jpg',
     );
   }
 

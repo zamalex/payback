@@ -91,7 +91,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                                        style: TextStyle(fontSize: 15,color: Colors.black),
                                      ),
                                      trailing: Text(
-                                       widget.data['created_at']??'-- --',
+                                       parseDate(widget.data['created_at']),
                                        style: TextStyle(
                                            fontSize: 15,
                                            color: Colors.grey,
@@ -188,5 +188,15 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
         ),
       ),
     );
+  }
+
+  String parseDate(String s){
+    DateTime dateTime = DateTime.parse(s);
+
+    // Format the DateTime object into a readable format
+    String formattedDateTime = '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')} '
+        '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}:${dateTime.second.toString().padLeft(2, '0')}';
+
+    return formattedDateTime;
   }
 }

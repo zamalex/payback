@@ -71,7 +71,7 @@ class DioClient {
     try {
       var response = await dio!.get(
         uri,
-        queryParameters: queryParameters,
+        queryParameters: queryParameters??{}..putIfAbsent('per_page', () => 1000000),
         options: options,
         cancelToken: cancelToken,
         onReceiveProgress: onReceiveProgress,
@@ -101,6 +101,7 @@ class DioClient {
     dio!.options.headers['Accept-Language'] = '${Url.LOCALE}';
 
     try {
+      print(data.toString());
       var response = await dio!.post(
         uri,
         data: data,
