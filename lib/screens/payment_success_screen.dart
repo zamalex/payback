@@ -2,11 +2,14 @@ import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/screens/main_screen.dart';
 
 import '../helpers/custom_widgets.dart';
 
 class PaymentSuccessScreen extends StatefulWidget {
-  const PaymentSuccessScreen({super.key});
+   PaymentSuccessScreen({super.key,required this.data});
+
+  Map data;
 
   @override
   State<PaymentSuccessScreen> createState() => _PaymentSuccessScreenState();
@@ -28,7 +31,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(leading: Center(child: InkWell(child: Text('Close',style: TextStyle(color: kPurpleColor),),onTap: (){Get.back();},)),),
+      appBar: AppBar(leading: Center(child: InkWell(child: Text('Close',style: TextStyle(color: kPurpleColor),),onTap: (){Get.offAll(MainScreen(index: 0,));},)),),
       body: Container(
         width: MediaQuery.of(context).size.height,
         child: Stack(
@@ -88,7 +91,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                                        style: TextStyle(fontSize: 15,color: Colors.black),
                                      ),
                                      trailing: Text(
-                                       '18.09.2023; 12:23',
+                                       widget.data['created_at']??'-- --',
                                        style: TextStyle(
                                            fontSize: 15,
                                            color: Colors.grey,
@@ -107,7 +110,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                                        style: TextStyle(fontSize: 15,color: Colors.black),
                                      ),
                                      trailing: Text(
-                                       '21 630,39 SAR',
+                                       '${widget.data['amount']??'--'} SAR',
                                        style: TextStyle(
                                            fontSize: 15,
                                            color: Colors.grey,
@@ -126,7 +129,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                                        style: TextStyle(fontSize: 15,color: Colors.black),
                                      ),
                                      trailing: Text(
-                                       '229,7 SAR',
+                                       '0 SAR',
                                        style: TextStyle(
                                            fontSize: 15,
                                            color: Colors.grey,
@@ -161,7 +164,9 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                   child: Container(
                       width: double.infinity,
                       child: CustomButton(
-                          buttonText: 'Go to Market', buttonColor: kPurpleColor)),
+                          buttonText: 'Go to Market', buttonColor: kPurpleColor,onTap: (){
+                        Get.offAll(MainScreen(index: 1,));
+                      },)),
                 )
               ],
             ),

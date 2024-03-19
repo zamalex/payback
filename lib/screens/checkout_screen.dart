@@ -78,6 +78,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             'payment_setting_id', () => 1);
 
         map.putIfAbsent(
+            'product_options', () => null);
+
+        map.putIfAbsent(
             'status', () => 'pending');
 
         map.putIfAbsent(
@@ -135,7 +138,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         Get.snackbar(value['data']?'Success':'Failed',value['message'],colorText: Colors.white,backgroundColor: value['data']?Colors.green:Colors.red);
 
         if(value['data']){
-          Get.to(PaymentSuccessScreen());
+          Get.to(PaymentSuccessScreen(data: value,));
         }
 
       });

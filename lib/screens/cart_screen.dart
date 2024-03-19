@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:payback/data/http/urls.dart';
@@ -214,12 +215,23 @@ class CartItem extends StatelessWidget {
             children: [
               ClipRRect(
                   borderRadius: BorderRadius.circular(15),
-                  child: Image.network(
+                  child: CachedNetworkImage(imageUrl: product!.featuredImage??'',width: 120,
+                    height: 120,
+                    fit: BoxFit.cover,errorWidget:(context, url, error) => Image.asset(
+                       'assets/images/payback_logo.png',
+                        width: 120,
+                        height: 120,
+                        color: kBlueColor,
+                        fit: BoxFit.contain,
+                      ) ,)),
+              /*
+              * Image.network(
                     product!.featuredImage??'',
                     width: 120,
                     height: 120,
                     fit: BoxFit.cover,
-                  )),
+                  )
+              * */
               SizedBox(
                 width: 10,
               ),

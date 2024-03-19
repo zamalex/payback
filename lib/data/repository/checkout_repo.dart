@@ -49,7 +49,9 @@ class CheckoutRepository {
 
         return {
           'message': 'order done',
-          'data': true
+          'data': true,
+          'amount':parsedJson['data']['amount'].toString(),
+          'created_at':parsedJson['data']['created_at'].toString()
         };
       }
 

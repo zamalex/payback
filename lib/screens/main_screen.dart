@@ -9,6 +9,9 @@ import 'package:payback/screens/shop_online_screen.dart';
 
 
 class MainScreen extends StatefulWidget {
+
+  MainScreen({this.index});
+  int? index;
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -20,6 +23,8 @@ class _MainScreenState extends State<MainScreen> {
   ];
   @override
   void initState() {
+
+    _currentIndex = widget.index??0;
     // TODO: implement initState
     screens.addAll([ HomeScreen(shopAll: (){
       setState(() {
