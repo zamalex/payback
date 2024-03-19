@@ -23,7 +23,7 @@ class Url {
   static const ONBOARDING_URL = '/admin/screens';
   static const DELIVERY_URL = '/admin/delivery-methods';
   static const CITIES_URL = '/admin/cities';
-  static const SEND_FCM_TOKEN_URL = '/admin/send';
+  static const SEND_FCM_TOKEN_URL = '/fcm';
   static const CREATE_ORDER_URL = '/admin/orders/create';
   static const CORDERS_URL = '/admin/orders';
 
