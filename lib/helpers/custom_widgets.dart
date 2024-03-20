@@ -123,7 +123,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
 class TextFieldButton extends StatelessWidget {
   String hinttext;
   Function onTap;
-  TextFieldButton({required this.hinttext, required this.onTap});
+  bool showIcon = true;
+  TextFieldButton({required this.hinttext, required this.onTap,this.showIcon=true});
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +152,7 @@ class TextFieldButton extends StatelessWidget {
             ),
             contentPadding:
                 EdgeInsets.symmetric(vertical: 12.0, horizontal: 10),
-            suffixIcon: IconButton(
+            suffixIcon:!showIcon?null: IconButton(
               icon: Icon(Icons.menu),
               onPressed: () {},
             ),

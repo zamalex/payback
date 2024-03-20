@@ -32,13 +32,35 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
   bool notify = false;
 
   final _formKey = GlobalKey<FormState>();
+  DateTime? _selectedDate = DateTime.now();
 
+  Future<void> _selectDate(BuildContext context) async {
+
+    DateTime _tomorrow = DateTime.now().add(Duration(days: 1));
+    DateTime _fiveYearsLater = DateTime.now().add(Duration(days: 365 * 5 + 1));
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _tomorrow,
+      firstDate: _tomorrow,
+      lastDate: _fiveYearsLater,
+    );
+    if (picked != null && picked != _selectedDate)
+      setState(() {
+        _selectedDate = picked;
+
+        date = '${_selectedDate?.year}-${_selectedDate?.month.toString().padLeft(2, '0')}-${_selectedDate?.day.toString().padLeft(2, '0')}';
+
+      });
+  }
   createCommitment(){
 
     _formKey.currentState!.save();
     bool isvalid = _formKey.currentState!.validate();
-    if(!isvalid)
+    if(!isvalid||date==null) {
+      Get.snackbar('Alert', 'Fill required data',backgroundColor: Colors.red,colorText: Colors.white,);
+
       return;
+    }
 
     Map<String,dynamic> request={
       'name':name,
@@ -71,6 +93,7 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
     print(request.toString());
     Provider.of<CommitmentsProvider>(context,listen: false).createCommitment(request).then((value) {}).then((value) {
       Provider.of<HomeProvider>(context,listen: false).getCommitments();
+      Get.back();
       Get.snackbar('Success', 'Commitment created',backgroundColor: Colors.green,colorText: Colors.white,);
 
     });
@@ -84,6 +107,8 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
     super.initState();
 
     Future.delayed(Duration.zero).then((value) {
+     Provider.of<HomeProvider>(context,listen: false).partnerCustomFields.clear();
+
       Provider.of<CommitmentsProvider>(context,listen: false).getCommitmentsCategories();
       Provider.of<HomeProvider>(context,listen: false).getPartners();
     });
@@ -280,8 +305,11 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
                           SizedBox(
                             height: 5,
                           ),
-                          CustomTextField(
-                              hintText: 'Enter the date (YYYY-MM-dd)',onSaved: (v){date=v;},type: TextInputType.datetime,),
+                          TextFieldButton(hinttext: date==null?'Enter the date (YYYY-MM-dd)':date??'', onTap: (){
+                            _selectDate(context);
+                          },showIcon: false,),
+                          /*CustomTextField(
+                              hintText: 'Enter the date (YYYY-MM-dd)',onSaved: (v){date=v;},type: TextInputType.datetime,),*/
                           SizedBox(
                             height: 15,
                           ),

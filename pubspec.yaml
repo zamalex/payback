@@ -57,6 +57,7 @@ dependencies:
   share_plus: ^7.2.2
   confetti: ^0.7.0
   carousel_slider: ^4.2.1
+  image_picker: ^1.0.7
 
 
 

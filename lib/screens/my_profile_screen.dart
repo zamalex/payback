@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:payback/data/preferences.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/model/auth_response.dart';
@@ -14,9 +17,29 @@ import 'package:payback/screens/subscription_screen.dart';
 
 import '../data/service_locator.dart';
 
-class MyProfileScreen extends StatelessWidget {
-  const MyProfileScreen({super.key});
+class MyProfileScreen extends StatefulWidget {
+   MyProfileScreen({super.key});
 
+  @override
+  State<MyProfileScreen> createState() => _MyProfileScreenState();
+}
+
+class _MyProfileScreenState extends State<MyProfileScreen> {
+  final ImagePicker picker = ImagePicker();
+
+  File? imageFile;
+
+  pickImage()async{
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery,imageQuality: 50);
+  if(image!=null){
+    setState(() {
+      imageFile = File(image.path);
+
+    });
+  }
+  }
+
+// Pick an image.
   @override
   Widget build(BuildContext context) {
     User user = sl<AuthResponse>().data!.user!;
@@ -75,29 +98,34 @@ class MyProfileScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(image: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVR9V1Ix26V2s_WWWryH3FU5Qkl2yR4PL3BcUybf2cUw&s'),fit: BoxFit.cover),
-                    border: Border.all(color: Colors.white,width: 3),
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(10),
-                        bottomLeft: Radius.circular(10),
-                        topLeft: Radius.circular(25),
-                        bottomRight: Radius.circular(25),
-                      )),
-                  
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                    Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: CircleAvatar(child: Icon(Icons.camera_alt,color: Colors.white,size: 20,),backgroundColor: kPurpleColor.withOpacity(.5),radius: 15,),
-                    )
-                  ],),
+                InkWell(
+                  onTap: (){
+                    pickImage();
+                  },
+                  child: Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(image: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVR9V1Ix26V2s_WWWryH3FU5Qkl2yR4PL3BcUybf2cUw&s'),fit: BoxFit.cover),
+                      border: Border.all(color: Colors.white,width: 3),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(10),
+                          bottomLeft: Radius.circular(10),
+                          topLeft: Radius.circular(25),
+                          bottomRight: Radius.circular(25),
+                        )),
+
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                      Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: CircleAvatar(child: Icon(Icons.camera_alt,color: Colors.white,size: 20,),backgroundColor: kPurpleColor.withOpacity(.5),radius: 15,),
+                      )
+                    ],),
+                  ),
                 ),
                 SizedBox(width: 20,),
                 Container(
