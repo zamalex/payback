@@ -12,6 +12,7 @@ class CheckoutObject{
    final selfFormKey = GlobalKey<FormState>();
    final courierFormKey = GlobalKey<FormState>();
 
+   TextEditingController addressController = TextEditingController();
 
    String? officeAddress;
   String? city;
