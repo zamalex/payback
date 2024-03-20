@@ -51,14 +51,16 @@ class User {
   String? name;
   String? email;
   String? avatarUrl;
+  String? phone;
 
-  User({this.id, this.name, this.email, this.avatarUrl});
+  User({this.id, this.name, this.email, this.avatarUrl,this.phone});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     email = json['email'];
     avatarUrl = json['avatar_url'];
+    phone = json['phone'];
   }
 
   Map<String, dynamic> toJson() {
@@ -67,6 +69,7 @@ class User {
     data['name'] = this.name;
     data['email'] = this.email;
     data['avatar_url'] = this.avatarUrl;
+    data['phone'] = this.phone;
     return data;
   }
 }

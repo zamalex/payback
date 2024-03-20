@@ -101,6 +101,13 @@ class PreferenceUtils{
      sharedPreferences?.setString('cart', cartJson);
    }
 
+   Future<void> deleteAllCart() async {
+      if(sharedPreferences==null)
+        await initPrefs();
+
+     sharedPreferences?.remove('cart');
+   }
+
   saveUser(AuthResponse loginModel)async{
     if(sharedPreferences==null)
       await initPrefs();
@@ -183,5 +190,8 @@ class PreferenceUtils{
     sl.unregister<AuthResponse>();
     Url.TOKEN='';
     sharedPreferences!.remove('user');
+    deleteAllCart();
   }
+
+
 }

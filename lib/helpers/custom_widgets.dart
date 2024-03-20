@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
@@ -22,20 +23,27 @@ class CustomTextField extends StatefulWidget {
   final String hintText;
 
   bool obscureText = false;
+  bool isFullName = false;
   TextInputType type = TextInputType.text;
 
   Widget? icon = null;
   bool editable = true;
 
   bool isPassword = false;
+  bool showCountryCode = false;
+
+
 
   CustomTextField(
       {required this.hintText,
       this.obscureText = false,
       this.type = TextInputType.text,
+        this.onChanged,
       this.controller,
       this.icon,
       this.isPassword = false,
+      this.isFullName = false,
+      this.showCountryCode = false,
       this.editable = true,
       this.maxLines = 1,
       this.onSaved});
@@ -43,6 +51,7 @@ class CustomTextField extends StatefulWidget {
   TextEditingController? controller;
   int maxLines = 1;
   Function? onSaved;
+  Function? onChanged;
   @override
   _CustomTextFieldState createState() => _CustomTextFieldState();
 }
@@ -54,19 +63,40 @@ class _CustomTextFieldState extends State<CustomTextField> {
     RegExp regExp = new RegExp(pattern);
     return regExp.hasMatch(value);
   }
+  String selectedCode = '+20';
+  String? _validateFullName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your full name';
+    }
+
+    // Split the full name by spaces
+    List<String> names = value.trim().split(' ');
+
+    // Check if there are at least two names
+    if (names.length < 2) {
+      return 'Please enter your first name and last name';
+    }
+
+    // You can add more complex validation rules here if needed
+    return null;
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
       //height: widget.maxLines * 48.0,
       child: TextFormField(
+
         validator: (text) {
           if (text!.isEmpty) {
             return 'Enter required data';
           }
-
-          if (widget.type == TextInputType.phone && !text.startsWith('20')) {
-            return 'Phone should start with 20';
+          if(widget.isFullName){
+            return _validateFullName(text);
           }
+
+          /*if (widget.type == TextInputType.phone && !text.startsWith('20')) {
+            return 'Phone should start with 20';
+          }*/
 
        if (widget.type == TextInputType.emailAddress && !GetUtils.isEmail(text)) {
             return 'Enter valid email';
@@ -78,11 +108,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
             return null;
         },
         onSaved: (s) {
-          if (widget.onSaved != null) widget.onSaved!(s);
+          if (widget.onSaved != null) widget.onSaved!(widget.showCountryCode?'${selectedCode}$s':s);
         },
         readOnly: !widget.editable,
         maxLines: widget.maxLines,
         controller: widget.controller,
+        onChanged: (s){
+          if (widget.onChanged != null) widget.onChanged!(s);
+
+        },
         obscureText: widget.obscureText,
         decoration: InputDecoration(
           fillColor: Colors.white, // Custom background color
@@ -100,6 +134,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
           ),
           contentPadding: EdgeInsets.symmetric(
               vertical: widget.maxLines * (12), horizontal: 10),
+          prefixIcon: widget.showCountryCode?Container(
+              //height: 20,
+              child: CountryCodePicker(
+                initialSelection: 'EG',
+                onChanged: (c){
+                selectedCode = (c.dialCode?..replaceAll('+', ''))!;
+              },)):null,
           suffixIcon: IconButton(
             icon: widget.isPassword
                 ? Icon(widget.obscureText

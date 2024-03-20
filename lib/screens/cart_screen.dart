@@ -6,6 +6,8 @@ import 'package:get/route_manager.dart';
 import 'package:payback/data/http/urls.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/helpers/custom_widgets.dart';
+import 'package:payback/helpers/functions.dart';
+import 'package:payback/model/auth_response.dart';
 import 'package:payback/providers/checkout_provider.dart';
 import 'package:payback/providers/home_provider.dart';
 import 'package:payback/screens/checkout_screen.dart';
@@ -176,6 +178,12 @@ class _CartScreenState extends State<CartScreen> {
                           buttonText: 'Proceed to check out',
                           buttonColor: kPurpleColor,
                           onTap: () {
+                            if(!sl.isRegistered<AuthResponse>()){
+
+                              showGoToLogin();
+                              return;
+                            }
+
                             Navigator.of(context).push(MaterialPageRoute(builder: (context) => CheckoutScreen(),));
                             //Get.to(CheckoutScreen());
                           }),

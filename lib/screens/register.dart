@@ -64,7 +64,7 @@ class RegisterScreen extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 5,),
-                    CustomTextField(hintText: 'Enter your name',controller: nameController,),
+                    CustomTextField(isFullName:true,hintText: 'Enter your name',controller: nameController,),
                     SizedBox(height: 15,),
 
                     Row(
@@ -82,7 +82,7 @@ class RegisterScreen extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 5,),
-                    CustomTextField(hintText: 'Enter your password',isPassword:true,obscureText: true,controller: passwordController,),
+                    CustomTextField(hintText: 'upper, lower, numbers, special chars',isPassword:true,obscureText: true,controller: passwordController,),
                     SizedBox(height: 20,),
                     Consumer<AuthProvider>(
                       builder:(context, value, child) => value.isLoading?CircularProgressIndicator(): Container(

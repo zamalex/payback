@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -114,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   )
                                 : Image.network(
-                                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVR9V1Ix26V2s_WWWryH3FU5Qkl2yR4PL3BcUybf2cUw&s',
+                                    sl<AuthResponse>().data?.user?.avatarUrl??'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVR9V1Ix26V2s_WWWryH3FU5Qkl2yR4PL3BcUybf2cUw&s',
                                     fit: BoxFit.cover,
                                     width: 70,
                                     height: 70,
@@ -124,54 +125,59 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 10,
                       ),
                       Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              !sl.isRegistered<AuthResponse>()
-                                  ? 'Welcome, Login now'
-                                  : 'Hello, ${authResponse == null ? 'Mustafa' : authResponse!.data!.user!.name}',
-                              style: TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold,
-                                  color: kPurpleColor,
-                                  overflow: TextOverflow.ellipsis),
-                              maxLines: 1,
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            if (sl.isRegistered<AuthResponse>())
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 4),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: kPurpleColor),
-                                child: Consumer<authProvider.AuthProvider>(
-                                    builder: (context, value, child) => Row(
-                                          children: [
-                                            Icon(
-                                              Icons.notification_add_outlined,
-                                              color: Colors.white,
-                                            ),
-                                            Text(
-                                              '${value.notifications.length} notifications',
-                                              style:
-                                                  TextStyle(color: Colors.white),
-                                            )
-                                          ],
-                                        )),
-                              )
-                          ],
-                        ),
+
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AutoSizeText(
+
+                                !sl.isRegistered<AuthResponse>()
+                                    ? 'Welcome, Login now'
+                                    : 'Hello, ${authResponse == null ? 'Mustafa' : authResponse!.data!.user!.name}',
+
+                                style: TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                    color: kPurpleColor,
+                                    overflow: TextOverflow.ellipsis),
+                                maxLines: 1,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              if (sl.isRegistered<AuthResponse>())
+                                Container(
+                                  width: 200,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 4),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      color: kPurpleColor),
+                                  child: Consumer<authProvider.AuthProvider>(
+                                      builder: (context, value, child) => Row(
+                                            children: [
+                                              Icon(
+                                                Icons.notification_add_outlined,
+                                                color: Colors.white,
+                                              ),
+                                              AutoSizeText(
+                                                '${value.notifications.length} notifications',
+                                                style:
+                                                    TextStyle(color: Colors.white),
+                                                maxLines: 1,
+                                              )
+                                            ],
+                                          )),
+                                )
+                            ],
+                          ),
+
                       ),
-                      Expanded(
-                        child: Row(
+                      Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [Icon(Icons.arrow_forward)],
                         ),
-                      )
+
                     ],
                   ),
                 ),

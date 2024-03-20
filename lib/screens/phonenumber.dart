@@ -12,8 +12,8 @@ class CheckPhoneNumberScreen extends StatelessWidget {
    CheckPhoneNumberScreen({Key? key,required this.request}) : super(key: key);
 
   Map<String,String> request;
+  String phone='';
 
-   TextEditingController phnoneController = TextEditingController();
    final _formKey = GlobalKey<FormState>();
 
 
@@ -21,7 +21,8 @@ class CheckPhoneNumberScreen extends StatelessWidget {
      if (_formKey.currentState!.validate()) {
 
        _formKey.currentState!.save();
-       request.putIfAbsent('phone', () => '+${phnoneController.text}');
+       print(phone);
+       request.putIfAbsent('phone', () => '+${phone.replaceAll('+', '')}');
        request.putIfAbsent('is_vendor', () => "0");
 
 
@@ -63,7 +64,9 @@ class CheckPhoneNumberScreen extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 5,),
-                    CustomTextField(hintText: 'Enter your phone number',controller: phnoneController,type: TextInputType.phone,),
+                    CustomTextField(showCountryCode:true,hintText: 'Enter your phone number',type: TextInputType.phone,onSaved: (s){
+                      phone=s;
+                    },),
 
                     SizedBox(height: 20,),
                     Consumer<AuthProvider>(

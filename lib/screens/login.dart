@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:payback/data/preferences.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/helpers/functions.dart';
+import 'package:payback/model/auth_response.dart' as ar;
 import 'package:payback/providers/auth_provider.dart' as a;
 import 'package:payback/screens/forgot_password_screen.dart';
 import 'package:payback/screens/main_screen.dart';
@@ -41,9 +42,14 @@ class LoginScreen extends StatelessWidget {
         value['data'] == null
             ?Get.snackbar('Alert', value['message'],backgroundColor: Colors.red,colorText: Colors.white): Get.to(MainScreen());
         if (value['data'] != null) {
-          sl<PreferenceUtils>().saveUser(value['data']);
+          ar.AuthResponse authResponse = value['data'];
+          sl<PreferenceUtils>().deleteAllCart();
+
+          sl<PreferenceUtils>().saveUser(authResponse..data?.user?.avatarUrl=user?.photoURL);
+          print('photo is ${user!.photoURL}');
         }
       });
+
       return user;
     } catch (error) {
       print(error);
@@ -68,6 +74,8 @@ class LoginScreen extends StatelessWidget {
         value['data'] == null
             ?Get.snackbar('Alert', value['message'],backgroundColor: Colors.red,colorText: Colors.white): Get.to(MainScreen());
         if (value['data'] != null) {
+          sl<PreferenceUtils>().deleteAllCart();
+
           sl<PreferenceUtils>().saveUser(value['data']);
         }
       });

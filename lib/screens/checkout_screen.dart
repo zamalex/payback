@@ -5,11 +5,15 @@ import 'package:get/route_manager.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/helpers/custom_widgets.dart';
 import 'package:payback/helpers/functions.dart';
+import 'package:payback/model/auth_response.dart';
 import 'package:payback/providers/checkout_provider.dart';
 import 'package:payback/screens/cart_screen.dart';
 import 'package:payback/screens/checkout_object.dart';
+import 'package:payback/screens/main_screen.dart';
 import 'package:payback/screens/payment_success_screen.dart';
 import 'package:provider/provider.dart';
+
+import '../data/service_locator.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
@@ -19,10 +23,18 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
+  User? user = sl<AuthResponse>().data!.user;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    if(user!=null){
+      nameController.text = user!.name??'';
+      phoneController.text = user!.phone??'';
+
+    }
     Future.delayed(Duration.zero).then((value) {
       getShippings();
     });
@@ -30,6 +42,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   String receiverName = '';
   String receiverPhone = '';
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
 
   getShippings() {
     Provider.of<CheckoutProvider>(context, listen: false).getShippingMethods();
@@ -154,7 +169,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
+        appBar:Provider.of<CheckoutProvider>(context).checkouts.isEmpty?null: AppBar(
           backgroundColor: kBackgroundColor,
           centerTitle: true,
           title: Text('Checkout'),
@@ -173,7 +188,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           builder: (context, value, child) {
 
             if(value.checkouts.isEmpty){
-              Navigator.pop(context);
+
+              return MainScreen();
+              //Get.to(MainScreen(index: 1,));
             }
 
             double allTotal = 0;
@@ -228,6 +245,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             height: 5,
                           ),
                           CustomTextField(
+                            controller: nameController,
                             hintText: 'Receiver name or pre-filled',
                             onSaved: (s) {
                               receiverName = s;
@@ -241,6 +259,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             height: 5,
                           ),
                           CustomTextField(
+                            controller: phoneController,
                             hintText: 'Receiver phone number or pre-filled',
                             onSaved: (s) {
                               receiverPhone = s;
@@ -374,289 +393,300 @@ class CheckoutItem extends StatelessWidget {
   CheckoutObject checkoutObject;
   int orderIndex;
 
+
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Order ${orderIndex + 1}',
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Column(
-          children: List.generate(
-            checkoutObject.products.length,
-            (index) => CartItem(product: checkoutObject.products[index]),
+
+
+    return Consumer<CheckoutProvider>(
+      builder:(context, pp, child) =>  Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Order ${orderIndex + 1}',
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
           ),
-        ),
-        SizedBox(
-          height: 15,
-        ),
-        Text('Delivery method',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            )),
-        SizedBox(
-          height: 15,
-        ),
-        SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: List.generate(
-                  Provider.of<CheckoutProvider>(context).shippings.length,
-                  (index) => DeliveryMethod(
-                      myIndex: index,
-                      selectedIndex: checkoutObject.selectedDelivery,
-                      txt:Provider.of<CheckoutProvider>(context).shippings.isNotEmpty? Provider.of<CheckoutProvider>(context)
-                              .shippings[index]
-                              .name ??'':''
-                          '',
-                      img: Provider.of<CheckoutProvider>(context)
-                              .shippings[index]
-                              .logo ??
-                          '',
-                      onTap: () {
-                        Provider.of<CheckoutProvider>(context, listen: false)
-                            .updateDelivery(orderIndex, index);
-                      })),
-            )),
-        SizedBox(
-          height: 15,
-        ),
-        Text(
-          'Pick up',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Row(
-          children: [
-            Radio(
-                value: 0,
-                groupValue: checkoutObject.selectedPickup,
-                onChanged: (value) {
-                  Provider.of<CheckoutProvider>(context, listen: false)
-                      .updatePickup(orderIndex, value!!);
-                },
-                activeColor: kBlueColor),
-            Text('Self pick up'),
-            Radio(
-                value: 1,
-                groupValue: checkoutObject.selectedPickup,
-                onChanged: (value) {
-                  Provider.of<CheckoutProvider>(context, listen: false)
-                      .updatePickup(orderIndex, value!!);
-                },
-                activeColor: kBlueColor),
-            Text('Courier'),
-            SizedBox(
-              height: 10,
+          SizedBox(
+            height: 20,
+          ),
+          Column(
+            children: List.generate(
+              checkoutObject.products.length,
+              (index) => CartItem(product: checkoutObject.products[index]),
             ),
-          ],
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        checkoutObject.selectedPickup == 0
-            ? Form(
-                key: checkoutObject.selfFormKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Choose delivery office'),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    CustomTextField(
-                      hintText: 'Office address',
-                      onSaved: (s) {
-                        Provider.of<CheckoutProvider>(context, listen: false)
-                            .checkouts[orderIndex]
-                            .officeAddress = s;
-                      },
-                    ),
-                  ],
-                ),
-              )
-            : Form(
-                key: checkoutObject.courierFormKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('City'),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    CustomTextField(
-                      hintText: 'Choose your city',
-                      onSaved: (s) {
-                        Provider.of<CheckoutProvider>(context, listen: false)
-                            .checkouts[orderIndex]
-                            .city = s;
-                      },
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text('Street'),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    CustomTextField(
-                        hintText: 'Choose your street',
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Text('Delivery method',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              )),
+          SizedBox(
+            height: 15,
+          ),
+          SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: List.generate(
+                    Provider.of<CheckoutProvider>(context).shippings.length,
+                    (index) => DeliveryMethod(
+                        myIndex: index,
+                        selectedIndex: checkoutObject.selectedDelivery,
+                        txt:Provider.of<CheckoutProvider>(context).shippings.isNotEmpty? Provider.of<CheckoutProvider>(context)
+                                .shippings[index]
+                                .name ??'':''
+                            '',
+                        img: Provider.of<CheckoutProvider>(context)
+                                .shippings[index]
+                                .logo ??
+                            '',
+                        onTap: () {
+                          Provider.of<CheckoutProvider>(context, listen: false)
+                              .updateDelivery(orderIndex, index);
+                        })),
+              )),
+          SizedBox(
+            height: 15,
+          ),
+          Text(
+            'Pick up',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: [
+              Radio(
+                  value: 0,
+                  groupValue: checkoutObject.selectedPickup,
+                  onChanged: (value) {
+                    Provider.of<CheckoutProvider>(context, listen: false)
+                        .updatePickup(orderIndex, value!!);
+                  },
+                  activeColor: kBlueColor),
+              Text('Self pick up'),
+              Radio(
+                  value: 1,
+                  groupValue: checkoutObject.selectedPickup,
+                  onChanged: (value) {
+                    Provider.of<CheckoutProvider>(context, listen: false)
+                        .updatePickup(orderIndex, value!!);
+                  },
+                  activeColor: kBlueColor),
+              Text('Courier'),
+              SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          checkoutObject.selectedPickup == 0
+              ? Form(
+                  key: checkoutObject.selfFormKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Choose delivery office'),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      CustomTextField(
+                        onChanged: (s){
+
+
+
+                        },
+                        hintText: 'Office address',
                         onSaved: (s) {
                           Provider.of<CheckoutProvider>(context, listen: false)
                               .checkouts[orderIndex]
-                              .street = s;
-                        }),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Building'),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            CustomTextField(
-                                hintText: 'Building N',
-                                onSaved: (s) {
-                                  Provider.of<CheckoutProvider>(context,
-                                          listen: false)
-                                      .checkouts[orderIndex]
-                                      .building = s;
-                                })
-                          ],
-                        )),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Expanded(
-                            child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Apartment'),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            CustomTextField(
-                                hintText: 'Apartment N',
-                                onSaved: (s) {
-                                  Provider.of<CheckoutProvider>(context,
-                                          listen: false)
-                                      .checkouts[orderIndex]
-                                      .apartment = s;
-                                })
-                          ],
-                        ))
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text('Comments for courier'),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    CustomTextField(
-                      hintText:
-                          'Enter additional info. Any door passwords, elevator availability etc.',
-                      onSaved: (s) {
-                        Provider.of<CheckoutProvider>(context, listen: false)
-                            .checkouts[orderIndex]
-                            .comments = s;
-                      },
-                      maxLines: 3,
+                              .officeAddress = s;
+                        },
+                      ),
+                    ],
+                  ),
+                )
+              : Form(
+                  key: checkoutObject.courierFormKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('City'),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      CustomTextField(
+                        hintText: 'Choose your city',
+                        onSaved: (s) {
+                          Provider.of<CheckoutProvider>(context, listen: false)
+                              .checkouts[orderIndex]
+                              .city = s;
+                        },
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text('Street'),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      CustomTextField(
+                          hintText: 'Choose your street',
+                          onSaved: (s) {
+                            Provider.of<CheckoutProvider>(context, listen: false)
+                                .checkouts[orderIndex]
+                                .street = s;
+                          }),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Building'),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              CustomTextField(
+                                  hintText: 'Building N',
+                                  onSaved: (s) {
+                                    Provider.of<CheckoutProvider>(context,
+                                            listen: false)
+                                        .checkouts[orderIndex]
+                                        .building = s;
+                                  })
+                            ],
+                          )),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Expanded(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Apartment'),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              CustomTextField(
+                                  hintText: 'Apartment N',
+                                  onSaved: (s) {
+                                    Provider.of<CheckoutProvider>(context,
+                                            listen: false)
+                                        .checkouts[orderIndex]
+                                        .apartment = s;
+                                  })
+                            ],
+                          ))
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text('Comments for courier'),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      CustomTextField(
+                        hintText:
+                            'Enter additional info. Any door passwords, elevator availability etc.',
+                        onSaved: (s) {
+                          Provider.of<CheckoutProvider>(context, listen: false)
+                              .checkouts[orderIndex]
+                              .comments = s;
+                        },
+                        maxLines: 3,
+                      )
+                    ],
+                  ),
+                ),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            'Order ${orderIndex + 1} summary',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(11),
+                color: kBlueLightColor.withOpacity(.7)),
+            padding: EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Price'),
+                    Text(
+                      '${checkoutObject.getTotalPrice()} SAR',
+                      style: TextStyle(
+                          color: kBlueColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
                     )
                   ],
                 ),
-              ),
-        SizedBox(
-          height: 20,
-        ),
-        Text(
-          'Order ${orderIndex + 1} summary',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(11),
-              color: kBlueLightColor.withOpacity(.7)),
-          padding: EdgeInsets.all(16),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Price'),
-                  Text(
-                    '${checkoutObject.getTotalPrice()} SAR',
-                    style: TextStyle(
-                        color: kBlueColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Divider(),
-              SizedBox(
-                height: 15,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Delivery'),
-                  Text(
-                    Provider.of<CheckoutProvider>(context).shippings.isNotEmpty?Provider.of<CheckoutProvider>(context).shippings[checkoutObject.selectedDelivery].name??'':'',
-                    style: TextStyle(
-                        color: kBlueColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Divider(),
-              SizedBox(
-                height: 15,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Cashback'),
-                  Text(
-                    '0 SAR',
-                    style: TextStyle(
-                        color: kBlueColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18),
-                  )
-                ],
-              )
-            ],
+                SizedBox(
+                  height: 15,
+                ),
+                Divider(),
+                SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Delivery'),
+                    Text(
+                      Provider.of<CheckoutProvider>(context).shippings.isNotEmpty?Provider.of<CheckoutProvider>(context).shippings[checkoutObject.selectedDelivery].name??'':'',
+                      style: TextStyle(
+                          color: kBlueColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Divider(),
+                SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Cashback'),
+                    Text(
+                      '0 SAR',
+                      style: TextStyle(
+                          color: kBlueColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-      ],
+          SizedBox(
+            height: 20,
+          ),
+        ],
+      ),
     );
   }
 }
