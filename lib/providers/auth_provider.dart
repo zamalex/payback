@@ -91,6 +91,19 @@ Future<Map> register(Map<String,String> body)async{
     return response;
   }
 
+  Future<bool> checkExistUser(String email)async{
+    isLoading = true;
+    notifyListeners();
+
+    String response= await sl<AuthRepository>().getUsers();
+
+
+    isLoading = false;
+    notifyListeners();
+
+    return response.contains(email);
+  }
+
 
 
 

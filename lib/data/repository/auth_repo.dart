@@ -261,4 +261,19 @@ class AuthRepository {
 
     }
   }
+
+  Future<String> getUsers() async {
+    try {
+      Response response =
+      await sl<DioClient>().get(Url.USERS_URL,);
+      if (response.statusCode == 200) {
+        return response.data.toString();
+      } else {
+        return '';
+      }
+    } catch (e) {
+      return'';
+
+    }
+  }
 }

@@ -18,24 +18,31 @@ class RegisterScreen extends StatelessWidget {
   TextEditingController passwordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
 
-  register(BuildContext context){
-    if(_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
+   register(BuildContext context)async{
+     if(_formKey.currentState!.validate()) {
+       _formKey.currentState!.save();
 
-      Map<String, String> request = {
-        'name': nameController.text,
-        'first_name': nameController.text,
-        'last_name': nameController.text,
-        'email': emailController.text,
-        'password': passwordController.text,
-        'password_confirmation': passwordController.text,
-      };
+       Map<String, String> request = {
+         'name': nameController.text,
+         'first_name': nameController.text,
+         'last_name': nameController.text,
+         'email': emailController.text,
+         'password': passwordController.text,
+         'password_confirmation': passwordController.text,
+       };
 
-      Get.to(CheckPhoneNumberScreen(request: request,));
-      return;
-    }
+       bool isExist = await Provider.of<AuthProvider>(context,listen: false).checkExistUser(emailController.text);
 
-  }
+       if(isExist){
+         Get.snackbar('Alert', 'Email already exists',backgroundColor: Colors.red,colorText: Colors.white);
+       }else{
+         Get.to(CheckPhoneNumberScreen(request: request,));
+
+       }
+       return;
+     }
+
+   }
 
    final _formKey = GlobalKey<FormState>();
 
