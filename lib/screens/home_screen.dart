@@ -66,119 +66,121 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: EdgeInsets.all(0),
         child: ListView(
           children: [
-            InkWell(
-              onTap: () {
-                if (sl.isRegistered<AuthResponse>())
-                  Get.to(MyProfileScreen());
-                else
-                  Get.to(LoginScreen());
-              },
-              child: Card(
-                margin: EdgeInsets.zero,
-                color: Colors.white,
-                elevation: 0,
-                shadowColor: Colors.grey,
-                shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.only(bottomRight: Radius.circular(40)),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: kPurpleColor,
-                          border: Border.all(color: Colors.white, width: 2),
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(8),
-                            bottomLeft: Radius.circular(8),
-                            topLeft: Radius.circular(30),
-                            bottomRight: Radius.circular(30),
-                          ),
-                        ),
-                        child: ClipRRect(
+            Consumer<authProvider.AuthProvider>(
+              builder:(context, value, child) => InkWell(
+                onTap: () {
+                  if (sl.isRegistered<AuthResponse>())
+                    Get.to(MyProfileScreen());
+                  else
+                    Get.to(LoginScreen());
+                },
+                child: Card(
+                  margin: EdgeInsets.zero,
+                  color: Colors.white,
+                  elevation: 0,
+                  shadowColor: Colors.grey,
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.only(bottomRight: Radius.circular(40)),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: kPurpleColor,
+                            border: Border.all(color: Colors.white, width: 2),
                             borderRadius: BorderRadius.only(
                               topRight: Radius.circular(8),
                               bottomLeft: Radius.circular(8),
-                              topLeft: Radius.circular(25),
-                              bottomRight: Radius.circular(25),
+                              topLeft: Radius.circular(30),
+                              bottomRight: Radius.circular(30),
                             ),
-                            child: !sl.isRegistered<AuthResponse>()
-                                ? Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset(
-                                      'assets/images/payback_logo.png',
-                                      width: 62,
-                                      height: 62,
-                                    ),
+                          ),
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(8),
+                                bottomLeft: Radius.circular(8),
+                                topLeft: Radius.circular(25),
+                                bottomRight: Radius.circular(25),
+                              ),
+                              child: !sl.isRegistered<AuthResponse>()
+                                  ? Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Image.asset(
+                                        'assets/images/payback_logo.png',
+                                        width: 62,
+                                        height: 62,
+                                      ),
+                                    )
+                                  : Image.network(
+                                      sl<AuthResponse>().data?.user?.avatarUrl??'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVR9V1Ix26V2s_WWWryH3FU5Qkl2yR4PL3BcUybf2cUw&s',
+                                      fit: BoxFit.cover,
+                                      width: 70,
+                                      height: 70,
+                                    )),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                AutoSizeText(
+
+                                  !sl.isRegistered<AuthResponse>()
+                                      ? 'Welcome, Login now'
+                                      : 'Hello, ${authResponse == null ? 'Mustafa' : authResponse!.data!.user!.name}',
+
+                                  style: TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                      color: kPurpleColor,
+                                      overflow: TextOverflow.ellipsis),
+                                  maxLines: 1,
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                if (sl.isRegistered<AuthResponse>())
+                                  Container(
+                                    width: 200,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 4),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        color: kPurpleColor),
+                                    child: Consumer<authProvider.AuthProvider>(
+                                        builder: (context, value, child) => Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.notification_add_outlined,
+                                                  color: Colors.white,
+                                                ),
+                                                AutoSizeText(
+                                                  '${value.notifications.length} notifications',
+                                                  style:
+                                                      TextStyle(color: Colors.white),
+                                                  maxLines: 1,
+                                                )
+                                              ],
+                                            )),
                                   )
-                                : Image.network(
-                                    sl<AuthResponse>().data?.user?.avatarUrl??'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVR9V1Ix26V2s_WWWryH3FU5Qkl2yR4PL3BcUybf2cUw&s',
-                                    fit: BoxFit.cover,
-                                    width: 70,
-                                    height: 70,
-                                  )),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
+                              ],
+                            ),
 
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AutoSizeText(
-
-                                !sl.isRegistered<AuthResponse>()
-                                    ? 'Welcome, Login now'
-                                    : 'Hello, ${authResponse == null ? 'Mustafa' : authResponse!.data!.user!.name}',
-
-                                style: TextStyle(
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold,
-                                    color: kPurpleColor,
-                                    overflow: TextOverflow.ellipsis),
-                                maxLines: 1,
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              if (sl.isRegistered<AuthResponse>())
-                                Container(
-                                  width: 200,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 4),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      color: kPurpleColor),
-                                  child: Consumer<authProvider.AuthProvider>(
-                                      builder: (context, value, child) => Row(
-                                            children: [
-                                              Icon(
-                                                Icons.notification_add_outlined,
-                                                color: Colors.white,
-                                              ),
-                                              AutoSizeText(
-                                                '${value.notifications.length} notifications',
-                                                style:
-                                                    TextStyle(color: Colors.white),
-                                                maxLines: 1,
-                                              )
-                                            ],
-                                          )),
-                                )
-                            ],
+                        ),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [Icon(Icons.arrow_forward)],
                           ),
 
-                      ),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [Icon(Icons.arrow_forward)],
-                        ),
-
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

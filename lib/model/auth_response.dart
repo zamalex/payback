@@ -59,7 +59,7 @@ class User {
     id = json['id'];
     name = json['name'];
     email = json['email'];
-    avatarUrl = json['avatar_url'];
+    avatarUrl = json['avatar_url']??'https://www.huber-online.com/daisy_website_files/_processed_/8/0/csm_no-image_d5c4ab1322.jpg';
     phone = json['phone'];
   }
 

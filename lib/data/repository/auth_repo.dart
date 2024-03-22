@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:payback/data/preferences.dart';
 import 'package:payback/helpers/dio_error_helper.dart';
 import 'package:payback/model/notifications_response.dart';
 
@@ -206,6 +207,116 @@ class AuthRepository {
     }
   }
 
+  Future<Map> updateUserData(Map<String, String> body) async {
+    try {
+      Response response =
+      await sl<DioClient>().put(Url.UPDATE_USER_DATA_URL, data: jsonEncode(body));
+
+      String message = response.data['message'];
+      if (response.statusCode! < 400) {
+        AuthResponse authResponse = sl<AuthResponse>();
+        authResponse.data!.user= User.fromJson(response.data['data']);
+        sl<PreferenceUtils>().saveUser(authResponse);
+
+        return {'message':message,'data':true};
+      }
+
+      return {'message':message,'data':false};
+    } catch (e) {
+      if (e is DioError) {
+
+        return {'message':DioErrorHelper.handleError(e),'data':false};
+        //return {'message':e.message};
+      } else {
+        return {'message':'Server Error','data':false};
+      }
+    }
+  }
+
+
+  Future<Map> updateUserEmail(Map<String, String> body) async {
+    try {
+      Response response =
+      await sl<DioClient>().put(Url.UPDATE_USER_EMAIL_URL, data: jsonEncode(body));
+
+      String message = response.data['message'];
+      if (response.statusCode! < 400) {
+        AuthResponse authResponse = sl<AuthResponse>();
+        authResponse.data!.user= User.fromJson(response.data['data']);
+        sl<PreferenceUtils>().saveUser(authResponse);
+
+        return {'message':message,'data':true};
+      }
+
+      return {'message':message,'data':false};
+    } catch (e) {
+      if (e is DioError) {
+
+        return {'message':DioErrorHelper.handleError(e),'data':false};
+        //return {'message':e.message};
+      } else {
+        return {'message':'Server Error','data':false};
+      }
+    }
+  }
+
+  Future<Map> updateUserAvatar(File file) async {
+    try {
+      String fileName = file.path.split('/').last;
+
+      // Create FormData object
+      FormData formData = FormData.fromMap({
+        'avatar': await MultipartFile.fromFile(
+          file.path,
+          filename: fileName,
+        ),
+      });
+      Response response =
+      await sl<DioClient>().post(Url.UPDATE_USER_AVATER_URL, data: formData);
+
+      String message = response.data['message'];
+      if (response.statusCode! < 400) {
+        AuthResponse authResponse = sl<AuthResponse>();
+        authResponse.data!.user= User.fromJson(response.data['data']);
+        sl<PreferenceUtils>().saveUser(authResponse);
+
+        return {'message':message,'data':true};
+      }
+
+      return {'message':message,'data':false};
+    } catch (e) {
+      if (e is DioError) {
+
+        return {'message':DioErrorHelper.handleError(e),'data':false};
+        //return {'message':e.message};
+      } else {
+        return {'message':'Server Error','data':false};
+      }
+    }
+  }
+
+  Future<Map> updateUserPassword(Map<String, String> body) async {
+    try {
+      Response response =
+      await sl<DioClient>().post(Url.CHANGE_PASSWORD_URL, data: jsonEncode(body));
+
+      String message = response.data['message'];
+      if (response.statusCode! < 400) {
+
+        return {'message':message,'data':true};
+      }
+
+      return {'message':message,'data':false};
+    } catch (e) {
+      if (e is DioError) {
+
+        return {'message':DioErrorHelper.handleError(e),'data':false};
+        //return {'message':e.message};
+      } else {
+        return {'message':'Server Error','data':false};
+      }
+    }
+  }
 
 
   Future<Map> getNotifications() async {

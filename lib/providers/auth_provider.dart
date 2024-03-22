@@ -91,6 +91,53 @@ Future<Map> register(Map<String,String> body)async{
     return response;
   }
 
+  Future<Map> updateUserData(Map<String,String> body)async{
+    isLoading = true;
+    notifyListeners();
+
+    Map response= await sl<AuthRepository>().updateUserData(body);
+
+    isLoading = false;
+    notifyListeners();
+
+    return response;
+  }
+  Future<Map> updateUserEmail(Map<String,String> body)async{
+    isLoading = true;
+    notifyListeners();
+
+    Map response= await sl<AuthRepository>().updateUserEmail(body);
+
+    isLoading = false;
+    notifyListeners();
+
+    return response;
+  }
+
+  Future<Map> updateUserPassword(Map<String,String> body)async{
+    isLoading = true;
+    notifyListeners();
+
+    Map response= await sl<AuthRepository>().updateUserPassword(body);
+
+    isLoading = false;
+    notifyListeners();
+
+    return response;
+  }
+  
+  Future<Map> updateUserAvatar(File file)async{
+    isLoading = true;
+    notifyListeners();
+
+    Map response= await sl<AuthRepository>().updateUserAvatar(file);
+
+    isLoading = false;
+    notifyListeners();
+
+    return response;
+  }
+
   Future<bool> checkExistUser(String email)async{
     isLoading = true;
     notifyListeners();
