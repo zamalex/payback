@@ -37,6 +37,7 @@ class CheckoutProvider extends ChangeNotifier{
   bool isLoading = false;
   List<Product> cart = [];
   List<ShippingMethod> shippings = [];
+  List<ShippingMethod> shippingsAddresses = [];
   List<Order> orders=[];
   Future loadOrders() async {
     isLoading = true;
@@ -105,6 +106,19 @@ class CheckoutProvider extends ChangeNotifier{
     final response = await sl<CheckoutRepository>().getShippingMethods();
     if (response.containsKey('data')) {
       shippings = response['data'];
+    }
+
+
+
+    notifyListeners();
+    return response;
+  }
+
+  Future<Map<String, dynamic>> getShippingAddresses() async {
+
+    final response = await sl<CheckoutRepository>().getShippingAddresses();
+    if (response.containsKey('data')) {
+      shippingsAddresses = response['data'];
     }
 
 

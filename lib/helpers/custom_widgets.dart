@@ -165,7 +165,8 @@ class TextFieldButton extends StatelessWidget {
   String hinttext;
   Function onTap;
   bool showIcon = true;
-  TextFieldButton({required this.hinttext, required this.onTap,this.showIcon=true});
+  TextEditingController? controller;
+  TextFieldButton({required this.hinttext, required this.onTap,this.showIcon=true,this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -176,6 +177,7 @@ class TextFieldButton extends StatelessWidget {
       child: Container(
         height: 48.0,
         child: TextField(
+          controller: controller,
           enabled: false,
           decoration: InputDecoration(
             fillColor: Colors.white, // Custom background color

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:payback/helpers/colors.dart';
@@ -37,6 +38,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     }
     Future.delayed(Duration.zero).then((value) {
       getShippings();
+      Provider.of<CheckoutProvider>(context, listen: false).getShippingAddresses();
+
     });
   }
 
@@ -165,6 +168,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   final _formKey = GlobalKey<FormState>();
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -390,6 +395,7 @@ class CheckoutItem extends StatefulWidget {
   CheckoutItem(
       {super.key, required this.orderIndex});
 
+
  late CheckoutObject checkoutObject;
   int orderIndex;
 
@@ -410,7 +416,32 @@ class _CheckoutItemState extends State<CheckoutItem> {
   TextEditingController buildingTextEditingController = TextEditingController();
   TextEditingController apartmentTextEditingController = TextEditingController();
   TextEditingController commentsTextEditingController = TextEditingController();
+  showDeliveryAddresses(BuildContext context,Function onSelect){
+    final pp = Provider.of<CheckoutProvider>(context,listen: false);
 
+
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+          title: Text('Select address'),
+          actions:  List.generate(pp.shippingsAddresses.length, (index){
+            return  CupertinoActionSheetAction(
+              child:  Text(pp.shippingsAddresses[index].name??''),
+              onPressed: () {
+                onSelect(pp.shippingsAddresses[index].name);
+                Navigator.pop(context, 'Delete For Everyone');
+              },
+            );
+          }),
+          cancelButton: CupertinoActionSheetAction(
+            child: const Text('Cancel'),
+            onPressed: () {
+
+              Navigator.pop(context, 'Cancel');
+            },
+          )),
+    );
+  }
   @override
   Widget build(BuildContext context) {
    widget.checkoutObject =Provider.of<CheckoutProvider>(context,listen: false).checkouts[widget.orderIndex];
@@ -520,7 +551,7 @@ class _CheckoutItemState extends State<CheckoutItem> {
                   SizedBox(
                     height: 5,
                   ),
-                  CustomTextField(
+                  /*CustomTextField(
                     controller: addressTextEditingController,
                     onChanged: (s){
 
@@ -531,7 +562,19 @@ class _CheckoutItemState extends State<CheckoutItem> {
                           .checkouts[widget.orderIndex]
                           .officeAddress = s;
                     },
-                  ),
+                  ),*/
+                  TextFieldButton(hinttext: addressTextEditingController.text.isEmpty?'Office address':addressTextEditingController.text,controller: addressTextEditingController, onTap: (){
+
+                    showDeliveryAddresses(context, (s){
+                      Provider.of<CheckoutProvider>(context, listen: false)
+                          .checkouts[widget.orderIndex]
+                          .officeAddress = s;
+                      setState(() {
+                        addressTextEditingController.text=s;
+                      });
+                    });
+
+                  })
                 ],
               ),
             )
