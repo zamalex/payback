@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+import '../helpers/colors.dart';
 import '../model/cashback_dashboard.dart';
 
 class PieChartSample2 extends StatefulWidget {
@@ -15,13 +16,7 @@ class PieChartSample2 extends StatefulWidget {
 
 class PieChart2State extends State<PieChartSample2> {
   int touchedIndex = -1;
-  List<Color> colors = [
-    Color(0xFF8B3FB9),
-    Color(0xFF6E4CB6),
-    Color(0xFF34C1B9),
 
-    Color(0xFF6274D1),
-  ];
 
   @override
   void initState() {
@@ -55,9 +50,13 @@ class PieChart2State extends State<PieChartSample2> {
                               touchedIndex = -1;
                               return;
                             }*/
-                            touchedIndex = pieTouchResponse!.touchedSection!.touchedSectionIndex;
+                            if(pieTouchResponse!=null){
+                          if(pieTouchResponse.touchedSection!=null){
+                            touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
 
                             widget.onTap(touchedIndex);
+                          }
+                           }
                           });
                         },
                       ),
@@ -82,7 +81,7 @@ class PieChart2State extends State<PieChartSample2> {
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                color: Colors.purple,
+                color: colors[touchedIndex%colors.length],
               ),
               child: Text(
                 '${widget.categories[touchedIndex].fromAll}%',
@@ -96,7 +95,7 @@ class PieChart2State extends State<PieChartSample2> {
             Container(
               child: Text(
                 '${widget.categories[touchedIndex].name}',
-                style: TextStyle(color: Colors.purple, fontSize: 12),
+                style: TextStyle(color: colors[touchedIndex%colors.length], fontSize: 12),
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -116,14 +115,14 @@ class PieChart2State extends State<PieChartSample2> {
       final radius = isTouched ? 60.0 : 50.0;
       const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
       return PieChartSectionData(
-        color: colors[i],
+        color: colors[i%colors.length],
         value: cats[i].fromAll.toDouble(),
         title: '',
         radius: radius,
         titleStyle: TextStyle(
           fontSize: fontSize,
           fontWeight: FontWeight.bold,
-          color: colors[i],
+          color: colors[i%colors.length],
           shadows: shadows,
         ),
       );
