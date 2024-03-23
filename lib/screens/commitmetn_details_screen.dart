@@ -215,7 +215,7 @@ class CommitmetDetails extends StatelessWidget {
                                         style: TextStyle(fontSize: 15,color: kBlueColor,fontWeight: FontWeight.bold),
                                       ),
                                       trailing: Text(
-                                        '300 SAR',
+                                        '${commitment.paymentTarget} SAR',
                                         style: TextStyle(
                                             fontSize: 15,
                                             color: Colors.black,
@@ -235,7 +235,7 @@ class CommitmetDetails extends StatelessWidget {
                                         style: TextStyle(fontSize: 15,color: kBlueColor,fontWeight: FontWeight.bold),
                                       ),
                                       trailing: Text(
-                                        '20%',
+                                        '${commitment.cashbackToCommitment}%',
                                         style: TextStyle(
                                             fontSize: 15,
                                             color: Colors.black,
@@ -255,7 +255,7 @@ class CommitmetDetails extends StatelessWidget {
                                         style: TextStyle(fontSize: 15,color: kBlueColor,fontWeight: FontWeight.bold),
                                       ),
                                       trailing: Text(
-                                        '27.07.2023',
+                                        '${commitment.dueDate}',
                                         style: TextStyle(
                                             fontSize: 15,
                                             color: Colors.black,
@@ -275,7 +275,7 @@ class CommitmetDetails extends StatelessWidget {
                                         style: TextStyle(fontSize: 15,color: kBlueColor,fontWeight: FontWeight.bold),
                                       ),
                                       trailing: Text(
-                                        'Home bills',
+                                        '${commitment.categoryName}',
                                         style: TextStyle(
                                             fontSize: 15,
                                             color: Colors.black,

@@ -4,6 +4,7 @@ class Commitment {
   late String? image;
   late int? partnerId;
   late String? categoryId;
+  late String? categoryName;
   late String? paymentTarget;
   late String? cashbackToCommitment;
   late String? dueDate;
@@ -18,6 +19,7 @@ class Commitment {
      this.name,
      this.partnerId,
      this.categoryId,
+    this.categoryName,
      this.paymentTarget,
      this.cashbackToCommitment,
      this.dueDate,
@@ -36,6 +38,7 @@ class Commitment {
      // partnerId: json['partner_id'],
       partnerId: json['partner']['id'],
       categoryId: json['category_id'],
+      categoryName: json['partner']['name'],
       paymentTarget: json['payment_target'],
       cashbackToCommitment: json['cashback_to_commitment'],
       dueDate: json['due_date'],
