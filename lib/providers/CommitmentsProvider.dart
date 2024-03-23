@@ -39,6 +39,18 @@ class CommitmentsProvider extends ChangeNotifier{
     return response;
   }
 
+  Future<Map> editCommitment(Map<String, dynamic> request,int id) async {
+    isLoading = true;
+    notifyListeners();
+    final response = await sl<CommitmentsRepository>().editCommitment(
+        request,id);
+    isLoading = false;
+    notifyListeners();
+
+
+    return response;
+  }
+
 
   Future<Map> deleteCommitment(int id) async {
     isLoading = true;

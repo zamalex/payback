@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:payback/model/auth_response.dart';
 import 'package:payback/providers/CommitmentsProvider.dart';
+import 'package:payback/screens/new_commitment_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -71,7 +72,9 @@ class CommitmetDetails extends StatelessWidget {
                                     },
                                         child: Icon(Icons.arrow_back_ios,color: Colors.white,)),
                                     Expanded(child: Text('Back',style: TextStyle(color: Colors.white),)),
-                                    Icon(Icons.edit,color: Colors.white,),
+                                    InkWell(onTap:(){
+                                      Get.to(NewCommitmentScreen(commitment: commitment,));
+                                    },child: Icon(Icons.edit,color: Colors.white,)),
                                     SizedBox(width: 5,),
                                     InkWell(
                                         onTap: (){

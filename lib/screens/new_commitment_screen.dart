@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:payback/helpers/colors.dart';
@@ -7,12 +9,15 @@ import 'package:payback/providers/home_provider.dart';
 import 'package:payback/screens/partner_info_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_switcher/slide_switcher.dart';
+import 'package:payback/model/commitment_model.dart'as c;
 
 import '../model/partner_model.dart';
 import '../providers/CommitmentsProvider.dart';
 
 class NewCommitmentScreen extends StatefulWidget {
-  const NewCommitmentScreen({super.key});
+
+  NewCommitmentScreen({this.commitment});
+  c.Commitment? commitment;
 
   @override
   State<NewCommitmentScreen> createState() => _NewCommitmentScreenState();
@@ -101,10 +106,60 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
   }
 
 
+
+  editCommitment(){
+
+    _formKey.currentState!.save();
+    bool isvalid = _formKey.currentState!.validate();
+    if(!isvalid||date==null) {
+      Get.snackbar('Alert', 'Fill required data',backgroundColor: Colors.red,colorText: Colors.white,);
+
+      return;
+    }
+
+    Map<String,dynamic> request={
+      'name':name,
+      'partner_id':widget.commitment!.partnerId,
+      'category_id':widget.commitment!.categoryId,
+      'payment_target':double.parse(payment_target.toString()).toInt(),
+      'cashback_to_commitment':((selectedPercentage+1)*10).toString(),
+      'due_date':date,
+      'type':type==0?'one-time':'repeatable',
+      'notify':notify?'1':'0',
+    };
+
+    if(selected==0){
+      request['name'] = 'SADAD';
+
+
+    }
+
+    print(jsonEncode(request));
+    Provider.of<CommitmentsProvider>(context,listen: false).editCommitment(request,widget.commitment!.id??0).then((value) {}).then((value) {
+      Provider.of<HomeProvider>(context,listen: false).getCommitments();
+      Get.back();
+      Get.snackbar('Success', 'Commitment Edited',backgroundColor: Colors.green,colorText: Colors.white,);
+
+    });
+
+  }
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    if(widget.commitment!=null){
+
+      date=widget.commitment!.dueDate!;
+      paymentTargetController.text=widget.commitment!.paymentTarget!;
+      if(widget.commitment!.partnerId!=1){
+        selected=1;
+        nameController.text=widget.commitment!.name!;
+
+      }
+    }
 
     Future.delayed(Duration.zero).then((value) {
      Provider.of<HomeProvider>(context,listen: false).partnerCustomFields.clear();
@@ -112,7 +167,13 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
       Provider.of<CommitmentsProvider>(context,listen: false).getCommitmentsCategories();
       Provider.of<HomeProvider>(context,listen: false).getPartners();
     });
+
+
   }
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController paymentTargetController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -147,14 +208,14 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'New commitment',
+                            widget.commitment!=null?'Edit commitment':'New commitment',
                             style: TextStyle(
                                 fontSize: 30, fontWeight: FontWeight.bold),
                           ),
                           SizedBox(
                             height: 10,
                           ),
-                          SlideSwitcher(
+                          if(widget.commitment==null)SlideSwitcher(
                             containerColor: Colors.white,
                             slidersColors: const [
                               kBlueColor,
@@ -193,18 +254,18 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
                           SizedBox(
                             height: 5,
                           ),
-                          CustomTextField(onSaved:(v){name=v;},hintText:selected==1?'Type commitment name': 'Type SADAD number'),
+                          CustomTextField(controller:nameController,onSaved:(v){name=v;},hintText:selected==1?'Type commitment name': 'Type SADAD number'),
                           SizedBox(
                             height: 15,
                           ),
-                          if(selected==1)
+                          if(selected==1&&widget.commitment==null)
                           Text('Choose partner'),
-                          if(selected==1)
+                          if(selected==1&&widget.commitment==null)
 
                             SizedBox(
                             height: 5,
                           ),
-                          if(selected==1)
+                          if(selected==1&&widget.commitment==null)
 
                             TextFieldButton(
                             hinttext: partner==null?'Choose partner':partner!.name??'',
@@ -214,17 +275,19 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
                               });});
                             },
                           ),
-                          if(selected==1)
+                          if(selected==1&&widget.commitment==null)
 
                             SizedBox(
                             height: 15,
                           ),
 
-
+                          if(widget.commitment==null)
                           Text('Choose category'),
+                          if(widget.commitment==null)
                           SizedBox(
                             height: 5,
                           ),
+                          if(widget.commitment==null)
                           TextFieldButton(
                             hinttext: category==null?'Choose category':category!.name??'',
                             onTap: () {
@@ -242,7 +305,7 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
                           SizedBox(
                             height: 5,
                           ),
-                          CustomTextField(hintText: 'Minimum 10 SAR',type: TextInputType.number,onSaved: (v){payment_target=v;}),
+                          CustomTextField(controller:paymentTargetController,hintText: 'Minimum 10 SAR',type: TextInputType.number,onSaved: (v){payment_target=v;}),
                           SizedBox(
                             height: 15,
                           ),
@@ -305,7 +368,7 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
                           SizedBox(
                             height: 5,
                           ),
-                          TextFieldButton(hinttext: date==null?'Enter the date (YYYY-MM-dd)':date??'', onTap: (){
+                          TextFieldButton(controller:dateController,hinttext: date==null?'Enter the date (YYYY-MM-dd)':date??'', onTap: (){
                             _selectDate(context);
                           },showIcon: false,),
                           /*CustomTextField(
@@ -397,8 +460,8 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
                             topRight: Radius.circular(16))),
                     child: Container(
                         width: double.infinity,
-                        child: CustomButton(onTap: (){createCommitment();},
-                            buttonText: 'Create', buttonColor: kPurpleColor)),
+                        child: CustomButton(onTap: (){ widget.commitment==null?createCommitment():editCommitment();},
+                            buttonText: widget.commitment==null?'Create':'Edit', buttonColor: kPurpleColor)),
                   ),
                 )
               ],

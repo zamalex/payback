@@ -33,6 +33,28 @@ class CommitmentsRepository{
     }
   }
 
+  Future editCommitment(Map<String, dynamic> body,int id) async {
+    try {
+      Response response =
+      await sl<DioClient>().put('${Url.COMMIMENTS_URL}/$id', data: jsonEncode(body));
+
+      final parsedJson = response.data;
+      if (response.statusCode! < 400) {
+        return {'message': 'Done', 'data': true};
+      }
+
+      return {'message': 'Error', 'data': false};
+    } catch (e) {
+      if (e is DioError) {
+        return {'message':  DioErrorHelper.handleError(e), 'data': false};
+
+
+      } else {
+        return {'message': 'unknown error', 'data': false};
+      }
+    }
+  }
+
 
   Future deleteCommitment(int id) async {
     try {
