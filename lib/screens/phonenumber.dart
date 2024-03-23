@@ -26,6 +26,7 @@ class CheckPhoneNumberScreen extends StatelessWidget {
        request.putIfAbsent('is_vendor', () => "0");
 
 
+
        Provider.of<AuthProvider>(context, listen: false)
            .register(request)
            .then((value) {
@@ -66,7 +67,7 @@ class CheckPhoneNumberScreen extends StatelessWidget {
                     SizedBox(height: 5,),
                     CustomTextField(showCountryCode:true,hintText: 'Enter your phone number',type: TextInputType.phone,onSaved: (s){
                       phone=s;
-                    },),
+                    },selectedCode: '+20',),
 
                     SizedBox(height: 20,),
                     Consumer<AuthProvider>(

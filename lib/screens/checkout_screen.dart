@@ -2,11 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/helpers/custom_widgets.dart';
 import 'package:payback/helpers/functions.dart';
 import 'package:payback/model/auth_response.dart';
+import 'package:payback/model/countries_utils.dart';
 import 'package:payback/providers/checkout_provider.dart';
 import 'package:payback/screens/cart_screen.dart';
 import 'package:payback/screens/checkout_object.dart';
@@ -32,8 +34,17 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     super.initState();
 
     if(user!=null){
+
+      if(user!.phone!=null){
+        if(user!.phone!.isNotEmpty){
+          Map<String,String> ph = CountriesUtils.seperatePhoneAndDialCode(user!.phone??'');
+
+          phoneController.text =ph['phone']!;
+
+        }
+      }
+
       nameController.text = user!.name??'';
-      phoneController.text = user!.phone??'';
 
     }
     Future.delayed(Duration.zero).then((value) {
@@ -264,6 +275,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             height: 5,
                           ),
                           CustomTextField(
+                            selectedCode: CountriesUtils.seperatePhoneAndDialCode(user!.phone??'')['dial_code']!,
+
+                            showCountryCode: true,
                             controller: phoneController,
                             hintText: 'Receiver phone number or pre-filled',
                             onSaved: (s) {

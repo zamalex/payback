@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:payback/model/share_details_response.dart';
 
 import '../../helpers/dio_error_helper.dart';
+import '../../model/cashback_dashboard.dart';
 import '../../model/partner_model.dart';
 import '../http/dio_client.dart';
 import '../http/urls.dart';
@@ -166,6 +167,59 @@ class CommitmentsRepository{
       } else {
         return {'message': 'Unknown error'};
       }
+    }
+  }
+
+
+  Future<Summary?> getCashbackHistory() async {
+    try {
+      Response response = await sl<DioClient>().get(Url.USERS_URL);
+
+      final res = """
+      {
+    "data": {
+        "total_spent": 2500,
+        "total_received": 2500,
+        "categories": [
+            {
+                "id": 1,
+                "name": "Home Bills",
+                "from_all": 25,
+                "spent": 200
+            },
+            {
+                "id": 2,
+                "name": "Travel and vacation",
+                "from_all": 50,
+                "spent": 200
+            },
+            {
+                "id": 3,
+                "name": "Another category",
+                "from_all": 12,
+                "spent": 300
+            },
+            {
+                "id": 4,
+                "name": "Another category",
+                "from_all": 13,
+                "spent": 240
+            }
+        ]
+    },
+    "status": 200,
+    "success": true,
+    "message": "string"
+}
+      """;
+
+      if (response.statusCode == 200) {
+        return Summary.fromJson(jsonDecode(res)['data']);
+      } else {
+        throw Exception('Failed to load summary');
+      }
+    } catch (error) {
+      throw Exception('Failed to load summary: $error');
     }
   }
 }

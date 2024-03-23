@@ -31,6 +31,7 @@ class CustomTextField extends StatefulWidget {
 
   bool isPassword = false;
   bool showCountryCode = false;
+  String? selectedCode;
 
 
 
@@ -41,6 +42,7 @@ class CustomTextField extends StatefulWidget {
         this.onChanged,
       this.controller,
       this.icon,
+        this.selectedCode,
       this.isPassword = false,
       this.isFullName = false,
       this.showCountryCode = false,
@@ -63,7 +65,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
     RegExp regExp = new RegExp(pattern);
     return regExp.hasMatch(value);
   }
-  String selectedCode = '+20';
   String? _validateFullName(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter your full name';
@@ -80,6 +81,19 @@ class _CustomTextFieldState extends State<CustomTextField> {
     // You can add more complex validation rules here if needed
     return null;
   }
+  String selectedCode = '+20';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    if(widget.selectedCode!=null){
+      selectedCode=widget.selectedCode!;
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -108,6 +122,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             return null;
         },
         onSaved: (s) {
+          print('saved $s');
           if (widget.onSaved != null) widget.onSaved!(widget.showCountryCode?'${selectedCode}$s':s);
         },
         readOnly: !widget.editable,
@@ -137,9 +152,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
           prefixIcon: widget.showCountryCode?Container(
               //height: 20,
               child: CountryCodePicker(
-                initialSelection: 'EG',
+                initialSelection: selectedCode,
                 onChanged: (c){
-                selectedCode = (c.dialCode?..replaceAll('+', ''))!;
+                  selectedCode = (c.dialCode?..replaceAll('+', ''))!;
+
               },)):null,
           suffixIcon: IconButton(
             icon: widget.isPassword

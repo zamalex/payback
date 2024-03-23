@@ -12,9 +12,11 @@ import 'package:payback/helpers/colors.dart';
 import 'package:payback/model/auth_response.dart';
 import 'package:payback/providers/CommitmentsProvider.dart';
 import 'package:payback/providers/checkout_provider.dart';
+import 'package:payback/providers/help_community_provider.dart';
 import 'package:payback/providers/home_provider.dart';
 import 'package:payback/screens/invitation_screen.dart';
 
+import 'dart:math' as math;
 
 import 'package:payback/screens/splash.dart';
 
@@ -169,6 +171,8 @@ void main() async {
         ChangeNotifierProvider<HomeProvider>(create: (_) => HomeProvider()),
         ChangeNotifierProvider<CheckoutProvider>(
             create: (_) => CheckoutProvider()),
+        ChangeNotifierProvider<HelpCommunityProvider>(
+            create: (_) => HelpCommunityProvider()),
         ChangeNotifierProvider<CommitmentsProvider>(
             create: (_) => CommitmentsProvider()),
       ],
@@ -240,29 +244,53 @@ class PieChart extends StatelessWidget {
     required this.radius,
     this.strokeWidth = 40,
     this.child,
+    this.onBranchClick,
     Key? key,
-  })  : // make sure sum of data is never ovr 100 percent
+  })  : // make sure sum of data is never over 100 percent
         assert(data.fold<double>(0, (sum, data) => sum + data.percent) <= 100),
         super(key: key);
 
   final List<PieChartData> data;
-  // radius of chart
+  // Radius of chart
   final double radius;
-  // width of stroke
+  // Width of stroke
   final double strokeWidth;
-  // optional child; can be used for text for example
+  // Optional child; can be used for text for example
   final Widget? child;
+  // Callback function for branch click
+  final void Function(int)? onBranchClick;
 
   @override
-  Widget build(context) {
-    return CustomPaint(
-      painter: _Painter(strokeWidth, data),
-      size: Size.square(radius),
-      child: SizedBox.square(
-        // calc diameter
-        dimension: radius * 2,
-        child: Center(
-          child: child,
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapUp: (TapUpDetails details) {
+        if (onBranchClick != null) {
+          final RenderBox box = context.findRenderObject() as RenderBox;
+          final Offset localPosition = box.globalToLocal(details.globalPosition);
+          final double tapAngle = (math.atan2(localPosition.dy - radius, localPosition.dx - radius) + math.pi * 2) % (math.pi * 2);
+          double cumulativePercent = 0;
+          for (int i = 0; i < data.length; i++) {
+            final double startAngle = math.pi * 2 * cumulativePercent / 100;
+            final double endAngle = math.pi * 2 * (cumulativePercent + data[i].percent) / 100;
+            print('Tap Angle: $tapAngle, Branch $i - Start Angle: $startAngle, End Angle: $endAngle'); // Debugging statement
+
+            if (tapAngle >= startAngle && tapAngle <= endAngle) {
+              onBranchClick!(i); // Call the callback with the index of the tapped branch
+              break;
+            }
+            cumulativePercent += data[i].percent;
+          }
+        }
+      },
+      child: CustomPaint(
+        painter: _Painter(strokeWidth, data),
+        size: Size.square(radius),
+        child: SizedBox.square(
+          // Calculate diameter
+          dimension: radius * 2,
+          child: Center(
+            child: child,
+          ),
         ),
       ),
     );

@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:payback/data/repository/auth_repo.dart';
 import 'package:payback/data/repository/checkout_repo.dart';
 import 'package:payback/data/repository/commitments_repo.dart';
+import 'package:payback/data/repository/help_community_repo.dart';
 import 'package:payback/data/repository/home_repo.dart';
 
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -30,5 +31,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => HomeRepository());
   sl.registerLazySingleton(() => CommitmentsRepository());
   sl.registerLazySingleton(() => CheckoutRepository());
+  sl.registerLazySingleton(() => HelpCommunityRepository());
 
 }

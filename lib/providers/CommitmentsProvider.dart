@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:payback/model/cashback_dashboard.dart';
 
 import '../data/repository/commitments_repo.dart';
 import '../data/service_locator.dart';
@@ -6,6 +7,8 @@ import '../model/partner_model.dart';
 import '../model/share_details_response.dart';
 
 class CommitmentsProvider extends ChangeNotifier{
+
+  Summary? cashbackHistory;
 
   String selectedMonth = '';
   List<String> months = [
@@ -122,6 +125,23 @@ class CommitmentsProvider extends ChangeNotifier{
    isLoading = false;
    notifyListeners();
     return response;
+  }
+
+
+  Future<Summary?> getCashbackHistory() async {
+   isLoading = true;
+   notifyListeners();
+
+    final response = await sl<CommitmentsRepository>()
+        .getCashbackHistory();
+
+
+    cashbackHistory = response;
+
+
+   isLoading = false;
+   notifyListeners();
+    return cashbackHistory;
   }
 
 }
