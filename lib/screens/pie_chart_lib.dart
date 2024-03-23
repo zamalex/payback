@@ -1,0 +1,132 @@
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
+
+import '../model/cashback_dashboard.dart';
+
+class PieChartSample2 extends StatefulWidget {
+  PieChartSample2({super.key,required this.categories,required this.onTap});
+
+  List<HistoryCategory> categories;
+  Function onTap;
+
+  @override
+  State<StatefulWidget> createState() => PieChart2State();
+}
+
+class PieChart2State extends State<PieChartSample2> {
+  int touchedIndex = -1;
+  List<Color> colors = [
+    Color(0xFF8B3FB9),
+    Color(0xFF6E4CB6),
+    Color(0xFF34C1B9),
+
+    Color(0xFF6274D1),
+  ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        AspectRatio(
+          aspectRatio: 1.3,
+          child: Row(
+            children: <Widget>[
+              const SizedBox(
+                height: 18,
+              ),
+              Expanded(
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: PieChart(
+                    PieChartData(
+                      pieTouchData: PieTouchData(
+                        touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                          setState(() {
+                           /* if (!event.isInterestedForInteractions ||
+                                pieTouchResponse == null ||
+                                pieTouchResponse.touchedSection == null) {
+                              touchedIndex = -1;
+                              return;
+                            }*/
+                            touchedIndex = pieTouchResponse!.touchedSection!.touchedSectionIndex;
+
+                            widget.onTap(touchedIndex);
+                          });
+                        },
+                      ),
+                      borderData: FlBorderData(
+                        show: false,
+                      ),
+                      sectionsSpace: 0,
+                      centerSpaceRadius: 50,
+                      sections: showingSections(widget.categories),
+                    ),
+                  ),
+                ),
+              ),
+
+            ],
+          ),
+        ),
+       if(touchedIndex!=-1) CircleAvatar(radius: 50,child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.purple,
+              ),
+              child: Text(
+                '${widget.categories[touchedIndex].fromAll}%',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                ),
+              ),
+            ),
+            SizedBox(height: 4,),
+            Container(
+              child: Text(
+                '${widget.categories[touchedIndex].name}',
+                style: TextStyle(color: Colors.purple, fontSize: 12),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              width: 70,
+            ),
+          ],
+        ),)
+      ],
+    );
+  }
+
+  List<PieChartSectionData> showingSections(List<HistoryCategory> cats) {
+    return List.generate(cats.length, (i) {
+      final isTouched = i == touchedIndex;
+      final fontSize = isTouched ? 25.0 : 16.0;
+      final radius = isTouched ? 60.0 : 50.0;
+      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+      return PieChartSectionData(
+        color: colors[i],
+        value: cats[i].fromAll.toDouble(),
+        title: '',
+        radius: radius,
+        titleStyle: TextStyle(
+          fontSize: fontSize,
+          fontWeight: FontWeight.bold,
+          color: colors[i],
+          shadows: shadows,
+        ),
+      );
+    });
+  }
+}

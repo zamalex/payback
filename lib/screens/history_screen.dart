@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/model/cashback_dashboard.dart';
 import 'package:payback/screens/commitment_category_spent_screen.dart';
+import 'package:payback/screens/pie_chart_lib.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_switcher/slide_switcher.dart';
 
@@ -95,36 +96,64 @@ HistoryCategory? selectedCategory;
                     backgroundColor: Colors.white,
                     //width: MediaQuery.of(context).size.width/2,
                     radius: MediaQuery.of(context).size.width*.25,
-                    child: PieChart(
-
-                    data:
-                      List.generate(value.cashbackHistory!.categories.length, (index) =>PieChartData(colors[index], value.cashbackHistory!.categories[index].fromAll.toDouble(),))
-                       ,
-                    radius: (MediaQuery.of(context).size.width*.25)-22,
-                    onBranchClick: (i){
+                    child:PieChartSample2(categories: value.cashbackHistory!.categories,onTap: (ss){
                       setState(() {
-                        selectedCategory = value.cashbackHistory!.categories[i];
+                        selectedCategory = value.cashbackHistory!.categories[ss];
                       });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children:  [
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 4),
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),color: Colors.purple),
-                          child: Text(
-                            '50%',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
+                    },) /*PieChart(
+                      data: List.generate(
+                        value.cashbackHistory!.categories.length,
+                            (index) => PieChartData(
+                          colors[index],
+                          value.cashbackHistory!.categories[index].fromAll.toDouble(),
+                        ),
+                      ),
+                      radius: (MediaQuery.of(context).size.width * 0.25) - 22,
+                      onSectionSelected: (index, data) {
+                        double cumulativePercent = 0;
+                        for (int i = 0; i < value.cashbackHistory!.categories.length; i++) {
+                          cumulativePercent += value.cashbackHistory!.categories[i].fromAll.toDouble();
+                          if (index == i) {
+                            setState(() {
+                              selectedCategory = value.cashbackHistory!.categories[index];
+                            });
+                            print('Section $index selected. Cumulative Percent: $cumulativePercent');
+                            break;
+                          }
+                        }
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.purple,
+                            ),
+                            child: Text(
+                              '50%',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 4,),
-                        Container(child: Text('Travel and vacation',style:TextStyle(color: Colors.purple,fontSize: 12),textAlign: TextAlign.center,maxLines: 2,overflow: TextOverflow.ellipsis,),width: 70,),
-                      ],
-                    ),
-                  ),),
+                          SizedBox(height: 4,),
+                          Container(
+                            child: Text(
+                              'Travel and vacation',
+                              style: TextStyle(color: Colors.purple, fontSize: 12),
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            width: 70,
+                          ),
+                        ],
+                      ),
+                    )*/,
+                      ),
                   SizedBox(width: 20,),
                   Expanded(child: Column(children: [
                     Container(

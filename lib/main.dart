@@ -230,6 +230,9 @@ class _MyAppState extends State<MyApp> {
 }
 
 ///////////////////////////////////////////////////
+
+typedef void SectionSelectedCallback(int index, PieChartData data);
+
 class PieChartData {
   const PieChartData(this.color, this.percent);
 
@@ -244,49 +247,45 @@ class PieChart extends StatelessWidget {
     required this.radius,
     this.strokeWidth = 40,
     this.child,
-    this.onBranchClick,
+    this.onSectionSelected,
     Key? key,
   })  : // make sure sum of data is never over 100 percent
         assert(data.fold<double>(0, (sum, data) => sum + data.percent) <= 100),
         super(key: key);
 
   final List<PieChartData> data;
-  // Radius of chart
   final double radius;
-  // Width of stroke
   final double strokeWidth;
-  // Optional child; can be used for text for example
   final Widget? child;
-  // Callback function for branch click
-  final void Function(int)? onBranchClick;
+  final SectionSelectedCallback? onSectionSelected; // New callback
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTapUp: (TapUpDetails details) {
-        if (onBranchClick != null) {
-          final RenderBox box = context.findRenderObject() as RenderBox;
-          final Offset localPosition = box.globalToLocal(details.globalPosition);
-          final double tapAngle = (math.atan2(localPosition.dy - radius, localPosition.dx - radius) + math.pi * 2) % (math.pi * 2);
-          double cumulativePercent = 0;
-          for (int i = 0; i < data.length; i++) {
-            final double startAngle = math.pi * 2 * cumulativePercent / 100;
-            final double endAngle = math.pi * 2 * (cumulativePercent + data[i].percent) / 100;
-            print('Tap Angle: $tapAngle, Branch $i - Start Angle: $startAngle, End Angle: $endAngle'); // Debugging statement
+        final RenderBox box = context.findRenderObject() as RenderBox;
+        final Offset localPosition = box.globalToLocal(details.globalPosition);
+        final double tapAngle = (math.atan2(localPosition.dy - radius, localPosition.dx - radius) + math.pi * 2) % (math.pi * 2);
+        double cumulativePercent = 0;
+        for (int i = 0; i < data.length; i++) {
+          final double startAngle = math.pi * 2 * cumulativePercent / 100;
+          final double endAngle = math.pi * 2 * (cumulativePercent + data[i].percent) / 100;
+          print('Tap Angle: $tapAngle, Branch $i - Start Angle: $startAngle, End Angle: $endAngle'); // Debugging statement
 
-            if (tapAngle >= startAngle && tapAngle <= endAngle) {
-              onBranchClick!(i); // Call the callback with the index of the tapped branch
-              break;
+          if (tapAngle >= startAngle && tapAngle <= endAngle) {
+            if (onSectionSelected != null) {
+              onSectionSelected!(i, data[i]); // Call the callback with the index and data of the tapped section
             }
-            cumulativePercent += data[i].percent;
+
+            break;
           }
+          cumulativePercent += data[i].percent;
         }
       },
       child: CustomPaint(
         painter: _Painter(strokeWidth, data),
         size: Size.square(radius),
         child: SizedBox.square(
-          // Calculate diameter
           dimension: radius * 2,
           child: Center(
             child: child,

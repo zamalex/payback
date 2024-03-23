@@ -60,7 +60,7 @@ dependencies:
   image_picker: ^1.0.7
   auto_size_text: ^3.0.0
   country_code_picker: ^3.0.0
-
+  fl_chart: ^0.66.2
 
 
 
