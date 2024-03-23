@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 
 import '../data/service_locator.dart';
 import '../model/product_model.dart';
+import 'main_screen.dart';
 
 class CartScreen extends StatefulWidget {
   CartScreen({super.key});
@@ -58,6 +59,16 @@ class _CartScreenState extends State<CartScreen> {
               total = total+(element.cartQuantity*double.parse(element.price??'0'));
             });
       
+            if(provider.cart.isEmpty){
+              return Center(child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,children: [
+                Icon(Icons.remove_shopping_cart,size: 50,color: kBlueColor,),
+                Text('Cart is empty',style: TextStyle(color: kBlueColor),)
+              ],),);
+
+            }
+            
             return Container(
               height: MediaQuery.of(context).size.height,
               padding: EdgeInsets.all(10),
