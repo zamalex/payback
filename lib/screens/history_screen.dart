@@ -22,12 +22,7 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> {
 
   int selected = 0;
-  List<Color> colors = [
-    Color(0xFF8B3FB9),
-    Color(0xFF6E4CB6),
-    Color(0xFF6274D1),
-    Color(0xFF34C1B9)
-  ];
+
   @override
   void initState() {
     // TODO: implement initState
@@ -40,6 +35,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     Provider.of<CommitmentsProvider>(context,listen: false).getCashbackHistory();
   }
 HistoryCategory? selectedCategory;
+  int selectedColorIndex = -1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,6 +95,7 @@ HistoryCategory? selectedCategory;
                     child:PieChartSample2(categories: value.cashbackHistory!.categories,onTap: (ss){
                       setState(() {
                         selectedCategory = value.cashbackHistory!.categories[ss];
+                        selectedColorIndex = ss;
                       });
                     },) /*PieChart(
                       data: List.generate(
@@ -165,8 +162,8 @@ HistoryCategory? selectedCategory;
 
                     ,selectedCategory==null?Container():Container(
                       decoration:BoxDecoration(color: Colors.purple.shade50,borderRadius: BorderRadius.only(topLeft: Radius.circular(20),bottomRight: Radius.circular(20),topRight: Radius.circular(10),bottomLeft: Radius.circular(10))),
-                      padding: EdgeInsets.all(16),child: Column(crossAxisAlignment:CrossAxisAlignment.start,children: [Text('Spent on ${selectedCategory!.name}:',style: TextStyle(color:Colors.purple),)
-                      ,Text('${selectedCategory!.spent}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.purple),),
+                      padding: EdgeInsets.all(16),child: Column(crossAxisAlignment:CrossAxisAlignment.start,children: [Text('Spent on ${selectedCategory!.name}:',style: TextStyle(color:colors[selectedColorIndex%colors.length]),)
+                      ,Text('${selectedCategory!.spent}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: colors[selectedColorIndex%colors.length]),),
                     ],),)
                   ],))
                 ],),
