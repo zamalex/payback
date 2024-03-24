@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:payback/data/preferences.dart';
 import 'package:payback/helpers/dio_error_helper.dart';
+import 'package:payback/model/cashbak_response.dart';
 import 'package:payback/model/notifications_response.dart';
 
 
@@ -259,7 +260,16 @@ class AuthRepository {
       }
     }
   }
-
+  Future<CashbackModel> getCashback() async {
+    try {
+      Response response = await sl<DioClient>().get(Url.GET_CASHBACK_URL);
+      if (response.statusCode == 200) {
+        return CashbackModel.fromJson(response.data['data']);
+      } else {
+        return CashbackModel.fromJson(jsonDecode(Url.NO_CASHBACK));    }
+    } catch (error) {
+      return CashbackModel.fromJson(jsonDecode(Url.NO_CASHBACK));    }
+  }
   Future<Map> updateUserAvatar(File file) async {
     try {
       String fileName = file.path.split('/').last;

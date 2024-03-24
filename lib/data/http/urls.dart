@@ -32,9 +32,22 @@ class Url {
   static const UPDATE_USER_EMAIL_URL = '/users/email/edit';
   static const UPDATE_USER_AVATER_URL = '/users/avatar';
 
+  static const GET_CASHBACK_URL = '/cashbacks';
+
   static String TOKEN = '';
   static String LOCALE = 'ar';
 
+
+  static String NO_CASHBACK="""
+   {
+        "deposit": "0",
+        "withdraw": "0",
+        "withdraw_unsigned_balance": "0",
+        "deposit_unsigned_balance": "0",
+        "withdraw_assigned_balance": "0",
+        "deposit_assigned_balance": "0"
+    }
+  """;
   static String PARTNER_JSON = """ {
             "id": 1,
             "name": "Partner",

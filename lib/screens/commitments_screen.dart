@@ -3,6 +3,7 @@ import 'package:get/route_manager.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/helpers/custom_widgets.dart';
 import 'package:payback/model/auth_response.dart';
+import 'package:payback/providers/auth_provider.dart';
 import 'package:payback/providers/home_provider.dart';
 import 'package:payback/screens/login.dart';
 import 'package:payback/screens/new_commitment_screen.dart';
@@ -11,8 +12,22 @@ import 'package:provider/provider.dart';
 
 import '../data/service_locator.dart';
 
-class CommitmentsScreen extends StatelessWidget {
+class CommitmentsScreen extends StatefulWidget {
   const CommitmentsScreen({super.key});
+
+  @override
+  State<CommitmentsScreen> createState() => _CommitmentsScreenState();
+}
+
+class _CommitmentsScreenState extends State<CommitmentsScreen> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    Provider.of<AuthProvider>(context,listen: false).getCashback();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,74 +72,76 @@ class CommitmentsScreen extends StatelessWidget {
                             color: kBlueLightColor.withOpacity(.5),
                             borderRadius: BorderRadius.circular(15)),
                         padding: EdgeInsets.all(8),
-                        child: Column(
-                          children: [
-                            ListTile(
-                              dense: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 0.0),
-                              visualDensity: VisualDensity(vertical: -4),
-                              title: Text(
-                                'Unassigned cashback, SAR',
-                                style: TextStyle(fontSize: 15),
+                        child: Consumer<AuthProvider>(
+                          builder:(context, value, child) => Column(
+                            children: [
+                              ListTile(
+                                dense: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 0.0),
+                                visualDensity: VisualDensity(vertical: -4),
+                                title: Text(
+                                  'Unassigned cashback, SAR',
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                                trailing: Text(
+                                  '${value.cashbackModel.depositUnsignedBalance} SAR',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: kBlueColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
-                              trailing: Text(
-                                '20 SAR',
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: kBlueColor,
-                                    fontWeight: FontWeight.bold),
+                              SizedBox(
+                                height: 3,
                               ),
-                            ),
-                            SizedBox(
-                              height: 3,
-                            ),
-                            Divider()
+                              Divider()
 
-                            // ,SizedBox(height: 3,),
-                            ,
-                            ListTile(
-                              dense: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 0.0),
-                              visualDensity: VisualDensity(vertical: -4),
-                              title: Text(
-                                'Unassigned % ofcashback',
-                                style: TextStyle(fontSize: 15),
-                              ),
-                              trailing: Text(
-                                '20%',
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: kBlueColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            )
+                              // ,SizedBox(height: 3,),
+                              ,
+                              ListTile(
+                                dense: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 0.0),
+                                visualDensity: VisualDensity(vertical: -4),
+                                title: Text(
+                                  'Unassigned % ofcashback',
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                                trailing: Text(
+                                  '${(value.cashbackModel.depositAssignedBalance/value.cashbackModel.depositUnsignedBalance)*100}%',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: kBlueColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              )
 
-                            // ,SizedBox(height: 3,),
-                            ,
-                            Divider()
+                              // ,SizedBox(height: 3,),
+                              ,
+                              Divider()
 
-                            // ,SizedBox(height: 3,),
-                            ,
-                            ListTile(
-                              dense: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 0.0),
-                              visualDensity: VisualDensity(vertical: -4),
-                              title: Text(
-                                'Commitments total, SAR',
-                                style: TextStyle(fontSize: 15),
-                              ),
-                              trailing: Text(
-                                '20 SAR',
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: kBlueColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            )
-                          ],
+                              // ,SizedBox(height: 3,),
+                              ,
+                              ListTile(
+                                dense: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 0.0),
+                                visualDensity: VisualDensity(vertical: -4),
+                                title: Text(
+                                  'Commitments total, SAR',
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                                trailing: Text(
+                                  '20 SAR',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: kBlueColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(
