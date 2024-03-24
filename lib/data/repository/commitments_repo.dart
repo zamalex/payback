@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:payback/model/commitment_model.dart';
 import 'package:payback/model/share_details_response.dart';
 
 import '../../helpers/dio_error_helper.dart';
@@ -220,6 +221,32 @@ class CommitmentsRepository{
       }
     } catch (error) {
       throw Exception('Failed to load summary: $error');
+    }
+  }
+
+
+
+
+  Future<Map> getCommitmentsOfCategory() async {
+    try {
+      Response response = await sl<DioClient>().get(Url.COMMIMENTS_URL,);
+
+      final parsedJson = response.data;
+      if (response.statusCode! < 400) {
+        List<Commitment> commitments = (parsedJson['data'] as List)
+            .map((json) => Commitment.fromJson(json))
+            .toList();
+
+        return {'message': 'Commitments retrieved successfully', 'data': commitments};
+      }
+
+      return {'message': 'Not found'};
+    } catch (e) {
+      if (e is DioError) {
+        return {'message': e.message};
+      } else {
+        return {'message': 'Unknown error'};
+      }
     }
   }
 }

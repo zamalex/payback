@@ -210,9 +210,11 @@ HistoryCategory? selectedCategory;
 }
 
 class MonthWidget extends StatelessWidget {
-   MonthWidget({super.key,required this.name,required this.isChecked});
+   MonthWidget({super.key,this.onTap,required this.name,required this.isChecked});
 
    bool isChecked = false;
+
+   Function? onTap;
    
    
    String name;
@@ -222,7 +224,10 @@ class MonthWidget extends StatelessWidget {
     return InkWell(
       onTap: (){
         Provider.of<CommitmentsProvider>(context,listen: false).selectMonth(name);
-      },
+        if(onTap!=null){
+          onTap!(name);
+        }
+        },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 4),
         padding: EdgeInsets.symmetric(vertical: 4,horizontal: 10),

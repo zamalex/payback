@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:payback/model/cashback_dashboard.dart';
+import 'package:payback/model/commitment_model.dart';
 
 import '../data/repository/commitments_repo.dart';
 import '../data/service_locator.dart';
@@ -28,7 +29,20 @@ class CommitmentsProvider extends ChangeNotifier{
   bool isLoading = false;
 
   List<Partner> commitmentsCategories = [];
+  List<Commitment> commitmentsOfCategory = [];
 
+  Future<Map> getCommitmentsOfCategory() async {
+    isLoading = true;
+    notifyListeners();
+    final response = await sl<CommitmentsRepository>().getCommitmentsOfCategory();
+
+    commitmentsOfCategory = response['data'];
+    isLoading = false;
+    notifyListeners();
+
+
+    return response;
+  }
 
   Future<Map> createCommitment(Map<String, dynamic> request) async {
     isLoading = true;
