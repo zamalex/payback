@@ -104,9 +104,10 @@ getCashbackHistory();
                     //width: MediaQuery.of(context).size.width/2,
                     radius: MediaQuery.of(context).size.width*.25,
                     child:PieChartSample2(categories: value.cashbackHistory!.categories,onTap: (ss){
-                      if(ss!=-1)
+
                         setState(() {
 
+                          if(ss!=-1)
                           selectedCategory = value.cashbackHistory!.categories[ss];
                           selectedColorIndex = ss;
                         });
@@ -121,7 +122,7 @@ getCashbackHistory();
                     ],),),
                     SizedBox(height: 10,)
 
-                    ,selectedCategory==null?Container():Container(
+                    ,(selectedCategory==null||selectedColorIndex==-1)?Container():Container(
                       decoration:BoxDecoration(color: colors[selectedColorIndex%colors.length].withOpacity(.2),borderRadius: BorderRadius.only(topLeft: Radius.circular(20),bottomRight: Radius.circular(20),topRight: Radius.circular(10),bottomLeft: Radius.circular(10))),
                       padding: EdgeInsets.all(16),child: Column(crossAxisAlignment:CrossAxisAlignment.start,children: [Text('Spent on ${selectedCategory!.name}:',style: TextStyle(color:colors[selectedColorIndex%colors.length]),)
                       ,Text('${selectedCategory!.spent}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: colors[selectedColorIndex%colors.length]),),
