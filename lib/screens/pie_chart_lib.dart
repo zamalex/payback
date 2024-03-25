@@ -75,10 +75,10 @@ class PieChart2State extends State<PieChartSample2> {
             ],
           ),
         ),
-       if(touchedIndex!=-1) CircleAvatar(radius: 50,backgroundColor: colors[touchedIndex%colors.length].withOpacity(.2),child: Column(
+        CircleAvatar(radius: 50,backgroundColor: colors[touchedIndex%colors.length].withOpacity(.2),child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
+            if(touchedIndex!=-1)Container(
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
@@ -95,7 +95,7 @@ class PieChart2State extends State<PieChartSample2> {
             SizedBox(height: 4,),
             Container(
               child: Text(
-                '${widget.categories[touchedIndex].name}',
+                touchedIndex==-1?'Select section':'${widget.categories[touchedIndex].name}',
                 style: TextStyle(color: colors[touchedIndex%colors.length], fontSize: 12),
                 textAlign: TextAlign.center,
                 maxLines: 2,

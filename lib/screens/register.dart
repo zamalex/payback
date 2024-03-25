@@ -67,7 +67,7 @@ class RegisterScreen extends StatelessWidget {
                     SizedBox(height: 20,),
                     Row(
                       children: [
-                        Text('First name',style: TextStyle(),),
+                        Text('Full name',style: TextStyle(),),
                       ],
                     ),
                     SizedBox(height: 5,),

@@ -34,7 +34,11 @@ class _MainScreenState extends State<MainScreen> {
       ShopOnlineScreen(),
       MapSample(),
       ControlsScreen(),
-      CartScreen(),]);
+      CartScreen(selectNav: (){
+        setState(() {
+          _currentIndex=0;
+        });
+      },),]);
   }
 
   @override

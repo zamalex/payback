@@ -18,7 +18,9 @@ import '../model/product_model.dart';
 import 'main_screen.dart';
 
 class CartScreen extends StatefulWidget {
-  CartScreen({super.key});
+  CartScreen({super.key,required this.selectNav});
+
+  Function selectNav;
 
 
   @override
@@ -64,7 +66,18 @@ class _CartScreenState extends State<CartScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,children: [
                 Icon(Icons.remove_shopping_cart,size: 50,color: kBlueColor,),
-                Text('Cart is empty',style: TextStyle(color: kBlueColor),)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Cart is empty',style: TextStyle(color: kBlueColor),),
+                    SizedBox(width: 10,),
+                    InkWell(
+                        onTap: (){
+                          widget.selectNav();
+                        },
+                        child: Text('Go Home',style: TextStyle(color: kBlueColor,fontWeight: FontWeight.bold),)),
+                  ],
+                )
               ],),);
 
             }
