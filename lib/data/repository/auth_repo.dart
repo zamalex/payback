@@ -334,21 +334,8 @@ class AuthRepository {
       Response response =
       await sl<DioClient>().get(Url.NOTIFICATIONS_URL,);
 
-      //final parsedJson = response.data;
-      final parsedJson = jsonDecode("""{
-  "notifications": [
-    {
-      "imageUrl": "https://example.com/image1.jpg",
-      "title": "Notification 1",
-      "content": "This is the content of Notification 1."
-    },
-    {
-      "imageUrl": "https://example.com/image2.jpg",
-      "title": "Notification 2",
-      "content": "This is the content of Notification 2."
-    }
-  ]
-}""");
+      final parsedJson = response.data;
+
       
       if (response.statusCode! < 400) {
         NotificationsResponse loginModel = NotificationsResponse.fromJson(parsedJson);

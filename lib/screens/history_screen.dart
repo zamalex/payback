@@ -32,6 +32,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   getCashbackHistory(){
+    selectedCategory = null;
+    selectedColorIndex = -1;
     Provider.of<CommitmentsProvider>(context,listen: false).getCashbackHistory();
   }
 HistoryCategory? selectedCategory;

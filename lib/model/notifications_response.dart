@@ -4,22 +4,15 @@ class NotificationsResponse {
   NotificationsResponse({this.notifications});
 
   NotificationsResponse.fromJson(Map<String, dynamic> json) {
-    if (json['notifications'] != null) {
+    if (json['data'] != null) {
       notifications = <NotificationItem>[];
-      json['notifications'].forEach((v) {
+      json['data'].forEach((v) {
         notifications!.add(new NotificationItem.fromJson(v));
       });
     }
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.notifications != null) {
-      data['notifications'] =
-          this.notifications!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
+
 }
 
 class NotificationItem {
@@ -31,8 +24,8 @@ class NotificationItem {
 
   NotificationItem.fromJson(Map<String, dynamic> json) {
     imageUrl = json['imageUrl'];
-    title = json['title'];
-    content = json['content'];
+    title = json['title']??'Notification';
+    content = json['body'];
   }
 
   Map<String, dynamic> toJson() {

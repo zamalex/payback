@@ -9,7 +9,7 @@ class Url {
   static const CHECK_TOKEN_URL = '/check-token';
   static const RESET_PASSWORD_URL = '/reset-password';
   static const CHANGE_PASSWORD_URL = '/change-password';
-  static const NOTIFICATIONS_URL = '/admin/products';
+  static const NOTIFICATIONS_URL = '/admin/mobile-notifications';
   static const SETTINGS_URL = '/admin/settings';
   static const CATEGORIES_URL = '/admin/categories';
   static const PRODUCTS_URL = '/admin/products';
