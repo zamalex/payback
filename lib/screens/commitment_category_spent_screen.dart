@@ -61,11 +61,7 @@ class _CommitmentCategorySpentScreenState
       body: Container(
         padding: EdgeInsets.all(16),
         child: Consumer<CommitmentsProvider>(
-          builder: (context, value, child) => value.isLoading
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Column(
+          builder: (context, value, child) => Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -102,7 +98,11 @@ class _CommitmentCategorySpentScreenState
                     SizedBox(
                       height: 20,
                     ),
-                    Expanded(
+                    value.isLoading
+                        ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                        :  Expanded(
                         child: ListView.builder(
                       itemBuilder: (context, index) => Container(
                         margin: EdgeInsets.symmetric(vertical: 4),

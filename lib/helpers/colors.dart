@@ -28,8 +28,8 @@ const kWhitrColor = Color.fromRGBO(255, 255, 255, 1);
 ];
 
 List<Color> colors = [
- Color(0xFF8B3FB9),
- Color(0xFF6E4CB6),
- Color(0xFF34C1B9),
  Color(0xFF6274D1),
+ Color(0xFF34C1B9),
+ Color(0xFFA762D1),
+ Color(0xFF6E4CB6),
 ];

@@ -41,6 +41,7 @@ class PieChart2State extends State<PieChartSample2> {
                   aspectRatio: 1,
                   child: PieChart(
                     PieChartData(
+
                       pieTouchData: PieTouchData(
                         touchCallback: (FlTouchEvent event, pieTouchResponse) {
                           setState(() {
@@ -74,7 +75,7 @@ class PieChart2State extends State<PieChartSample2> {
             ],
           ),
         ),
-       if(touchedIndex!=-1) CircleAvatar(radius: 50,child: Column(
+       if(touchedIndex!=-1) CircleAvatar(radius: 50,backgroundColor: colors[touchedIndex%colors.length].withOpacity(.2),child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
@@ -112,7 +113,7 @@ class PieChart2State extends State<PieChartSample2> {
     return List.generate(cats.length, (i) {
       final isTouched = i == touchedIndex;
       final fontSize = isTouched ? 25.0 : 16.0;
-      final radius = isTouched ? 60.0 : 50.0;
+      final radius = isTouched ? 55.0 : 50.0;
       const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
       return PieChartSectionData(
         color: colors[i%colors.length],

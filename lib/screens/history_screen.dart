@@ -50,7 +50,7 @@ HistoryCategory? selectedCategory;
         ],
       ),
       body: Consumer<CommitmentsProvider>(
-        builder:(context, value, child) => value.isLoading?Center(child: CircularProgressIndicator(),):value.cashbackHistory==null?Center(child: Text('No available data',)):Container(
+        builder:(context, value, child) => Container(
           width: double.infinity,
           height: MediaQuery.of(context).size.height,
           padding: EdgeInsets.all(16),
@@ -61,6 +61,7 @@ HistoryCategory? selectedCategory;
               Text('Cashback dashboard',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 35),),
                 SizedBox(height: 20,),
                 SlideSwitcher(
+
                   containerColor: Colors.white,
                   slidersColors: const [
                     kBlueColor,
@@ -77,80 +78,40 @@ HistoryCategory? selectedCategory;
                     ),
                   ],
                   onSelect: (index) {
+
+
                     setState(() {
                       selected = index;
                     });
+
+getCashbackHistory();
+
+
                   },
                   containerHeight: 45,
                   containerWight: MediaQuery.of(context).size.width-32-10,
                 ),
                 SizedBox(height: 20,),
-              SingleChildScrollView(scrollDirection: Axis.horizontal,child: Row(children: List.generate(value.months.length, (index) => MonthWidget(name: value.months[index],isChecked: value.selectedMonth==value.months[index],)),),),
-                SizedBox(height: 20,),
-                Row(children: [
+                value.isLoading?Center(child: CircularProgressIndicator(),):value.cashbackHistory==null?Center(child: Text('No available data',)): Column(children: [
+                  SingleChildScrollView(scrollDirection: Axis.horizontal,child: Row(children: List.generate(value.months.length, (index) => MonthWidget(name: value.months[index],isChecked: value.selectedMonth==value.months[index],onTap: (mon){
+                    getCashbackHistory();
+                  },)),),),
+                  SizedBox(height: 20,),
+
+                  Row(children: [
                   CircleAvatar(
                     backgroundColor: Colors.white,
                     //width: MediaQuery.of(context).size.width/2,
                     radius: MediaQuery.of(context).size.width*.25,
                     child:PieChartSample2(categories: value.cashbackHistory!.categories,onTap: (ss){
-                      setState(() {
-                        selectedCategory = value.cashbackHistory!.categories[ss];
-                        selectedColorIndex = ss;
-                      });
-                    },) /*PieChart(
-                      data: List.generate(
-                        value.cashbackHistory!.categories.length,
-                            (index) => PieChartData(
-                          colors[index],
-                          value.cashbackHistory!.categories[index].fromAll.toDouble(),
-                        ),
-                      ),
-                      radius: (MediaQuery.of(context).size.width * 0.25) - 22,
-                      onSectionSelected: (index, data) {
-                        double cumulativePercent = 0;
-                        for (int i = 0; i < value.cashbackHistory!.categories.length; i++) {
-                          cumulativePercent += value.cashbackHistory!.categories[i].fromAll.toDouble();
-                          if (index == i) {
-                            setState(() {
-                              selectedCategory = value.cashbackHistory!.categories[index];
-                            });
-                            print('Section $index selected. Cumulative Percent: $cumulativePercent');
-                            break;
-                          }
-                        }
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: Colors.purple,
-                            ),
-                            child: Text(
-                              '50%',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 4,),
-                          Container(
-                            child: Text(
-                              'Travel and vacation',
-                              style: TextStyle(color: Colors.purple, fontSize: 12),
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            width: 70,
-                          ),
-                        ],
-                      ),
-                    )*/,
-                      ),
+                      if(ss!=-1)
+                        setState(() {
+
+                          selectedCategory = value.cashbackHistory!.categories[ss];
+                          selectedColorIndex = ss;
+                        });
+                    },) ,
+                  ),
                   SizedBox(width: 20,),
                   Expanded(child: Column(children: [
                     Container(
@@ -158,10 +119,10 @@ HistoryCategory? selectedCategory;
                       padding: EdgeInsets.all(16),child: Column(crossAxisAlignment:CrossAxisAlignment.start,children: [Text('Total cashback spent (SAR):')
                       ,Text('2500',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
                     ],),),
-          SizedBox(height: 10,)
+                    SizedBox(height: 10,)
 
                     ,selectedCategory==null?Container():Container(
-                      decoration:BoxDecoration(color: Colors.purple.shade50,borderRadius: BorderRadius.only(topLeft: Radius.circular(20),bottomRight: Radius.circular(20),topRight: Radius.circular(10),bottomLeft: Radius.circular(10))),
+                      decoration:BoxDecoration(color: colors[selectedColorIndex%colors.length].withOpacity(.2),borderRadius: BorderRadius.only(topLeft: Radius.circular(20),bottomRight: Radius.circular(20),topRight: Radius.circular(10),bottomLeft: Radius.circular(10))),
                       padding: EdgeInsets.all(16),child: Column(crossAxisAlignment:CrossAxisAlignment.start,children: [Text('Spent on ${selectedCategory!.name}:',style: TextStyle(color:colors[selectedColorIndex%colors.length]),)
                       ,Text('${selectedCategory!.spent}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: colors[selectedColorIndex%colors.length]),),
                     ],),)
@@ -185,10 +146,10 @@ HistoryCategory? selectedCategory;
                       Get.to(CommitmentCategorySpentScreen());
 
 
-                  }
+                    }
                     else{
 
-                    Get.to(CommitmentCategoryReceivedScreen());
+                      Get.to(CommitmentCategoryReceivedScreen());
                     }
                   },
                   child: Container(child:  Row(
@@ -201,6 +162,7 @@ HistoryCategory? selectedCategory;
                   ),padding:EdgeInsets.all(12),margin: EdgeInsets.only(bottom: 4),decoration: BoxDecoration(borderRadius:BorderRadius.circular(12),color: Colors.grey.shade200),),
                 )),)
 
+              ],)
             ],),
           ),
       ),
