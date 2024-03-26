@@ -33,6 +33,7 @@ class Url {
   static const UPDATE_USER_AVATER_URL = '/users/avatar';
 
   static const GET_CASHBACK_URL = '/cashbacks';
+  static const GET_CASHBACK_HISTORY_URL = '/admin/cashback/categories';
 
   static String TOKEN = '';
   static String LOCALE = 'ar';

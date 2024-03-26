@@ -67,6 +67,14 @@
           }
         },
         {
+          "client_id": "772501374258-qg2sqkbhkquh5jfk310b2ai06q4ov859.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sahla.payback",
+            "certificate_hash": "d1a81fd3e94a05bc7638db6b849f78dd9240073e"
+          }
+        },
+        {
           "client_id": "772501374258-g0gk7h4d0kd4a7ksmk33kadlrjere8qf.apps.googleusercontent.com",
           "client_type": 3
         }

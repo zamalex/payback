@@ -5,10 +5,12 @@ import '../helpers/colors.dart';
 import '../model/cashback_dashboard.dart';
 
 class PieChartSample2 extends StatefulWidget {
-  PieChartSample2({super.key,required this.categories,required this.onTap});
+  PieChartSample2({super.key,required this.spent,required this.categories,required this.onTap});
 
   List<HistoryCategory> categories;
   Function onTap;
+
+  bool spent;
 
   @override
   State<StatefulWidget> createState() => PieChart2State();
@@ -22,6 +24,14 @@ class PieChart2State extends State<PieChartSample2> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    if(widget.spent) {
+      widget.categories.removeWhere((element) =>
+      element.summary!.fromAllSpent == 0);
+    }else{
+      widget.categories.removeWhere((element) => element.summary!.fromAllReceived==0);
+
+    }
 
   }
   @override
@@ -85,7 +95,7 @@ class PieChart2State extends State<PieChartSample2> {
                 color: colors[touchedIndex%colors.length],
               ),
               child: Text(
-                '${widget.categories[touchedIndex].fromAll}%',
+                '${widget.spent?widget.categories[touchedIndex].summary!.fromAllSpent:widget.categories[touchedIndex].summary!.fromAllReceived}%',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 12,
@@ -95,7 +105,7 @@ class PieChart2State extends State<PieChartSample2> {
             SizedBox(height: 4,),
             Container(
               child: Text(
-                touchedIndex==-1?'Select section':'${widget.categories[touchedIndex].name}',
+                touchedIndex==-1?'Select section':'${widget.categories[touchedIndex].category}',
                 style: TextStyle(color: colors[touchedIndex%colors.length], fontSize: 12),
                 textAlign: TextAlign.center,
                 maxLines: 2,
@@ -117,7 +127,7 @@ class PieChart2State extends State<PieChartSample2> {
       const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
       return PieChartSectionData(
         color: colors[i%colors.length],
-        value: cats[i].fromAll.toDouble(),
+        value:widget.spent? cats[i].summary!.fromAllSpent:cats[i].summary!.fromAllReceived,
         title: '',
         radius: radius,
         titleStyle: TextStyle(

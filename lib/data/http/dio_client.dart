@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:payback/model/auth_response.dart';
 
@@ -37,6 +38,9 @@ class DioClient {
     dio!.interceptors
         .add(InterceptorsWrapper(onResponse: (response, handler) async {
       if (response.statusCode != null) {
+        if(response.statusCode! >= 400){
+          FirebaseCrashlytics.instance.recordError(response, null);
+        }
         if (response.statusCode == 401) {
           print('error ${response.statusCode}');
         } else {

@@ -9,7 +9,7 @@ import '../model/share_details_response.dart';
 
 class CommitmentsProvider extends ChangeNotifier{
 
-  Summary? cashbackHistory;
+  CashBackHistory? cashbackHistory;
 
   String selectedMonth = '';
   List<String> months = [
@@ -142,7 +142,7 @@ class CommitmentsProvider extends ChangeNotifier{
   }
 
 
-  Future<Summary?> getCashbackHistory() async {
+  Future<CashBackHistory?> getCashbackHistory() async {
    isLoading = true;
    notifyListeners();
 

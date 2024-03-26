@@ -172,50 +172,19 @@ class CommitmentsRepository{
   }
 
 
-  Future<Summary?> getCashbackHistory() async {
+  Future<CashBackHistory?> getCashbackHistory() async {
     try {
-      Response response = await sl<DioClient>().get(Url.USERS_URL);
+      Response response = await sl<DioClient>().get(Url.GET_CASHBACK_HISTORY_URL);
 
-      final res = """
-      {
-    "data": {
-        "total_spent": 2500,
-        "total_received": 2500,
-        "categories": [
-            {
-                "id": 1,
-                "name": "Home Bills",
-                "from_all": 25,
-                "spent": 200
-            },
-            {
-                "id": 2,
-                "name": "Travel and vacation",
-                "from_all": 50,
-                "spent": 200
-            },
-            {
-                "id": 3,
-                "name": "Another category",
-                "from_all": 12,
-                "spent": 300
-            },
-            {
-                "id": 4,
-                "name": "Another category",
-                "from_all": 13,
-                "spent": 240
-            }
-        ]
-    },
-    "status": 200,
-    "success": true,
-    "message": "string"
-}
-      """;
 
       if (response.statusCode == 200) {
-        return Summary.fromJson(jsonDecode(res)['data']);
+        CashBackHistory  cashBackHistory = CashBackHistory.fromJson(response.data);
+
+        cashBackHistory.categories!.forEach((element) {
+          element.summary!.calculateFromAll(cashBackHistory.categories!);
+        });
+
+        return cashBackHistory;
       } else {
         throw Exception('Failed to load summary');
       }
