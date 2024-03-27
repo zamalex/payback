@@ -127,7 +127,7 @@ class MyOrderItem extends StatelessWidget {
         child:  Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            MyOrderSubItem(),
+            MyOrderSubItem(order: order,),
             Padding(
               padding: EdgeInsets.only(left: 8.0, top: 10),
               child: Text(
@@ -144,14 +144,14 @@ class MyOrderItem extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Text('Time & date'), Text(order.createdAt??'-- --')],
+                children: [Text('Time & date'), Text(order.dateTime??'-- --')],
               ),
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Text('Total price'), Text('${order.amount??''} SAR')],
+                children: [Text('Total price'), Text('${order.totalPrice??0} SAR')],
               ),
             ),
             Padding(
@@ -169,7 +169,9 @@ class MyOrderItem extends StatelessWidget {
 }
 
 class MyOrderSubItem extends StatelessWidget {
-  const MyOrderSubItem({super.key});
+   MyOrderSubItem({super.key,required this.order});
+
+  Order order;
 
   @override
   Widget build(BuildContext context) {
@@ -205,7 +207,7 @@ class MyOrderSubItem extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
-                            child: Text('Amazon',
+                            child: Text('${order.vendorName}',
                                 style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.normal,
@@ -218,7 +220,7 @@ class MyOrderSubItem extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              'Sneakers shoes woman',
+                              '${order.productName}',
                               maxLines: 1,
                               style: TextStyle(
                                   fontSize: 15,

@@ -76,6 +76,9 @@ class Summary {
       });
       fromAllReceived = (this.received!/all)*100;
 
+
+      fromAllSpent=double.parse(fromAllSpent.toStringAsFixed(2));
+      fromAllReceived=double.parse(fromAllReceived.toStringAsFixed(2));
       /*if(fromAllSpent==0){
         fromAllSpent=10;
       }

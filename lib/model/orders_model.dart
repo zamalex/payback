@@ -1,56 +1,55 @@
 class Order {
-  final int? id;
-  final String? userId;
-  final String? vendorId;
-  final String? paymentSettingId;
-  final String? deliveryMethodId;
-  final String? description;
-  final String? amount;
-  final String? taxAmount;
-  final String? discountAmount;
-  final String? shippingAmount;
-  final String? subTotal;
-  final String? couponCode;
-  final String? status;
-  final String? createdAt;
-  final String? updatedAt;
+   int? id;
+   String? orderId;
+   String? productName;
+   int? quantity;
+   String? vendorName;
+   String? productImage;
+   String? dateTime;
+   double? totalPrice;
+   double? cashback;
+   String? orderNo;
+   String? status;
+   String? deliveryMethod;
+   String? pickupOffice;
+   String? userName;
+   String? userPhone;
 
   Order({
-    this.id,
-    this.userId,
-    this.vendorId,
-    this.paymentSettingId,
-    this.deliveryMethodId,
-    this.description,
-    this.amount,
-    this.taxAmount,
-    this.discountAmount,
-    this.shippingAmount,
-    this.subTotal,
-    this.couponCode,
-    this.status,
-    this.createdAt,
-    this.updatedAt,
+     this.id,
+     this.orderId,
+     this.productName,
+     this.quantity,
+     this.vendorName,
+     this.productImage,
+     this.dateTime,
+     this.totalPrice,
+     this.cashback,
+     this.orderNo,
+     this.status,
+     this.deliveryMethod,
+     this.pickupOffice,
+     this.userName,
+     this.userPhone,
   });
 
   factory Order.fromJson(Map<String, dynamic> json) {
     return Order(
       id: json['id'],
-      userId: json['user_id'],
-      vendorId: json['vendor_id'],
-      paymentSettingId: json['payment_setting_id'],
-      deliveryMethodId: json['delivery_method_id'],
-      description: json['description'],
-      amount: json['amount'],
-      taxAmount: json['tax_amount'],
-      discountAmount: json['discount_amount'],
-      shippingAmount: json['shipping_amount'],
-      subTotal: json['sub_total'],
-      couponCode: json['coupon_code'],
-      status: json['status'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
+      orderId: json['order_id'].toString(),
+      productName: json['product']['name'],
+      quantity: int.parse(json['qty'].toString()),
+      vendorName: json['order']['vendor']==null?'----':json['order']['vendor']['store_name'],
+      productImage: json['product']==null?'----':json['product']['featured_image'],
+      dateTime: json['created_at'],
+      totalPrice: double.parse(json['price'].toString()),
+      cashback: double.parse(json['order']['vendor']['payment_management_commission']),
+      orderNo: json['order_id'].toString(),
+      status: json['order']['status'].toString(),
+      deliveryMethod: json['order']['delivery_method']['name'],
+      pickupOffice: 'Office', // You need to extract this information from the data
+      userName: (json['order']==null||json['order']['user']==null)?'----':json['order']['user']['name'],
+      userPhone: (json['order']==null||json['order']['user']==null)?'----':json['order']['user']['phone'],
     );
   }
 }
-

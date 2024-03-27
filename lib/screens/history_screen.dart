@@ -170,7 +170,7 @@ getCashbackHistory();
                     children: [
                       Expanded(child: Row(children: [Icon(Icons.airplanemode_active), SizedBox(width: 5,),Text(value.cashbackHistory!.categories![index].category??'',style: TextStyle(fontWeight: FontWeight.normal),)],)),
                       Container(margin:EdgeInsets.only(right: 50,left: 10),child: Text('${selected==0?value.cashbackHistory!.categories![index].summary!.fromAllSpent:value.cashbackHistory!.categories![index].summary!.fromAllReceived}%',style: TextStyle(fontWeight: FontWeight.normal),)),
-                      Container(child: Text('${value.cashbackHistory!.categories![index].summary!.spent}',style: TextStyle(fontWeight: FontWeight.normal),)),
+                      Container(child: Text('${selected==0?value.cashbackHistory!.categories![index].summary!.spent:value.cashbackHistory!.categories![index].summary!.received}',style: TextStyle(fontWeight: FontWeight.normal),)),
 
                     ],
                   ),padding:EdgeInsets.all(12),margin: EdgeInsets.only(bottom: 4),decoration: BoxDecoration(borderRadius:BorderRadius.circular(12),color: Colors.grey.shade200),),
