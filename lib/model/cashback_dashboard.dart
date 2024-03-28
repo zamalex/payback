@@ -67,14 +67,15 @@ class Summary {
       cats.forEach((element) {
         all+= element.summary!.spent!;
       });
-      fromAllSpent = (this.spent!/all)*100;
+      fromAllSpent = all==0?0:(this.spent!/all)*100;
 
 
        all = 0;
       cats.forEach((element) {
         all+= element.summary!.received!;
       });
-      fromAllReceived = (this.received!/all)*100;
+
+      fromAllReceived =all==0?0: (this.received!/all)*100;
 
 
       fromAllSpent=double.parse(fromAllSpent.toStringAsFixed(2));
@@ -86,6 +87,8 @@ class Summary {
       if(fromAllReceived==0){
         fromAllReceived=10;
       }*/
+
+
 
 
   }

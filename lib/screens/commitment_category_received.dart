@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:custom_date_range_picker/custom_date_range_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:payback/data/http/urls.dart';
 import 'package:payback/helpers/custom_widgets.dart';
+import 'package:payback/model/orders_model.dart';
 import 'package:payback/screens/order_details_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +20,7 @@ class CommitmentCategoryReceivedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: BackButtonIcon(),
+        leading: BackButton(),
         actions: [
           InkWell(
               onTap: (){
@@ -39,7 +43,7 @@ class CommitmentCategoryReceivedScreen extends StatelessWidget {
 
             SizedBox(height: 20,),
 
-            Expanded(child: ListView.builder(itemBuilder: (context, index) =>Container(margin: EdgeInsets.symmetric(vertical: 4),child:  ReceivedItem(),),itemCount: 3,))
+            Expanded(child: ListView.builder(itemBuilder: (context, index) =>Container(margin: EdgeInsets.symmetric(vertical: 4),child:  ReceivedItem(order: Order.fromJson(jsonDecode(Url.STATIC_ORDER)),),),itemCount: 3,))
           ],
         ),),
     );
@@ -52,7 +56,8 @@ class CommitmentCategoryReceivedScreen extends StatelessWidget {
 
 
 class ReceivedItem extends StatelessWidget {
-  const ReceivedItem({super.key});
+   ReceivedItem({super.key,required this.order});
+  Order order;
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +97,7 @@ class ReceivedItem extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
-                              child: Text('Amazon',
+                              child: Text('${order.vendorName}',
                                   style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.normal,
@@ -109,7 +114,7 @@ class ReceivedItem extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                'Sneakers shoes woman',
+                                '${order.productName}',
                                 maxLines: 1,
                                 style: TextStyle(
                                     fontSize: 18,
@@ -128,7 +133,7 @@ class ReceivedItem extends StatelessWidget {
 
                                Text(
 
-                                'Cashback: 100 SAR',
+                                'Cashback: 0 SAR',
                                 textAlign: TextAlign.end,
                                 style: TextStyle(
 

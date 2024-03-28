@@ -21,6 +21,7 @@ class Url {
   static const SORT_COMMIMENTS_URL = '/admin/commitments/sort';
   static const CREATE_COMMIMENTS_URL = '/admin/commitments/create';
   static const SHARE_INVITATION_URL = '/admin/share-commitments';
+  static const GET_HELP_COMUNITY_URL = '/admin/cashback/community';
   static const COMMIMENTS_CATEGORIES_URL = '/admin/commitment-categories';
   static const ONBOARDING_URL = '/admin/screens';
   static const DELIVERY_URL = '/admin/delivery-methods';
@@ -34,6 +35,7 @@ class Url {
 
   static const GET_CASHBACK_URL = '/cashbacks';
   static const GET_CASHBACK_HISTORY_URL = '/admin/cashback/categories';
+  static const GET_CASHBACK_TRANSACTIONS_URL = '/admin/cashback/balances';
 
   static String TOKEN = '';
   static String LOCALE = 'ar';
@@ -124,4 +126,48 @@ class Url {
          "description":null
     
       }]}""";
+
+
+
+  static String STATIC_ORDER= """
+  {
+            "id": 17,
+            "order_id": "14",
+            "product_id": "2",
+            "qty": "1",
+            "price": "13.00",
+            "tax_amount": "0.00",
+            "created_at": "2024-03-23T21:54:45.000000Z",
+            "updated_at": "2024-03-23T21:54:45.000000Z",
+            "product": {
+                "id": 2,
+                "name": "Printing services",
+                "quantity": "55",
+                "featured_image": "path/to/featured_image.jpg",
+                "price": "13.00"
+            },
+            "order": {
+                "id": 14,
+                "vendor_id": "1",
+                "delivery_method_id": "1",
+                "user_id": "16",
+                "status": "pending",
+                "delivery_method": {
+                    "id": 1,
+                    "name": "Cash On Delivery"
+                    
+                },
+                "vendor": {
+                    "id": 1,
+                     "store_name": "Gutkowski-Hintz"
+                },
+                "user": {
+                    "id": 16,
+                    "name": "safax ezz",
+                    "phone": "+201115597889"
+                   
+                }
+            }
+        }
+  """;
 }

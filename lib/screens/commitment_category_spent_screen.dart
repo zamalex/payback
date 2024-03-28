@@ -1,6 +1,7 @@
 import 'package:custom_date_range_picker/custom_date_range_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:payback/helpers/custom_widgets.dart';
+import 'package:payback/model/cashback_dashboard.dart';
 import 'package:provider/provider.dart';
 
 import '../helpers/colors.dart';
@@ -8,7 +9,9 @@ import '../providers/CommitmentsProvider.dart';
 import 'history_screen.dart';
 
 class CommitmentCategorySpentScreen extends StatefulWidget {
-  const CommitmentCategorySpentScreen({super.key});
+  CommitmentCategorySpentScreen({super.key,required this.historyCategory});
+
+  HistoryCategory historyCategory;
 
   @override
   State<CommitmentCategorySpentScreen> createState() =>
@@ -27,7 +30,18 @@ class _CommitmentCategorySpentScreenState
 
   getCategoryCommitments() {
     Provider.of<CommitmentsProvider>(context, listen: false)
-        .getCommitmentsOfCategory();
+        .getCommitmentsOfCategory({
+      'category_id':widget.historyCategory.categoryId
+    });
+  }
+
+  double calculateTotal(){
+    double all =0;
+    Provider.of<CommitmentsProvider>(context,listen: false).commitmentsOfCategory.forEach((element) {
+      all+=double.parse(element.paymentTarget!);
+    });
+
+    return all;
   }
 
   @override
@@ -65,7 +79,7 @@ class _CommitmentCategorySpentScreenState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Home bills',
+                      widget.historyCategory.category??'',
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                     ),
@@ -91,7 +105,7 @@ class _CommitmentCategorySpentScreenState
                       height: 20,
                     ),
                     Text(
-                      'Total spent: 1200 SAR',
+                      'Total spent: ${calculateTotal()} SAR',
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     ),

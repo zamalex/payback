@@ -31,10 +31,10 @@ class CommitmentsProvider extends ChangeNotifier{
   List<Partner> commitmentsCategories = [];
   List<Commitment> commitmentsOfCategory = [];
 
-  Future<Map> getCommitmentsOfCategory() async {
+  Future<Map> getCommitmentsOfCategory(Map<String,dynamic>? params) async {
     isLoading = true;
     notifyListeners();
-    final response = await sl<CommitmentsRepository>().getCommitmentsOfCategory();
+    final response = await sl<CommitmentsRepository>().getCommitmentsOfCategory(params);
 
     commitmentsOfCategory = response['data'];
     isLoading = false;
@@ -142,15 +142,26 @@ class CommitmentsProvider extends ChangeNotifier{
   }
 
 
-  Future<CashBackHistory?> getCashbackHistory() async {
+  Future<CashBackHistory?> getCashbackHistory(Map<String,dynamic>? params,bool spent) async {
    isLoading = true;
    notifyListeners();
 
     final response = await sl<CommitmentsRepository>()
-        .getCashbackHistory();
+        .getCashbackHistory(params);
 
 
     cashbackHistory = response;
+
+    if(cashbackHistory!=null){
+
+      if(spent) {
+        cashbackHistory!.categories!.removeWhere((element) =>
+        element.summary!.fromAllSpent == 0);
+      }else{
+        cashbackHistory!.categories!.removeWhere((element) => element.summary!.fromAllReceived==0);
+
+      }
+    }
 
 
    isLoading = false;

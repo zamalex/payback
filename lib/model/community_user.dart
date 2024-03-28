@@ -3,12 +3,16 @@
 class CommunityUser {
   final int id;
   final String name;
-  final int toUserPercent;
-  final int fromUserPercent;
+  final int user_id;
+  final String avatar;
+  final String toUserPercent;
+  final String fromUserPercent;
 
   CommunityUser({
     required this.id,
     required this.name,
+    required this.user_id,
+    required this.avatar,
     required this.toUserPercent,
     required this.fromUserPercent,
   });
@@ -16,9 +20,11 @@ class CommunityUser {
   factory CommunityUser.fromJson(Map<String, dynamic> json) {
     return CommunityUser(
       id: json['id'] as int? ?? 0,
+      user_id: int.parse(json['user_id'].toString()),
+      avatar: json['avatar'],
       name: json['name'] as String? ?? '',
-      toUserPercent: json['toUserPercent'] as int? ?? 0,
-      fromUserPercent: json['fromUserPercent'] as int? ?? 0,
+      toUserPercent: json['toUserPercent'].toString(),
+      fromUserPercent: json['fromUserPercent'].toString(),
     );
   }
 }

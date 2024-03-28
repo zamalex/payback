@@ -43,7 +43,7 @@ class Order {
       productImage: json['product']==null?'----':json['product']['featured_image'],
       dateTime: json['created_at'],
       totalPrice: double.parse(json['price'].toString()),
-      cashback: double.parse(json['order']['vendor']['payment_management_commission']),
+      cashback: 0,
       orderNo: json['order_id'].toString(),
       status: json['order']['status'].toString(),
       deliveryMethod: json['order']['delivery_method']['name'],

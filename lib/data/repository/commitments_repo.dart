@@ -7,6 +7,7 @@ import 'package:payback/model/share_details_response.dart';
 import '../../helpers/dio_error_helper.dart';
 import '../../model/cashback_dashboard.dart';
 import '../../model/partner_model.dart';
+import '../../model/transactions_response.dart';
 import '../http/dio_client.dart';
 import '../http/urls.dart';
 import '../service_locator.dart';
@@ -172,9 +173,9 @@ class CommitmentsRepository{
   }
 
 
-  Future<CashBackHistory?> getCashbackHistory() async {
+  Future<CashBackHistory?> getCashbackHistory(Map<String,dynamic>? params) async {
     try {
-      Response response = await sl<DioClient>().get(Url.GET_CASHBACK_HISTORY_URL);
+      Response response = await sl<DioClient>().get(Url.GET_CASHBACK_HISTORY_URL,queryParameters: params);
 
 
       if (response.statusCode == 200) {
@@ -196,17 +197,33 @@ class CommitmentsRepository{
 
 
 
-  Future<Map> getCommitmentsOfCategory() async {
+  Future<Map> getCommitmentsOfCategory(Map<String,dynamic>? params) async {
     try {
-      Response response = await sl<DioClient>().get(Url.COMMIMENTS_URL,);
+      Response commitmentsRes = await sl<DioClient>().get(Url.COMMIMENTS_URL,queryParameters: params);
+      Response transactionsRes = await sl<DioClient>().get(Url.GET_CASHBACK_TRANSACTIONS_URL,queryParameters: params);
 
-      final parsedJson = response.data;
-      if (response.statusCode! < 400) {
+      final parsedJson = commitmentsRes.data;
+      if (commitmentsRes.statusCode! < 400&&transactionsRes.statusCode! < 400) {
         List<Commitment> commitments = (parsedJson['data'] as List)
             .map((json) => Commitment.fromJson(json))
             .toList();
 
-        return {'message': 'Commitments retrieved successfully', 'data': commitments};
+        List<Commitment> someCommitments=[];
+        List<Transaction> transactions = List<Transaction>.from(transactionsRes.data['data'].map((x) => Transaction.fromJson(x)));
+
+        if(transactions.isNotEmpty){
+          transactions.forEach((trans) {
+            if(trans.reference!=null)
+            someCommitments.addAll(commitments.where((comm) => comm.name==trans.reference!.name).toList());
+
+          });
+
+        }else{
+          someCommitments.clear();
+        }
+
+
+        return {'message': 'Commitments retrieved successfully', 'data': someCommitments};
       }
 
       return {'message': 'Not found'};

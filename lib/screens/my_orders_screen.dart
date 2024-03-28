@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payback/helpers/functions.dart';
 import 'package:payback/model/orders_model.dart';
 import 'package:payback/providers/checkout_provider.dart';
 import 'package:payback/screens/order_details_screen.dart';
@@ -83,6 +84,8 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
               onSelect: (index) {
                 setState(() {
                   selected = index;
+                  value.selectedStatus = selected==0?'completed':selected==1?'pending':'cancelled';
+                  value.loadOrders();
                 });
               },
               containerHeight: 45,
@@ -91,7 +94,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
             SizedBox(
               height: 20,
             ),
-            Expanded(
+           value.isLoading?Center(child: CircularProgressIndicator(),): Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                                 children: List.generate(
@@ -117,7 +120,7 @@ class MyOrderItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.to(OrderDetails());
+        Get.to(OrderDetails(order: order,));
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 4),
@@ -144,7 +147,7 @@ class MyOrderItem extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Text('Time & date'), Text(order.dateTime??'-- --')],
+                children: [Text('Time & date'), Text(parseDate(order.dateTime!))],
               ),
             ),
             Padding(

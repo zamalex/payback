@@ -1,9 +1,12 @@
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payback/data/preferences.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/screens/main_screen.dart';
+import 'package:payback/screens/my_orders_screen.dart';
 
+import '../data/service_locator.dart';
 import '../helpers/custom_widgets.dart';
 
 class PaymentSuccessScreen extends StatefulWidget {
@@ -26,6 +29,8 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
         ConfettiController(duration: const Duration(seconds: 2));
 
     _controllerCenter.play();
+
+    sl<PreferenceUtils>().deleteAllCart();
   }
 
   @override
@@ -146,7 +151,11 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                          SizedBox(height: 20,),
                          Text('More information about each order, order status and product details you can check in “My Orders” page. You can find this page in your Profile')
                          ,SizedBox(height: 10,),
-                         Text('Go to My Orders',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.blue),)
+                         InkWell(
+                             onTap: (){
+                               Get.to(MyOrdersScreen());
+                             },
+                             child: Text('Go to My Orders',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.blue),))
 
                        ],),),
 

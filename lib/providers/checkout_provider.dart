@@ -12,6 +12,8 @@ import '../model/orders_model.dart';
 
 class CheckoutProvider extends ChangeNotifier{
 
+  String selectedStatus = 'completed';
+
   List<CheckoutObject> checkouts = [
 
 
@@ -39,6 +41,8 @@ class CheckoutProvider extends ChangeNotifier{
   List<ShippingMethod> shippings = [];
   List<ShippingMethod> shippingsAddresses = [];
   List<Order> orders=[];
+
+
   Future loadOrders() async {
     isLoading = true;
     notifyListeners();
@@ -46,6 +50,8 @@ class CheckoutProvider extends ChangeNotifier{
     try {
       final response = await sl<CheckoutRepository>().getOrders();
       orders = response['data'];
+
+      orders = orders.where((element) => element.status==selectedStatus).toList();
     } catch (e) {
       orders=[];
     }

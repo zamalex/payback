@@ -45,10 +45,19 @@ class _HistoryScreenState extends State<HistoryScreen> {
   getCashbackHistory(){
     selectedCategory = null;
     selectedColorIndex = -1;
-    Provider.of<CommitmentsProvider>(context,listen: false).getCashbackHistory();
+    Provider.of<CommitmentsProvider>(context,listen: false).getCashbackHistory(
+      {
+        'from':from,
+        'to':to
+      }
+      ,selected==0
+    );
   }
 HistoryCategory? selectedCategory;
   int selectedColorIndex = -1;
+  DateTime? from;
+  DateTime? to;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +66,16 @@ HistoryCategory? selectedCategory;
         actions: [
           InkWell(
               onTap: (){
-                showCustomDateRangePicker(context, dismissible: true, minimumDate:DateTime(1990,), maximumDate: DateTime.now(), onApplyClick: (one,two){}, onCancelClick: (){}, backgroundColor: Colors.white, primaryColor: kBlueColor);
+                showCustomDateRangePicker(context, dismissible: true, minimumDate:DateTime(1990,), maximumDate: DateTime.now(), onApplyClick: (one,two){
+                  from= one;
+                  to = two;
+
+                  getCashbackHistory();
+                }, onCancelClick: (){
+                  from=null;
+                  to = null;
+                  getCashbackHistory();
+                }, backgroundColor: Colors.white, primaryColor: kBlueColor);
               },
               child: Container(child: Icon(Icons.calendar_month,color: kBlueColor,),margin: EdgeInsets.only(right:16),))
         ],
@@ -157,7 +175,7 @@ getCashbackHistory();
                 Column(children: List.generate(value.cashbackHistory!.categories!.length, (index) => InkWell(
                   onTap: (){
                     if(selected==0){
-                      Get.to(CommitmentCategorySpentScreen());
+                      Get.to(CommitmentCategorySpentScreen(historyCategory: value.cashbackHistory!.categories![index],));
 
 
                     }

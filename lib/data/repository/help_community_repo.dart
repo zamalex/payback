@@ -16,41 +16,14 @@ class HelpCommunityRepository{
 
   Future<Map<String, dynamic>> getHelpCommunityUsersList() async {
     try {
-     /* Response response = await sl<DioClient>().get('${Url.SHARE_INVITATION_URL}/$id',);
+      Response response = await sl<DioClient>().get('${Url.GET_HELP_COMUNITY_URL}',);
 
-      final parsedJson = response.data;*/
-
-      final parsedJson = """
-      [
-  {
-    "id": 1,
-    "name": "John",
-    "toUserPercent": 80,
-    "fromUserPercent": 20
-  },
-  {
-    "id": 2,
-    "name": "Alice",
-    "toUserPercent": 60,
-    "fromUserPercent": 40
-  },
-  {
-    "id": 3,
-    "name": "Bob",
-    "toUserPercent": 70,
-    "fromUserPercent": 30
-  },
-  {
-    "id": 4,
-    "name": "Hah",
-    "toUserPercent": 70,
-    "fromUserPercent": 30
-  }
-]
-      """;
+      final parsedJson = response.data;
 
 
-        final List<dynamic> jsonData = jsonDecode(parsedJson);
+
+
+        final List<dynamic> jsonData = parsedJson['data'];
 
         return {'data':jsonData.map((json) => CommunityUser.fromJson(json)).toList()};
 

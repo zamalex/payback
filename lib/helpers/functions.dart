@@ -29,3 +29,13 @@ double calculateCartTotal(List<Product> pros){
 
   return total;
 }
+
+String parseDate(String s){
+  DateTime dateTime = DateTime.parse(s);
+
+  // Format the DateTime object into a readable format
+  String formattedDateTime = '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')} '
+      '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}:${dateTime.second.toString().padLeft(2, '0')}';
+
+  return formattedDateTime;
+}

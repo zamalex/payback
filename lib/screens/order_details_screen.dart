@@ -1,15 +1,25 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:payback/data/http/urls.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/model/orders_model.dart';
 import 'package:payback/screens/commitment_category_received.dart';
 
+import '../helpers/functions.dart';
+
 class OrderDetails extends StatelessWidget {
-  const OrderDetails({super.key});
+   OrderDetails({super.key,this.order});
+
+   Order? order;
 
   @override
   Widget build(BuildContext context) {
+    order = order ?? Order.fromJson(jsonDecode(Url.STATIC_ORDER));
+
     return Scaffold(
       appBar: AppBar(
-        leading:  BackButtonIcon(),
+        leading:  BackButton(),
         title: Text('Order details'),
         centerTitle: true,
       ),
@@ -20,19 +30,19 @@ class OrderDetails extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ReceivedItem(),
+              ReceivedItem(order: order!,),
               Text('General information',style: TextStyle(fontWeight: FontWeight.bold),),
               SizedBox(height: 20,),
               Container(padding:EdgeInsets.all(16),decoration: BoxDecoration(color: kBlueColor.withOpacity(.2),borderRadius: BorderRadius.circular(15)),child: Column(children: [
-                LeadingTrailingItem(txt: 'Date & Time', widget: Text('05.06.2023; 17:32',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),))
+                LeadingTrailingItem(txt: 'Date & Time', widget: Text('${parseDate(order!.dateTime!)}',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),))
                 ,SizedBox(height: 5,),
                 Divider()
                 ,SizedBox(height: 5,),
-                LeadingTrailingItem(txt: 'Status', widget: Text('Completed',style: TextStyle(color:Colors.green,fontWeight: FontWeight.bold),))
+                LeadingTrailingItem(txt: 'Status', widget: Text('${order!.status}',style: TextStyle(color:Colors.green,fontWeight: FontWeight.bold),))
               ,SizedBox(height: 5,),
               Divider()
               ,SizedBox(height: 5,),
-                LeadingTrailingItem(txt: 'Tracking number', widget: Text('10994513651',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),))
+                LeadingTrailingItem(txt: 'Tracking number', widget: Text('${order!.id}',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),))
 
 
               ],),)
@@ -49,15 +59,15 @@ class OrderDetails extends StatelessWidget {
                 ,SizedBox(height: 5,),
                 Divider()
                 ,SizedBox(height: 5,),
-                LeadingTrailingItem(txt: 'Office', widget: Text('City, Street, Building. Truncate...',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),))
+                LeadingTrailingItem(txt: 'Office', widget: Text('${order!.pickupOffice}',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),))
   ,SizedBox(height: 5,),
                 Divider()
                 ,SizedBox(height: 5,),
-                LeadingTrailingItem(txt: 'Name', widget: Text('Salim Lambertson',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),))
+                LeadingTrailingItem(txt: 'Name', widget: Text('${order!.userName}',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),))
   ,SizedBox(height: 5,),
                 Divider()
                 ,SizedBox(height: 5,),
-                LeadingTrailingItem(txt: 'Phone', widget: Text('+10994513651',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),))
+                LeadingTrailingItem(txt: 'Phone', widget: Text('${order!.userPhone}',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),))
 
 
               ],),),
@@ -66,19 +76,19 @@ class OrderDetails extends StatelessWidget {
       SizedBox(height: 20,),
       Container(padding:EdgeInsets.all(16),decoration: BoxDecoration(color: kBlueColor.withOpacity(.2),borderRadius: BorderRadius.circular(15)),child: Column(children: [
        
-          LeadingTrailingItem(txt: 'Quantity', widget: Text('1',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),))
+          LeadingTrailingItem(txt: 'Quantity', widget: Text('${order!.quantity}',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),))
           ,SizedBox(height: 5,),
           Divider()
           ,SizedBox(height: 5,),
-          LeadingTrailingItem(txt: 'Price', widget: Text('912,5 SAR',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),))
+          LeadingTrailingItem(txt: 'Price', widget: Text('${order!.totalPrice} SAR',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),))
           ,SizedBox(height: 5,),
           Divider()
           ,SizedBox(height: 5,),
-          LeadingTrailingItem(txt: 'Cashback', widget: Text('912,5 SAR',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),))
+          LeadingTrailingItem(txt: 'Cashback', widget: Text('0 SAR',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),))
           ,SizedBox(height: 5,),
           Divider()
           ,SizedBox(height: 5,),
-          LeadingTrailingItem(txt: 'Delivery', widget: Text('+by company tarrifs',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),))
+          LeadingTrailingItem(txt: 'Delivery', widget: Text('${order!.deliveryMethod}',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),))
 
 
       ],),),
