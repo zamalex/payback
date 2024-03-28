@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/screens/main_screen.dart';
 import 'package:payback/screens/smsverify.dart';
 import 'package:provider/provider.dart';
 
@@ -87,7 +88,13 @@ class CheckPhoneNumberScreen extends StatelessWidget {
                       ],
                     ),
 
-                    Expanded(child: Text('Continue as a Guest',style: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold),)),
+                    Expanded(child: InkWell(onTap:(){
+                      Navigator.of(context)
+                          .pushReplacement(MaterialPageRoute(
+                        builder: (context) => MainScreen(),
+                      ));
+
+                    },child: Text('Continue as a Guest',style: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold),))),
 
                   ]
               ),

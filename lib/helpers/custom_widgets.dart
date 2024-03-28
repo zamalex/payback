@@ -108,9 +108,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
             return _validateFullName(text);
           }
 
-          /*if (widget.type == TextInputType.phone && !text.startsWith('20')) {
-            return 'Phone should start with 20';
-          }*/
+          if (widget.type == TextInputType.phone && text.startsWith('0')) {
+            return 'Phone shouldn\'t start with 0';
+          }
 
        if (widget.type == TextInputType.emailAddress && !GetUtils.isEmail(text)) {
             return 'Enter valid email';

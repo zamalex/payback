@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/screens/main_screen.dart';
 import 'package:payback/screens/phonenumber.dart';
 import 'package:provider/provider.dart';
 
@@ -123,7 +124,12 @@ class RegisterScreen extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 20,),
-                    Text('Continue as a Guest',style: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold),),
+                    InkWell(onTap:(){
+                      Navigator.of(context)
+                          .pushReplacement(MaterialPageRoute(
+                        builder: (context) => MainScreen(),
+                      ));
+                    },child: Text('Continue as a Guest',style: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold),)),
 
                   ]
               ),
