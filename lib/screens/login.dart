@@ -43,7 +43,6 @@ class LoginScreen extends StatelessWidget {
             ?Get.snackbar('Alert', value['message'],backgroundColor: Colors.red,colorText: Colors.white): Get.to(MainScreen());
         if (value['data'] != null) {
           ar.AuthResponse authResponse = value['data'];
-          sl<PreferenceUtils>().deleteAllCart();
 
           sl<PreferenceUtils>().saveUser(authResponse..data?.user?.avatarUrl=user?.photoURL);
           print('photo is ${user!.photoURL}');
@@ -74,7 +73,6 @@ class LoginScreen extends StatelessWidget {
         value['data'] == null
             ?Get.snackbar('Alert', value['message'],backgroundColor: Colors.red,colorText: Colors.white): Get.to(MainScreen());
         if (value['data'] != null) {
-          sl<PreferenceUtils>().deleteAllCart();
 
           sl<PreferenceUtils>().saveUser(value['data']);
         }

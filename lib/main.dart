@@ -16,6 +16,7 @@ import 'package:payback/providers/checkout_provider.dart';
 import 'package:payback/providers/help_community_provider.dart';
 import 'package:payback/providers/home_provider.dart';
 import 'package:payback/screens/invitation_screen.dart';
+import 'package:payback/screens/main_screen.dart';
 
 import 'dart:math' as math;
 
@@ -49,7 +50,14 @@ Future<void> _initURIHandler() async {
       if (initialURI != null) {
         debugPrint("Initial URI received $initialURI with id ${initialURI.queryParameters.toString()}");
 
-        sl<PreferenceUtils>().saveInvitation(initialURI.toString());
+
+        if(initialURI.toString().contains('pro')){
+          sl<PreferenceUtils>().saveProduct(initialURI.toString());
+
+        }else{
+          sl<PreferenceUtils>().saveInvitation(initialURI.toString());
+
+        }
 
 
 
@@ -73,10 +81,18 @@ void _incomingLinkHandler() {
       debugPrint('Received URI: $uri');
 
       if(uri!=null) {
-        sl<PreferenceUtils>().saveInvitation(uri.toString());
-        if (sl.isRegistered<AuthResponse>()) {
-          Get.to(InvitationScreen());
+        if(uri.toString().contains('pro')){
+          sl<PreferenceUtils>().saveProduct(uri.toString());
+          if (sl.isRegistered<AuthResponse>()) {
+            Get.to(MainScreen());
+          }
+        }else{
+          sl<PreferenceUtils>().saveInvitation(uri.toString());
+          if (sl.isRegistered<AuthResponse>()) {
+            Get.to(InvitationScreen());
+          }
         }
+
       }
 
 

@@ -169,6 +169,33 @@ class PreferenceUtils{
       sharedPreferences!.remove('invitation');
 
    }
+
+
+   saveProduct(String invitation)async{
+    if(sharedPreferences==null)
+      await initPrefs();
+
+
+
+    await sharedPreferences!.setString('product',invitation);
+  }
+   Future<String?> readIProduct()async{
+     if(sharedPreferences==null)
+       await initPrefs();
+
+     String? s = sharedPreferences!.getString('product');
+
+
+     return s;
+   }
+
+   Future deleteProduct()async{
+     if(sharedPreferences==null)
+       await initPrefs();
+
+      sharedPreferences!.remove('product');
+
+   }
   
   Future<AuthResponse?> readUser()async{
     if(sharedPreferences==null)

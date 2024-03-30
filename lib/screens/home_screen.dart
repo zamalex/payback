@@ -2,15 +2,18 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:payback/data/preferences.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/model/auth_response.dart';
+import 'package:payback/model/product_model.dart';
 import 'package:payback/providers/home_provider.dart';
 import 'package:payback/providers/auth_provider.dart' as authProvider;
 import 'package:payback/screens/commitments_screen.dart';
 import 'package:payback/screens/login.dart';
 import 'package:payback/screens/my_profile_screen.dart';
+import 'package:payback/screens/product_details_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../data/service_locator.dart';
@@ -39,7 +42,22 @@ class _HomeScreenState extends State<HomeScreen> {
       Provider.of<HomeProvider>(context, listen: false)
           .getProducts(isHotDeals: true);
       Provider.of<HomeProvider>(context, listen: false)
-          .getProducts(isSuggested: true);
+          .getProducts(isSuggested: true).then((value){
+        sl<PreferenceUtils>().readIProduct().then((pp) {
+
+          if(pp!=null){
+            Uri uri = Uri.parse(pp);
+            int id = int.parse(uri.queryParameters['pro']??'0');
+            sl<PreferenceUtils>().deleteProduct();
+
+            Product? p = Provider.of<HomeProvider>(context, listen: false).products.firstWhereOrNull((element) => element.id==id);
+          if(p!=null){
+            Get.to(ProductDetailsScreen(product: p));
+          }
+          }
+
+        });
+      });
       if (sl.isRegistered<AuthResponse>()) {
         Provider.of<HomeProvider>(context, listen: false).getCommitments();
         Provider.of<authProvider.AuthProvider>(context, listen: false)
@@ -60,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 AutoSizeText(
 
                                   !sl.isRegistered<AuthResponse>()
-                                      ? 'Welcome, Login now'
+                                      ? 'Welcome Guest, Login now'
                                       : 'Hello, ${authResponse == null ? 'Mustafa' : authResponse!.data!.user!.name}',
 
                                   style: TextStyle(
@@ -164,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   color: Colors.white,
                                                 ),
                                                 AutoSizeText(
-                                                  '${value.notifications.length} notifications',
+                                                  '${value.notifications.length==0?'no':value.notifications.length} notifications',
                                                   style:
                                                       TextStyle(color: Colors.white),
                                                   maxLines: 1,

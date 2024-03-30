@@ -152,6 +152,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           prefixIcon: widget.showCountryCode?Container(
               //height: 20,
               child: CountryCodePicker(
+
                 initialSelection: selectedCode,
                 onChanged: (c){
                   selectedCode = (c.dialCode?..replaceAll('+', ''))!;

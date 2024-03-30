@@ -379,22 +379,48 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         ],
                       )),
                     )),
-                    Container(
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(16),
-                              topRight: Radius.circular(16))),
-                      child:value.isLoading?Center(child: CircularProgressIndicator(),): Container(
-                          width: double.infinity,
-                          child: CustomButton(
-                            buttonText: 'Submit order',
-                            buttonColor: kPurpleColor,
-                            onTap: () {
-                              submitOrder();
-                            },
-                          )),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(16),
+                                    topRight: Radius.circular(16))),
+                            child:value.isLoading?Center(child: CircularProgressIndicator(),): Container(
+                                width: double.infinity,
+                                child: CustomButton(
+                                  buttonText: 'Continue shopping',
+                                  buttonColor: kPurpleColor,
+                                  onTap: () {
+                                    Get.offAll(MainScreen(index: 1,));
+                                  },
+                                )),
+                          ),
+                        ),
+                        SizedBox(width: 10,),
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(16),
+                                    topRight: Radius.circular(16))),
+                            child:value.isLoading?Center(child: CircularProgressIndicator(),): Container(
+                                width: double.infinity,
+                                child: CustomButton(
+                                  buttonText: 'Submit order',
+                                  buttonColor: kPurpleColor,
+                                  onTap: () {
+                                    submitOrder();
+                                  },
+                                )),
+                          ),
+                        ),
+                      ],
                     )
                   ],
                 ),

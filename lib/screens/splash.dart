@@ -36,6 +36,12 @@ class _SplashState extends State<Splash> {
           return;
         }
 
+        sl<PreferenceUtils>().readIProduct().then((value) {
+          if(value!=null){
+            Get.to(MainScreen());
+          }
+        });
+
         if (value['data'] == null) {
           Get.to(LoginScreen());
         } else {

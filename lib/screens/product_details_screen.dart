@@ -10,6 +10,7 @@ import 'package:payback/model/product_model.dart';
 import 'package:payback/providers/checkout_provider.dart';
 import 'package:payback/providers/home_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:slide_switcher/slide_switcher.dart';
 import '../data/service_locator.dart';
 import '../helpers/custom_widgets.dart';
@@ -42,9 +43,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       leadingWidth: 100,
       centerTitle: true,
       actions: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CircleAvatar(child: Icon(Icons.share,color: kBlueColor,),backgroundColor: Colors.white,),
+        InkWell(
+          onTap: (){
+            Share.share('check out this product https://payback.example.com?pro=${widget.product.id}');
+
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CircleAvatar(child: Icon(Icons.share,color: kBlueColor,),backgroundColor: Colors.white,),
+          ),
         ),
         InkWell(
           onTap: (){

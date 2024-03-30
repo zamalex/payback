@@ -148,7 +148,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.max,children: [
                         Text(user.name??'',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.grey.shade800),),
-                        Text('Free user',style: TextStyle(fontSize: 18,color: Colors.grey),)
+                        Text('No subscription',style: TextStyle(fontSize: 18,color: Colors.grey),)
                       ],),
                     )
                   ],
