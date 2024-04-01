@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
@@ -415,9 +416,11 @@ class Commitment extends StatelessWidget {
                         color: Colors.white,
                       ),
                       SizedBox(width: 8),
-                      Text(
-                        '${commitment!.name ?? ''}',
-                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      Expanded(
+                        child: Text(
+                          '${commitment!.name ?? ''}',
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        ),
                       ),
                     ],
                   )),

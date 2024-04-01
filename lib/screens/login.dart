@@ -44,7 +44,8 @@ class LoginScreen extends StatelessWidget {
         if (value['data'] != null) {
           ar.AuthResponse authResponse = value['data'];
 
-          sl<PreferenceUtils>().saveUser(authResponse..data?.user?.avatarUrl=user?.photoURL);
+
+          sl<PreferenceUtils>().saveUser(authResponse..data?.user?.avatarUrl=user?.photoURL..data?.user?.phone=user?.phoneNumber);
           print('photo is ${user!.photoURL}');
         }
       });

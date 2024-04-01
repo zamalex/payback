@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
@@ -304,11 +305,11 @@ class CartItem extends StatelessWidget {
                           Expanded(
                             child: Text(
                               product!.description??'',
-                              maxLines: 1,
+                             // maxLines: 1,
                               style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
-                                  overflow: TextOverflow.ellipsis,
+                                  //overflow: TextOverflow.ellipsis,
                                   color: Colors.black),
                             ),
                           ),
@@ -356,13 +357,12 @@ class CartItem extends StatelessWidget {
                             width: 5,
                           ),
                           Expanded(
-                            child: Text(
+                            child: AutoSizeText(
                               '${product!.price} SAR ',
                               textAlign: TextAlign.end,
                               style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  overflow: TextOverflow.ellipsis,
                                   color: kPurpleColor),
                             ),
                           ),

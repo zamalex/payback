@@ -456,6 +456,8 @@ class _CheckoutItemState extends State<CheckoutItem> {
   TextEditingController buildingTextEditingController = TextEditingController();
   TextEditingController apartmentTextEditingController = TextEditingController();
   TextEditingController commentsTextEditingController = TextEditingController();
+
+  int selected_delivery=-1;
   showDeliveryAddresses(BuildContext context,Function onSelect){
     final pp = Provider.of<CheckoutProvider>(context,listen: false);
 
@@ -527,21 +529,29 @@ class _CheckoutItemState extends State<CheckoutItem> {
                 child: Row(
                   children: List.generate(
                       Provider.of<CheckoutProvider>(context).shippings.length,
-                          (index) => DeliveryMethod(
-                          myIndex: index,
-                          selectedIndex: widget.checkoutObject.selectedDelivery,
-                          txt:Provider.of<CheckoutProvider>(context).shippings.isNotEmpty? Provider.of<CheckoutProvider>(context)
-                              .shippings[index]
-                              .name ??'':''
-                              '',
-                          img: Provider.of<CheckoutProvider>(context)
-                              .shippings[index]
-                              .logo ??
-                              '',
-                          onTap: () {
-                            Provider.of<CheckoutProvider>(context, listen: false)
-                                .updateDelivery(widget.orderIndex, index);
-                          })),
+                          (index){
+                        if(selected_delivery!=-1){
+                          Provider.of<CheckoutProvider>(context, listen: false)
+                              .updateDelivery(widget.orderIndex, selected_delivery);
+                        }
+
+                        return DeliveryMethod(
+                            myIndex: index,
+                            selectedIndex:selected_delivery!=-1?selected_delivery: widget.checkoutObject.selectedDelivery,
+                            txt:Provider.of<CheckoutProvider>(context).shippings.isNotEmpty? Provider.of<CheckoutProvider>(context)
+                                .shippings[index]
+                                .name ??'':''
+                                '',
+                            img: Provider.of<CheckoutProvider>(context)
+                                .shippings[index]
+                                .logo ??
+                                '',
+                            onTap: () {
+                              selected_delivery = index;
+                              Provider.of<CheckoutProvider>(context, listen: false)
+                                  .updateDelivery(widget.orderIndex, selected_delivery);
+                            });
+                          }),
                 )),
             SizedBox(
               height: 15,

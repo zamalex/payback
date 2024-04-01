@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/auth_response.dart';
@@ -212,12 +214,19 @@ class PreferenceUtils{
 
 
 
-  logout(){
+  logout()async{
     if(sl.isRegistered<AuthResponse>())
     sl.unregister<AuthResponse>();
     Url.TOKEN='';
     sharedPreferences!.remove('user');
     deleteAllCart();
+    await FirebaseAuth.instance.signOut();
+
+    try {
+      await GoogleSignIn().signOut();
+    } catch (e) {
+      print('failed to disconnect on signout $e');
+    }
   }
 
 
