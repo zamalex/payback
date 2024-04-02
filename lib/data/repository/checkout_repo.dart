@@ -7,6 +7,7 @@ import 'package:payback/model/notifications_response.dart';
 
 import '../../model/auth_response.dart';
 import '../../model/orders_model.dart';
+import '../../model/payment_model.dart';
 import '../../model/shipping_model.dart';
 import '../http/dio_client.dart';
 import '../http/urls.dart';
@@ -106,6 +107,22 @@ class CheckoutRepository {
       }
     } catch (e) {
       return {'data':[]};
+    }
+  }
+
+
+  Future<List<PaymentSetting>> getPaymentMethods() async {
+    try {
+      Response response = await sl<DioClient>().get(Url.PAYMENTS_URL,);
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = response.data['data'];
+        return List<PaymentSetting>.from(data.map((item) => PaymentSetting.fromJson(item)));
+      } else {
+        return [];
+      }
+    } catch (e) {
+      return [];
     }
   }
 }

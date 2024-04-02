@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:payback/data/preferences.dart';
 import 'package:payback/data/repository/checkout_repo.dart';
+import 'package:payback/model/payment_model.dart';
 import 'package:payback/model/product_model.dart';
 import 'package:payback/model/shipping_model.dart';
 import 'package:payback/screens/checkout_object.dart';
@@ -41,6 +42,7 @@ class CheckoutProvider extends ChangeNotifier{
   List<ShippingMethod> shippings = [];
   List<ShippingMethod> shippingsAddresses = [];
   List<Order> orders=[];
+  List<PaymentSetting> paymentMethods=[];
 
 
   Future loadOrders() async {
@@ -54,6 +56,21 @@ class CheckoutProvider extends ChangeNotifier{
       orders = orders.where((element) => element.status==selectedStatus).toList();
     } catch (e) {
       orders=[];
+    }
+
+    isLoading = false;
+    notifyListeners();
+  }
+  Future getPaymentMethods() async {
+    isLoading = true;
+    notifyListeners();
+
+    try {
+      final response = await sl<CheckoutRepository>().getPaymentMethods();
+      paymentMethods = response;
+
+    } catch (e) {
+      paymentMethods=[];
     }
 
     isLoading = false;

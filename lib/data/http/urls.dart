@@ -29,6 +29,7 @@ class Url {
   static const SEND_FCM_TOKEN_URL = '/fcm';
   static const CREATE_ORDER_URL = '/admin/orders/create';
   static const CORDERS_URL = '/admin/orders';
+  static const PAYMENTS_URL = '/admin/payment-settings';
   static const UPDATE_USER_DATA_URL = '/users/profile';
   static const UPDATE_USER_EMAIL_URL = '/users/email/edit';
   static const UPDATE_USER_AVATER_URL = '/users/avatar';

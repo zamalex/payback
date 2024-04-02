@@ -28,8 +28,16 @@ class DioErrorHelper {
             final statusCode = error.response!.statusCode;
             final data = error.response!.data;
             //e.response?.data['message']??e.message
+            String e = data['message']??error.message;
+            if(data['data']!=null){
+
+              data['data'].forEach((k, v) {
+               e = '${e} \n ${v}';
+              });
+            }
+
             errorDescription =
-            'Received invalid status code: $statusCode\nResponse data: ${data['message']??error.message}';
+            'Code: $statusCode\nResponse data: ${e}';
           } else {
             errorDescription = 'Response was null';
           }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:custom_date_range_picker/custom_date_range_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
@@ -78,12 +79,16 @@ class ReceivedItem extends StatelessWidget {
               children: [
                 ClipRRect(
                     borderRadius: BorderRadius.circular(15),
-                    child: Image.network(
-                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuCxMPJwglskH6j6jQhCmJGqIr9kR6_iMPng&usqp=CAU',
-                      width: 120,
+                    child: CachedNetworkImage(imageUrl: order.productImage??'',width: 120,
                       height: 120,
-                      fit: BoxFit.cover,
-                    )),
+                      fit: BoxFit.cover,errorWidget: (context, url, error) =>Image.network('https://www.huber-online.com/daisy_website_files/_processed_/8/0/csm_no-image_d5c4ab1322.jpg',width: 120,
+                          height: 120,
+                          fit: BoxFit.cover),)/*Image.network(
+                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuCxMPJwglskH6j6jQhCmJGqIr9kR6_iMPng&usqp=CAU',
+                    width: 60,
+                    height: 60,
+                    fit: BoxFit.cover,
+                  )*/),
                 SizedBox(
                   width: 10,
                 ),

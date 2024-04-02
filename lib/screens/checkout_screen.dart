@@ -49,6 +49,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     }
     Future.delayed(Duration.zero).then((value) {
       getShippings();
+      getPaymentMethods();
       Provider.of<CheckoutProvider>(context, listen: false).getShippingAddresses();
 
     });
@@ -64,12 +65,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     Provider.of<CheckoutProvider>(context, listen: false).getShippingMethods();
   }
 
+  getPaymentMethods() {
+    Provider.of<CheckoutProvider>(context, listen: false).getPaymentMethods();
+  }
+
   submitOrder() {
     Map<String, dynamic> request = {};
     List<Map<String, dynamic>> ordersArray = [];
 
     bool allowed = true;
     if (!_formKey.currentState!.validate()) {
+
+      Get.snackbar('Alert', 'You must fill all required data to proceed',
+          colorText: Colors.white, backgroundColor: Colors.red);
       return;
     }
     _formKey.currentState!.save();
@@ -180,7 +188,33 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
+  showPaymentPicker(BuildContext context,Function onSelect){
+    final pp = Provider.of<CheckoutProvider>(context,listen: false);
 
+
+
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+          title: Text('Select payment method'),
+          actions:  List.generate(pp.paymentMethods.length, (index){
+            return  CupertinoActionSheetAction(
+              child:  Text(pp.paymentMethods[index].paymentGateway??''),
+              onPressed: () {
+                onSelect(pp.paymentMethods[index].paymentGateway);
+                Navigator.pop(context, 'Delete For Everyone');
+              },
+            );
+          }),
+          cancelButton: CupertinoActionSheetAction(
+            child: const Text('Cancel'),
+            onPressed: () {
+
+              Navigator.pop(context, 'Cancel');
+            },
+          )),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -415,7 +449,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   buttonText: 'Submit order',
                                   buttonColor: kPurpleColor,
                                   onTap: () {
-                                    submitOrder();
+                                    showPaymentPicker(context,(s){
+                                      submitOrder();
+                                    });
                                   },
                                 )),
                           ),

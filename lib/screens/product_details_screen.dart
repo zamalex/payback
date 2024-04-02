@@ -56,7 +56,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         InkWell(
           onTap: (){
             Provider.of<HomeProvider>(context,listen: false).saveProduct(widget.product);
-          },
+            Get.snackbar('Done', 'Action done successfully',colorText: Colors.white,backgroundColor: Colors.green);
+            },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: CircleAvatar(child: Icon(Icons.save,color: kBlueColor,),backgroundColor: Colors.white,),
