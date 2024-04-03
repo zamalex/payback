@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:payback/data/http/urls.dart';
 import 'package:payback/helpers/custom_widgets.dart';
+import 'package:payback/model/cashback_dashboard.dart';
 import 'package:payback/model/orders_model.dart';
 import 'package:payback/screens/order_details_screen.dart';
 import 'package:provider/provider.dart';
@@ -14,9 +15,33 @@ import '../helpers/colors.dart';
 import '../providers/CommitmentsProvider.dart';
 import 'history_screen.dart';
 
-class CommitmentCategoryReceivedScreen extends StatelessWidget {
-  const CommitmentCategoryReceivedScreen({super.key});
+class CommitmentCategoryReceivedScreen extends StatefulWidget {
+   CommitmentCategoryReceivedScreen({super.key,required this.historyCategory});
+  HistoryCategory historyCategory;
 
+  @override
+  State<CommitmentCategoryReceivedScreen> createState() => _CommitmentCategoryReceivedScreenState();
+}
+
+class _CommitmentCategoryReceivedScreenState extends State<CommitmentCategoryReceivedScreen> {
+
+
+
+
+  getCategoryReceivedProducts() {
+    Provider.of<CommitmentsProvider>(context, listen: false)
+        .getReceivedProductsOfCategory({
+      'category_id':widget.historyCategory.categoryId
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    Future.delayed(Duration.zero).then((value) => getCategoryReceivedProducts());
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +69,7 @@ class CommitmentCategoryReceivedScreen extends StatelessWidget {
 
             SizedBox(height: 20,),
 
-            Expanded(child: ListView.builder(itemBuilder: (context, index) =>Container(margin: EdgeInsets.symmetric(vertical: 4),child:  ReceivedItem(order: Order.fromJson(jsonDecode(Url.STATIC_ORDER)),),),itemCount: 3,))
+            Consumer<CommitmentsProvider>(builder:(context, value, child) => Expanded(child: ListView.builder(itemBuilder: (context, index) =>Container(margin: EdgeInsets.symmetric(vertical: 4),child:  ReceivedItem(order: value.ordersOfCategory[index],),),itemCount: value.ordersOfCategory.length,)))
           ],
         ),),
     );

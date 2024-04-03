@@ -181,7 +181,7 @@ getCashbackHistory();
                     }
                     else{
 
-                      Get.to(CommitmentCategoryReceivedScreen());
+                      Get.to(CommitmentCategoryReceivedScreen(historyCategory: value.cashbackHistory!.categories![index],));
                     }
                   },
                   child: Container(child:  Row(

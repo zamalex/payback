@@ -60,7 +60,7 @@ class _CommitmentsScreenState extends State<CommitmentsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'My commitmetns',
+                        'My commitments',
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
@@ -109,7 +109,7 @@ class _CommitmentsScreenState extends State<CommitmentsScreen> {
                                   style: TextStyle(fontSize: 15),
                                 ),
                                 trailing: Text(
-                                  '${(value.cashbackModel.depositAssignedBalance/value.cashbackModel.depositUnsignedBalance)*100}%',
+                                  '${((value.cashbackModel.depositAssignedBalance/value.cashbackModel.depositUnsignedBalance)).isNaN?0:(((value.cashbackModel.depositAssignedBalance/value.cashbackModel.depositUnsignedBalance)))*100}%',
                                   style: TextStyle(
                                       fontSize: 20,
                                       color: kBlueColor,

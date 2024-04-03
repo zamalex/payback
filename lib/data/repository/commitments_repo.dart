@@ -6,7 +6,9 @@ import 'package:payback/model/share_details_response.dart';
 
 import '../../helpers/dio_error_helper.dart';
 import '../../model/cashback_dashboard.dart';
+import '../../model/orders_model.dart';
 import '../../model/partner_model.dart';
+import '../../model/product_model.dart';
 import '../../model/transactions_response.dart';
 import '../http/dio_client.dart';
 import '../http/urls.dart';
@@ -215,6 +217,47 @@ class CommitmentsRepository{
           transactions.forEach((trans) {
             if(trans.reference!=null)
             someCommitments.addAll(commitments.where((comm) => comm.name==trans.reference!.name).toList());
+
+          });
+
+        }else{
+          someCommitments.clear();
+        }
+
+
+        return {'message': 'Commitments retrieved successfully', 'data': someCommitments};
+      }
+
+      return {'message': 'Not found'};
+    } catch (e) {
+      if (e is DioError) {
+        return {'message': e.message};
+      } else {
+        return {'message': 'Unknown error'};
+      }
+    }
+  }
+
+
+
+  Future<Map> getReceivedProductsOfCategory(Map<String,dynamic>? params) async {
+    try {
+      Response ordersRes = await sl<DioClient>().get(Url.CORDERS_URL,);
+      Response transactionsRes = await sl<DioClient>().get(Url.GET_CASHBACK_TRANSACTIONS_URL,queryParameters: params);
+
+      final parsedJson = ordersRes.data;
+      if (ordersRes.statusCode! < 400&&transactionsRes.statusCode! < 400) {
+        List<dynamic> data = parsedJson['data'];
+        List<Order> orders = data.map((json) => Order.fromJson(json)).toList();
+
+
+        List<Order> someCommitments=[];
+        List<Transaction> transactions = List<Transaction>.from(transactionsRes.data['data'].map((x) => Transaction.fromJson(x)));
+
+        if(transactions.isNotEmpty){
+          transactions.forEach((trans) {
+            if(trans.reference!=null)
+            someCommitments.addAll(orders.where((comm) => comm.productName==trans.reference!.name).toList());
 
           });
 

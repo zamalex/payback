@@ -18,7 +18,7 @@ class Transaction {
 
 class Reference {
   String name;
-  String category;
+  String? category;
   String type;
   String createdAt;
 
@@ -31,7 +31,7 @@ class Reference {
 
   factory Reference.fromJson(Map<String, dynamic> json) => Reference(
     name: json["name"],
-    category: json["category"],
+    category: json["category"]??'',
     type: json["type"],
     createdAt: json["created_at"],
   );
