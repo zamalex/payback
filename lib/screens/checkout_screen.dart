@@ -493,7 +493,8 @@ class _CheckoutItemState extends State<CheckoutItem> {
   TextEditingController apartmentTextEditingController = TextEditingController();
   TextEditingController commentsTextEditingController = TextEditingController();
 
-  int selected_delivery=-1;
+  int selected_delivery=0;
+  int selected_pickup = 0;
   showDeliveryAddresses(BuildContext context,Function onSelect){
     final pp = Provider.of<CheckoutProvider>(context,listen: false);
 
@@ -532,7 +533,8 @@ class _CheckoutItemState extends State<CheckoutItem> {
         buildingTextEditingController.text= buildingTextEditingController.text;
         apartmentTextEditingController.text= apartmentTextEditingController.text;
         commentsTextEditingController.text= commentsTextEditingController.text;
-
+        Provider.of<CheckoutProvider>(context, listen: false).checkouts[widget.orderIndex].selectedPickup = selected_pickup;
+        Provider.of<CheckoutProvider>(context, listen: false).checkouts[widget.orderIndex].selectedDelivery = selected_delivery;
         return  Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -566,14 +568,14 @@ class _CheckoutItemState extends State<CheckoutItem> {
                   children: List.generate(
                       Provider.of<CheckoutProvider>(context).shippings.length,
                           (index){
-                        if(selected_delivery!=-1){
+                       /* if(selected_delivery!=-1){
                           Provider.of<CheckoutProvider>(context, listen: false)
                               .updateDelivery(widget.orderIndex, selected_delivery);
-                        }
+                        }*/
 
                         return DeliveryMethod(
                             myIndex: index,
-                            selectedIndex:selected_delivery!=-1?selected_delivery: widget.checkoutObject.selectedDelivery,
+                            selectedIndex:selected_delivery,
                             txt:Provider.of<CheckoutProvider>(context).shippings.isNotEmpty? Provider.of<CheckoutProvider>(context)
                                 .shippings[index]
                                 .name ??'':''
@@ -605,8 +607,9 @@ class _CheckoutItemState extends State<CheckoutItem> {
                     value: 0,
                     groupValue: widget.checkoutObject.selectedPickup,
                     onChanged: (value) {
+                      selected_pickup = 0;
                       Provider.of<CheckoutProvider>(context, listen: false)
-                          .updatePickup(widget.orderIndex, value!!);
+                          .updatePickup(widget.orderIndex, value!);
                     },
                     activeColor: kBlueColor),
                 Text('Self pick up'),
@@ -614,6 +617,7 @@ class _CheckoutItemState extends State<CheckoutItem> {
                     value: 1,
                     groupValue: widget.checkoutObject.selectedPickup,
                     onChanged: (value) {
+                      selected_pickup = 1;
                       Provider.of<CheckoutProvider>(context, listen: false)
                           .updatePickup(widget.orderIndex, value!!);
                     },
