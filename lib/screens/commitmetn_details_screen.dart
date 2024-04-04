@@ -314,7 +314,7 @@ class CommitmetDetails extends StatelessWidget {
                               'commitment_id':commitment.id
                             }).then((value){
                               if(value['data']!=null){
-                                Share.share('check out my invitation to share my commitment https://payback.example.com?id=${value['data']}');
+                                Share.share('check out my invitation to share my commitment https://payback.example.com${value['data']}');
 
                               }
                             });

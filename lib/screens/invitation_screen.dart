@@ -21,6 +21,8 @@ class InvitationScreen extends StatefulWidget {
 
 class _InvitationScreenState extends State<InvitationScreen> {
   int id=0;
+  int user=0;
+  String signature='';
 
   @override
   void initState() {
@@ -39,10 +41,16 @@ class _InvitationScreenState extends State<InvitationScreen> {
       sl<PreferenceUtils>().readInvitation().then((value) {
         if(value!=null){
           Uri uri = Uri.parse(value);
-          id = int.parse(uri.queryParameters['id']??'0');
+          uri.queryParameters.forEach((key, value) {
+            print(key);
+            print(value);
+          });
+          id = int.parse(uri.queryParameters['commitment_id']??'0');
+          user = int.parse(uri.queryParameters['user_id']??'0');
+          signature = uri.queryParameters['signature']??'';
           sl<PreferenceUtils>().deleteInvitation();
 
-          Provider.of<CommitmentsProvider>(context,listen: false).getInvitationDetails(id);
+          Provider.of<CommitmentsProvider>(context,listen: false).getInvitationDetails2(user,id);
         }
 
       });
@@ -50,12 +58,19 @@ class _InvitationScreenState extends State<InvitationScreen> {
   }
 
   acceptRejectInvitation(int decision){
+    Map <String,dynamic> query = {
+      'commitment_id':id,
 
+      'user_id':user,
+
+      'signature':signature,
+
+    };
     FocusScope.of(context).requestFocus(FocusNode());
     Provider.of<CommitmentsProvider>(context,listen: false).acceptRejectInvitation({
       'amount':decision==0?0:int.parse(controller.text.replaceAll('%','')),
       'status':decision
-    },id).then((value){
+    },query).then((value){
       Get.snackbar('Alert', value['message'],backgroundColor:value['data']?Colors.green: Colors.red,colorText: Colors.white);
       Get.to(MainScreen());
     });

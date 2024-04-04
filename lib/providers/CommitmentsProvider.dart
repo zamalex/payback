@@ -111,12 +111,12 @@ class CommitmentsProvider extends ChangeNotifier{
     return response;
   }
 
-  Future<Map<String, dynamic>> acceptRejectInvitation(Map<String,dynamic> body,int id) async {
+  Future<Map<String, dynamic>> acceptRejectInvitation(Map<String,dynamic> body,Map<String,dynamic> query) async {
    isLoading = true;
    notifyListeners();
 
     final response = await sl<CommitmentsRepository>()
-        .acceptRejectInvitation(body,id);
+        .acceptRejectInvitation(body,query);
 
 
    isLoading = false;
@@ -148,6 +148,23 @@ class CommitmentsProvider extends ChangeNotifier{
 
     final response = await sl<CommitmentsRepository>()
         .getInvitationDetails(id);
+
+
+    shareDetailsResponse = response['data'];
+
+
+   isLoading = false;
+   notifyListeners();
+    return response;
+  }
+
+
+  Future<Map<String, dynamic>> getInvitationDetails2(int user,int commitment) async {
+   isLoading = true;
+   notifyListeners();
+
+    final response = await sl<CommitmentsRepository>()
+        .getInvitationDetails2(user,commitment);
 
 
     shareDetailsResponse = response['data'];

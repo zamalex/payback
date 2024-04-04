@@ -107,10 +107,10 @@ class CommitmentsRepository{
   }
 
 
-  Future acceptRejectInvitation(Map<String, dynamic> body,int id) async {
+  Future acceptRejectInvitation(Map<String, dynamic> body,Map<String, dynamic> query) async {
     try {
       Response response =
-      await sl<DioClient>().put('${Url.SHARE_INVITATION_URL}/$id', data: jsonEncode(body));
+      await sl<DioClient>().post('${Url.SHARE_INVITATION_URL}', data: jsonEncode(body),queryParameters: query);
 
       final parsedJson = response.data;
       if (response.statusCode! < 400) {
@@ -133,11 +133,11 @@ class CommitmentsRepository{
   Future sendInvitation(Map<String, dynamic> body) async {
     try {
       Response response =
-      await sl<DioClient>().post(Url.SHARE_INVITATION_URL, data: jsonEncode(body));
+      await sl<DioClient>().post('${Url.SHARE_INVITATION_URL}/url', data: jsonEncode(body));
 
       final parsedJson = response.data;
       if (response.statusCode! < 400) {
-        return {'message': 'Done', 'data': parsedJson['data']};
+        return {'message': 'Done', 'data': parsedJson['url']};
       }
 
       return {'message': 'Error', };
@@ -162,6 +162,31 @@ class CommitmentsRepository{
         ShareDetailsResponse shareDetailsResponse= ShareDetailsResponse.fromJson(parsedJson);
 
         return {'message': 'Partners retrieved successfully', 'data': shareDetailsResponse};
+      }
+
+      return {'message': 'Not found'};
+    } catch (e) {
+      if (e is DioError) {
+        return {'message': e.message};
+      } else {
+        return {'message': 'Unknown error'};
+      }
+    }
+  }
+
+
+  Future<Map<String, dynamic>> getInvitationDetails2(int user,int commitment) async {
+    try {
+      Response userResponse = await sl<DioClient>().get('${Url.USERS_URL}/$user',);
+      Response commitmentResponse = await sl<DioClient>().get('${Url.COMMIMENTS_URL}/$commitment',);
+
+      final parsedUser = userResponse.data;
+      final parsedCommitment = commitmentResponse.data;
+      if (userResponse.statusCode! < 400&&commitmentResponse.statusCode! < 400) {
+        ShareUser shareUser= ShareUser.fromJson(parsedUser['data']);
+        ShareCommit shareCommit= ShareCommit.fromJson(parsedCommitment['data']);
+
+        return {'message': 'Partners retrieved successfully', 'data': ShareDetailsResponse(data: ShareDetails(id: 0,amount: '0',commitment: shareCommit,user: shareUser,))};
       }
 
       return {'message': 'Not found'};
