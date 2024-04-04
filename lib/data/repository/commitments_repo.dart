@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:payback/model/commitment_model.dart';
+import 'package:payback/model/contributor_model.dart';
 import 'package:payback/model/share_details_response.dart';
 
 import '../../helpers/dio_error_helper.dart';
@@ -242,6 +243,49 @@ class CommitmentsRepository{
           transactions.forEach((trans) {
             if(trans.reference!=null)
             someCommitments.addAll(commitments.where((comm) => comm.name==trans.reference!.name).toList());
+
+          });
+
+        }else{
+          someCommitments.clear();
+        }
+
+
+        return {'message': 'Commitments retrieved successfully', 'data': someCommitments};
+      }
+
+      return {'message': 'Not found'};
+    } catch (e) {
+      if (e is DioError) {
+        return {'message': e.message};
+      } else {
+        return {'message': 'Unknown error'};
+      }
+    }
+  }
+
+
+
+
+  Future<Map> getReceivedFromUsers(Map<String,dynamic>? params) async {
+    try {
+
+     // Response commitmentsRes = await sl<DioClient>().get(Url.COMMIMENTS_URL,queryParameters: params);
+      Response transactionsRes = await sl<DioClient>().get(Url.GET_CASHBACK_TRANSACTIONS_URL,queryParameters: params);
+
+     // final parsedJson = commitmentsRes.data;
+      if (transactionsRes.statusCode! < 400) {
+
+
+        List<ContributorModel> someCommitments=[];
+        List<Transaction> transactions = List<Transaction>.from(transactionsRes.data['data'].map((x) => Transaction.fromJson(x)));
+
+        if(transactions.isNotEmpty){
+          transactions.forEach((trans) {
+            if(trans.reference!=null&&trans.reference!.category=='Community')
+
+              someCommitments.add(ContributorModel(amount: trans.amount,avatar:trans.reference!.avatar ,name: trans.reference!.name));
+
 
           });
 

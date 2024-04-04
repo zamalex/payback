@@ -33,6 +33,12 @@ class _CommitmentCategoryReceivedScreenState extends State<CommitmentCategoryRec
         .getReceivedProductsOfCategory({
       'category_id':widget.historyCategory.categoryId
     });
+
+
+    Provider.of<CommitmentsProvider>(context, listen: false)
+        .getContributorsOfReceived({
+      'category_id':widget.historyCategory.categoryId
+    });
   }
 
   @override

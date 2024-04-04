@@ -20,12 +20,14 @@ class Reference {
   String name;
   String? category;
   String type;
+  String? avatar;
   String createdAt;
 
   Reference({
     required this.name,
     required this.category,
     required this.type,
+    required this.avatar,
     required this.createdAt,
   });
 
@@ -33,6 +35,7 @@ class Reference {
     name: json["name"],
     category: json["category"]??'',
     type: json["type"],
+    avatar: json["avatar"],
     createdAt: json["created_at"],
   );
 }

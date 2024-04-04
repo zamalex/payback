@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:payback/model/cashback_dashboard.dart';
 import 'package:payback/model/commitment_model.dart';
+import 'package:payback/model/contributor_model.dart';
 import 'package:payback/model/orders_model.dart';
 import 'package:payback/model/product_model.dart';
 
@@ -32,6 +33,7 @@ class CommitmentsProvider extends ChangeNotifier{
 
   List<Partner> commitmentsCategories = [];
   List<Commitment> commitmentsOfCategory = [];
+  List<ContributorModel> contributorsOfReceived = [];
   List<Order> ordersOfCategory = [];
 
   Future<Map> getCommitmentsOfCategory(Map<String,dynamic>? params) async {
@@ -40,6 +42,24 @@ class CommitmentsProvider extends ChangeNotifier{
     final response = await sl<CommitmentsRepository>().getCommitmentsOfCategory(params);
 
     commitmentsOfCategory = response['data'];
+    isLoading = false;
+    notifyListeners();
+
+
+    return response;
+  }
+
+
+  Future<Map> getContributorsOfReceived(Map<String,dynamic>? params) async {
+    isLoading = true;
+    notifyListeners();
+    if(params==null){
+      params = {};
+    }
+    params.putIfAbsent('action', () => 'reserved');
+    final response = await sl<CommitmentsRepository>().getReceivedFromUsers(params);
+
+    contributorsOfReceived = response['data'];
     isLoading = false;
     notifyListeners();
 
