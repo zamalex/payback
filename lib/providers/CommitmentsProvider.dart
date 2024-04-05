@@ -211,9 +211,10 @@ class CommitmentsProvider extends ChangeNotifier{
       if(spent) {
         cashbackHistory!.categories!.removeWhere((element) =>
         element.summary!.fromAllSpent == 0);
+
       }else{
         cashbackHistory!.categories!.removeWhere((element) => element.summary!.fromAllReceived==0);
-
+       // cashbackHistory!.categories!.add(HistoryCategory(category: 'Community',categoryId: '0',summary: Summary()));
       }
     }
 

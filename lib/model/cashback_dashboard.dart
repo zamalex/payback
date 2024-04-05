@@ -44,12 +44,12 @@ class Summary {
   double fromAllReceived=0;
 
   Summary(
-      {this.received,
-        this.spent,
-        this.withdrawUnsignedBalance,
-        this.depositUnsignedBalance,
-        this.withdrawAssignedBalance,
-        this.depositAssignedBalance});
+      {this.received=0,
+        this.spent=0,
+        this.withdrawUnsignedBalance=0,
+        this.depositUnsignedBalance=0,
+        this.withdrawAssignedBalance=0,
+        this.depositAssignedBalance=0});
 
   Summary.fromJson(Map<String, dynamic> json) {
     received = double.parse(json['deposit'].toString());

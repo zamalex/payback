@@ -8,6 +8,7 @@ import 'package:payback/data/http/urls.dart';
 import 'package:payback/helpers/custom_widgets.dart';
 import 'package:payback/model/cashback_dashboard.dart';
 import 'package:payback/model/orders_model.dart';
+import 'package:payback/screens/commitments_details_another_screen.dart';
 import 'package:payback/screens/order_details_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -29,16 +30,23 @@ class _CommitmentCategoryReceivedScreenState extends State<CommitmentCategoryRec
 
 
   getCategoryReceivedProducts() {
-    Provider.of<CommitmentsProvider>(context, listen: false)
-        .getReceivedProductsOfCategory({
-      'category_id':widget.historyCategory.categoryId
-    });
+
+    if(widget.historyCategory.categoryId!='0'){
+      Provider.of<CommitmentsProvider>(context, listen: false)
+          .getReceivedProductsOfCategory({
+        'category_id':widget.historyCategory.categoryId
+      });
+    }
+    else{
+      Provider.of<CommitmentsProvider>(context, listen: false)
+          .getContributorsOfReceived({
+        'category_id':widget.historyCategory.categoryId
+      });
+    }
 
 
-    Provider.of<CommitmentsProvider>(context, listen: false)
-        .getContributorsOfReceived({
-      'category_id':widget.historyCategory.categoryId
-    });
+
+
   }
 
   @override
@@ -75,7 +83,7 @@ class _CommitmentCategoryReceivedScreenState extends State<CommitmentCategoryRec
 
             SizedBox(height: 20,),
 
-            Consumer<CommitmentsProvider>(builder:(context, value, child) => Expanded(child: ListView.builder(itemBuilder: (context, index) =>Container(margin: EdgeInsets.symmetric(vertical: 4),child:  ReceivedItem(order: value.ordersOfCategory[index],),),itemCount: value.ordersOfCategory.length,)))
+            widget.historyCategory.categoryId=='0'?Consumer<CommitmentsProvider>(builder:(context, value, child) => Expanded(child: ListView.builder(itemBuilder: (context, index) =>Container(margin: EdgeInsets.symmetric(vertical: 4),child: ContributorWidget(),),itemCount: value.contributorsOfReceived.length,))):Consumer<CommitmentsProvider>(builder:(context, value, child) => Expanded(child: ListView.builder(itemBuilder: (context, index) =>Container(margin: EdgeInsets.symmetric(vertical: 4),child:  ReceivedItem(order: value.ordersOfCategory[index],),),itemCount: value.ordersOfCategory.length,)))
           ],
         ),),
     );
