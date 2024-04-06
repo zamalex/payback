@@ -19,9 +19,10 @@ import 'contributer_screen.dart';
 import 'package:payback/model/commitment_model.dart' as model;
 
 class CommitmetDetails extends StatefulWidget {
-  CommitmetDetails({super.key, required this.commitment});
+  CommitmetDetails({super.key, required this.commitment,this.another = false});
 
   model.Commitment commitment;
+  bool another;
 
   @override
   State<CommitmetDetails> createState() => _CommitmetDetailsState();
@@ -97,6 +98,7 @@ class _CommitmetDetailsState extends State<CommitmetDetails> {
                                   'Back',
                                   style: TextStyle(color: Colors.white),
                                 )),
+                                if(!widget.another)
                                 InkWell(
                                     onTap: () {
                                       Get.to(NewCommitmentScreen(
@@ -110,6 +112,7 @@ class _CommitmetDetailsState extends State<CommitmetDetails> {
                                 SizedBox(
                                   width: 5,
                                 ),
+                                if(!widget.another)
                                 InkWell(
                                     onTap: () {
                                       Provider.of<CommitmentsProvider>(context,
@@ -395,6 +398,7 @@ class _CommitmetDetailsState extends State<CommitmetDetails> {
                         SizedBox(
                           height: 20,
                         ),
+                        if(!widget.another)
                         Container(
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(16),
@@ -418,6 +422,7 @@ class _CommitmetDetailsState extends State<CommitmetDetails> {
                         SizedBox(
                           height: 20,
                         ),
+                        if(!widget.another)
                         Container(
                             width: double.infinity,
                             child: CustomButton(
@@ -467,6 +472,7 @@ class _CommitmetDetailsState extends State<CommitmetDetails> {
             SizedBox(
               height: 20,
             ),
+            if(!widget.another)
             Container(
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(

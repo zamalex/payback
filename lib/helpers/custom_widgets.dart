@@ -369,8 +369,8 @@ class CustomThumbShape extends SliderComponentShape {
 }
 
 class Commitment extends StatelessWidget {
-  Commitment({super.key, this.commitment});
-
+  Commitment({super.key, this.commitment,this.another = false});
+  bool another ;
   com.Commitment? commitment;
 
   int i = Random().nextInt(shade0.length);
@@ -381,7 +381,7 @@ class Commitment extends StatelessWidget {
       commitment = com.Commitment.fromJson(jsonDecode(Url.COMMITMENT_JSON));
     return InkWell(
       onTap: () {
-        Get.to(CommitmetDetails(commitment: commitment!,));
+        Get.to(CommitmetDetails(commitment: commitment!,another: another,));
       },
       child: Container(
         margin: EdgeInsets.all(0),

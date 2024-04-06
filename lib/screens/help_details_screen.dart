@@ -103,7 +103,7 @@ class _HelpDetailsScreenState extends State<HelpDetailsScreen> {
 
                 ],),
                 SizedBox(height: 10,),
-                Column(children: List.generate(value.toUserCommitments.length, (index) => Container(margin:EdgeInsets.symmetric(vertical: 4),child: Commitment(commitment: value.toUserCommitments[index],))),)
+                Column(children: List.generate(value.toUserCommitments.length, (index) => Container(margin:EdgeInsets.symmetric(vertical: 4),child: Commitment(another:true,commitment: value.toUserCommitments[index],))),)
                ,
                 SizedBox(height: 10,),
                 Row(
