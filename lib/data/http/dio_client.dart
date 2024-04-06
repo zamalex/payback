@@ -75,7 +75,7 @@ class DioClient {
     try {
       var response = await dio!.get(
         uri,
-        queryParameters: queryParameters??{}..putIfAbsent('per_page', () => 1000000),
+        queryParameters: queryParameters??{}..putIfAbsent('per_page', () => double.maxFinite),
         options: options,
         cancelToken: cancelToken,
         onReceiveProgress: onReceiveProgress,

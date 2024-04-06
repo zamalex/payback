@@ -34,6 +34,9 @@ class CommitmentsProvider extends ChangeNotifier{
   List<Partner> commitmentsCategories = [];
   List<Commitment> commitmentsOfCategory = [];
 
+  List<Commitment> fromUserCommitments = [];
+  List<Commitment> toUserCommitments = [];
+
   List<ContributorModel> commitmentContributors = [];
   List<ContributorModel> contributorsOfReceived = [];
   List<Order> ordersOfCategory = [];
@@ -44,6 +47,26 @@ class CommitmentsProvider extends ChangeNotifier{
     final response = await sl<CommitmentsRepository>().getCommitmentsOfCategory(params);
 
     commitmentsOfCategory = response['data'];
+    isLoading = false;
+    notifyListeners();
+
+
+    return response;
+  }
+
+
+  Future getFromToCommitments(String action) async {
+    isLoading = true;
+    notifyListeners();
+    final response = await sl<CommitmentsRepository>().getFromToUser(action);
+
+    if(action=='send'){
+      toUserCommitments = response;
+
+    }else{
+      fromUserCommitments = response;
+
+    }
     isLoading = false;
     notifyListeners();
 

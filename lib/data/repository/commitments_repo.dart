@@ -350,6 +350,47 @@ class CommitmentsRepository{
     }
   }
 
+  Future<List<Commitment>> getFromToUser(String action) async {
+    try {
+      Response transactionsRes = await sl<DioClient>().get(Url.GET_CASHBACK_TRANSACTIONS_URL,queryParameters: {'action':action});
+
+      if (transactionsRes.statusCode! < 400) {
+
+
+        List<Commitment> someCommitments=[];
+        List<Transaction> transactions = List<Transaction>.from(transactionsRes.data['data'].map((x) => Transaction.fromJson(x)));
+
+        if(transactions.isNotEmpty){
+          transactions.forEach((trans) {
+            if(trans.reference!=null)
+              {
+                if(trans.reference!.commitment!=null)
+                {
+                  someCommitments.add(trans.reference!.commitment!..categoryName=trans.reference!.category);
+
+                }
+              }
+
+          });
+
+        }else{
+          someCommitments.clear();
+        }
+
+
+        return someCommitments;
+      }
+
+      return [];
+    } catch (e) {
+      if (e is DioError) {
+        return [];
+      } else {
+        return [];
+      }
+    }
+  }
+
 
 
   Future<Map> getReceivedProductsOfCategory(Map<String,dynamic>? params) async {

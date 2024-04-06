@@ -1,3 +1,5 @@
+import 'package:payback/model/commitment_model.dart';
+
 class Transaction {
   String amount;
   String status;
@@ -19,6 +21,7 @@ class Transaction {
 class Reference {
   String name;
   String? category;
+  Commitment? commitment; 
   String type;
   String? avatar;
   String createdAt;
@@ -29,6 +32,7 @@ class Reference {
     required this.type,
     required this.avatar,
     required this.createdAt,
+    required this.commitment,
   });
 
   factory Reference.fromJson(Map<String, dynamic> json) => Reference(
@@ -37,5 +41,6 @@ class Reference {
     type: json["type"],
     avatar: json["avatar"],
     createdAt: json["created_at"],
+    commitment: json["commitment"]==null?null:Commitment.fromJson(json['commitment']),
   );
 }
