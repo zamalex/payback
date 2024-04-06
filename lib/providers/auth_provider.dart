@@ -20,6 +20,7 @@ class AuthProvider extends ChangeNotifier {
   List<NotificationItem> notifications = [];
   List<Plan> plans = [];
 
+  Plan? subscribedPlan;
   SettingsResponse? settingsResponse;
 
   Future<Map> getSettings() async {
@@ -43,6 +44,11 @@ class AuthProvider extends ChangeNotifier {
 
     plans = await sl<AuthRepository>().getSubscriptions();
 
+    plans.forEach((element) {
+      if(element.isSubscribed){
+        subscribedPlan = element;
+      }
+    });
 
     isLoading = false;
     notifyListeners();

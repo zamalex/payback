@@ -48,6 +48,15 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   }
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    Future.delayed(Duration.zero).then((value) {
+      Provider.of<AuthProvider>(context, listen: false).getPlans();
+    });
+  }
 // Pick an image.
   @override
   Widget build(BuildContext context) {
@@ -148,7 +157,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.max,children: [
                         Text(user.name??'',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.grey.shade800),),
-                        Text('No subscription',style: TextStyle(fontSize: 18,color: Colors.grey),)
+                        Text(value.subscribedPlan!=null?'${value.subscribedPlan!.planName} subscription':'No subscription',style: TextStyle(fontSize: 18,color: Colors.grey),)
                       ],),
                     )
                   ],
