@@ -33,6 +33,8 @@ class CommitmentsProvider extends ChangeNotifier{
 
   List<Partner> commitmentsCategories = [];
   List<Commitment> commitmentsOfCategory = [];
+
+  List<ContributorModel> commitmentContributors = [];
   List<ContributorModel> contributorsOfReceived = [];
   List<Order> ordersOfCategory = [];
 
@@ -42,6 +44,21 @@ class CommitmentsProvider extends ChangeNotifier{
     final response = await sl<CommitmentsRepository>().getCommitmentsOfCategory(params);
 
     commitmentsOfCategory = response['data'];
+    isLoading = false;
+    notifyListeners();
+
+
+    return response;
+  }
+
+
+  Future<Map> getCommitmentsContributors(Map<String,dynamic>? params) async {
+    isLoading = true;
+    commitmentContributors.clear();
+    notifyListeners();
+    final response = await sl<CommitmentsRepository>().getCommitmentContributors(params);
+
+    commitmentContributors = response['data'];
     isLoading = false;
     notifyListeners();
 

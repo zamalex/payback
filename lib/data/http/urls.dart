@@ -39,6 +39,7 @@ class Url {
   static const GET_CASHBACK_URL = '/cashbacks';
   static const GET_CASHBACK_HISTORY_URL = '/admin/cashback/categories';
   static const GET_CASHBACK_TRANSACTIONS_URL = '/admin/cashback/balances';
+  static const ERROR_IMAGE = 'https://www.huber-online.com/daisy_website_files/_processed_/8/0/csm_no-image_d5c4ab1322.jpg';
 
   static String TOKEN = '';
   static String LOCALE = 'ar';

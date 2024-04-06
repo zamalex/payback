@@ -309,6 +309,49 @@ class CommitmentsRepository{
 
 
 
+
+  Future<Map> getCommitmentContributors(Map<String,dynamic>? params) async {
+    try {
+      print(params.toString());
+     // Response commitmentsRes = await sl<DioClient>().get(Url.COMMIMENTS_URL,queryParameters: params);
+      Response transactionsRes = await sl<DioClient>().get(Url.GET_CASHBACK_TRANSACTIONS_URL,queryParameters: params);
+
+     // final parsedJson = commitmentsRes.data;
+      if (transactionsRes.statusCode! < 400) {
+
+
+        List<ContributorModel> someCommitments=[];
+        List<Transaction> transactions = List<Transaction>.from(transactionsRes.data['data'].map((x) => Transaction.fromJson(x)));
+
+        if(transactions.isNotEmpty){
+          transactions.forEach((trans) {
+            if(trans.reference!=null&&trans.reference!.category=='Community')
+
+              someCommitments.add(ContributorModel(amount: trans.amount,avatar:trans.reference!.avatar ,name: trans.reference!.name));
+
+
+          });
+
+        }else{
+          someCommitments.clear();
+        }
+
+
+        return {'message': 'Commitments retrieved successfully', 'data': someCommitments};
+      }
+
+      return {'message': 'Not found','data':[]};
+    } catch (e) {
+      if (e is DioError) {
+        return {'message': e.message,'data':[]};
+      } else {
+        return {'message': 'Unknown error','data':[]};
+      }
+    }
+  }
+
+
+
   Future<Map> getReceivedProductsOfCategory(Map<String,dynamic>? params) async {
     try {
       Response ordersRes = await sl<DioClient>().get(Url.CORDERS_URL,);
