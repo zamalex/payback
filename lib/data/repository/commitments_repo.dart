@@ -350,7 +350,7 @@ class CommitmentsRepository{
     }
   }
 
-  Future<List<Commitment>> getFromToUser(String action) async {
+  Future<List<Commitment>> getFromToUser(String action,int user) async {
     try {
       Response transactionsRes = await sl<DioClient>().get(Url.GET_CASHBACK_TRANSACTIONS_URL,queryParameters: {'action':action});
 
@@ -366,7 +366,14 @@ class CommitmentsRepository{
               {
                 if(trans.reference!.commitment!=null)
                 {
-                  someCommitments.add(trans.reference!.commitment!..categoryName=trans.reference!.category);
+                  if(action=='send'&&trans.reference!.to_user_id==user){
+                    someCommitments.add(trans.reference!.commitment!..categoryName=trans.reference!.category..amount=double.parse(trans.amount.toString()));
+
+                  }
+                  if(action=='rserved'&&trans.reference!.from_user_id==user){
+                    someCommitments.add(trans.reference!.commitment!..categoryName=trans.reference!.category..amount=double.parse(trans.amount.toString()));
+
+                  }
 
                 }
               }
@@ -376,6 +383,7 @@ class CommitmentsRepository{
         }else{
           someCommitments.clear();
         }
+
 
 
         return someCommitments;

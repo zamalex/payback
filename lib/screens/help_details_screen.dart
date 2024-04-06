@@ -5,9 +5,12 @@ import 'package:payback/providers/CommitmentsProvider.dart';
 import 'package:provider/provider.dart';
 
 import '../helpers/colors.dart';
+import '../model/community_user.dart';
 
 class HelpDetailsScreen extends StatefulWidget {
-  const HelpDetailsScreen({super.key});
+   HelpDetailsScreen({super.key,required this.communityUser});
+
+  CommunityUser communityUser;
 
   @override
   State<HelpDetailsScreen> createState() => _HelpDetailsScreenState();
@@ -25,8 +28,27 @@ class _HelpDetailsScreenState extends State<HelpDetailsScreen> {
 
 
   getFromToCommitments(){
-    Provider.of<CommitmentsProvider>(context,listen: false).getFromToCommitments('send');
-    Provider.of<CommitmentsProvider>(context,listen: false).getFromToCommitments('rserved');
+    Provider.of<CommitmentsProvider>(context,listen: false).getFromToCommitments('send',widget.communityUser.user_id);
+    Provider.of<CommitmentsProvider>(context,listen: false).getFromToCommitments('rserved',widget.communityUser.user_id);
+  }
+
+  double getTotalSend(){
+    double total = 0;
+    Provider.of<CommitmentsProvider>(context,listen: false).toUserCommitments.forEach((element) {
+      total+=element.amount;
+    });
+
+    return total;
+  }
+
+
+  double getTotalReceived(){
+    double total = 0;
+    Provider.of<CommitmentsProvider>(context,listen: false).fromUserCommitments.forEach((element) {
+      total+=element.amount;
+    });
+
+    return total;
   }
 
 
@@ -70,14 +92,14 @@ class _HelpDetailsScreenState extends State<HelpDetailsScreen> {
                 SizedBox(
                   height: 20,
                 ),
-                CircleAvatar(backgroundImage: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVR9V1Ix26V2s_WWWryH3FU5Qkl2yR4PL3BcUybf2cUw&s',),radius: 70,)
+                CircleAvatar(backgroundImage: NetworkImage(widget.communityUser.avatar,),radius: 70,)
                 ,SizedBox(height: 20,),
-                Text('Karim Lamasso-Obligato',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22),),
+                Text(widget.communityUser.name,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22),),
                 SizedBox(height: 25,),
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('You sharing to',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22),),
-                  Text('Total 20%',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: kBlueColor),),
+                //  Text('Total 20%',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: kBlueColor),),
 
                 ],),
                 SizedBox(height: 10,),
@@ -86,7 +108,7 @@ class _HelpDetailsScreenState extends State<HelpDetailsScreen> {
                 SizedBox(height: 10,),
                 Row(
                   children: [
-                    Text('Total shared 80%',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: kBlueColor),),
+                    Text('Total shared ${widget.communityUser.toUserPercent}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: kBlueColor),),
                   ],
                 ),
 
@@ -94,7 +116,7 @@ class _HelpDetailsScreenState extends State<HelpDetailsScreen> {
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('You receiving to',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22),),
-                  Text('Total 20%',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: kBlueColor),),
+                 // Text('Total 20%',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: kBlueColor),),
 
                 ],),
                 SizedBox(height: 10,),
@@ -102,7 +124,7 @@ class _HelpDetailsScreenState extends State<HelpDetailsScreen> {
                 ,SizedBox(height: 10,),
                 Row(
                   children: [
-                    Text('Total received 80%',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: kBlueColor),),
+                    Text('Total received ${widget.communityUser.fromUserPercent}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: kBlueColor),),
                   ],
                 ),
               ],

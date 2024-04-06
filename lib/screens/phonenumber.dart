@@ -23,6 +23,7 @@ class CheckPhoneNumberScreen extends StatelessWidget {
 
        _formKey.currentState!.save();
        print(phone);
+       request.remove('phone');
        request.putIfAbsent('phone', () => '+${phone.replaceAll('+', '')}');
        request.putIfAbsent('is_vendor', () => "0");
 

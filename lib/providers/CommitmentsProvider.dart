@@ -55,10 +55,10 @@ class CommitmentsProvider extends ChangeNotifier{
   }
 
 
-  Future getFromToCommitments(String action) async {
+  Future getFromToCommitments(String action,int user) async {
     isLoading = true;
     notifyListeners();
-    final response = await sl<CommitmentsRepository>().getFromToUser(action);
+    final response = await sl<CommitmentsRepository>().getFromToUser(action,user);
 
     if(action=='send'){
       toUserCommitments = response;

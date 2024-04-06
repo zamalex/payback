@@ -14,6 +14,8 @@ class Commitment {
   late String? createdAt;
   late String? updatedAt;
 
+  double amount;
+
   Commitment({
     required this.id,
      this.name,
@@ -26,6 +28,7 @@ class Commitment {
      this.type,
      this.image,
      this.notify,
+    this.amount=0,
      this.createdAt,
      this.updatedAt, this.paid,
   });

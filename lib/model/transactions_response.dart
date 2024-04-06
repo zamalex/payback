@@ -25,6 +25,8 @@ class Reference {
   String type;
   String? avatar;
   String createdAt;
+  int from_user_id;
+  int to_user_id;
 
   Reference({
     required this.name,
@@ -33,6 +35,8 @@ class Reference {
     required this.avatar,
     required this.createdAt,
     required this.commitment,
+   required this.from_user_id,
+   required this.to_user_id,
   });
 
   factory Reference.fromJson(Map<String, dynamic> json) => Reference(
@@ -41,6 +45,8 @@ class Reference {
     type: json["type"],
     avatar: json["avatar"],
     createdAt: json["created_at"],
+    to_user_id: json["to_user_id"]??0,
+    from_user_id: json["user_id"]??0,
     commitment: json["commitment"]==null?null:Commitment.fromJson(json['commitment']),
   );
 }

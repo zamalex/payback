@@ -109,7 +109,7 @@ class CommunityItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        Get.to(HelpDetailsScreen());
+        Get.to(HelpDetailsScreen(communityUser: communityUser,));
       },
       child: Card(
         elevation: 2,
@@ -126,7 +126,7 @@ class CommunityItem extends StatelessWidget {
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
-              CircleAvatar(backgroundImage: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVR9V1Ix26V2s_WWWryH3FU5Qkl2yR4PL3BcUybf2cUw&s',),radius: 50,)
+              CircleAvatar(backgroundImage: NetworkImage(communityUser.avatar,),radius: 50,)
               ,SizedBox(height: 20,),
               Text(
                 communityUser.name,
@@ -148,7 +148,7 @@ class CommunityItem extends StatelessWidget {
                       style: TextStyle(color: kBlueColor, fontSize: 15),
                     ),
                     Text(
-                      '${communityUser.toUserPercent}%',
+                      '${communityUser.toUserPercent}',
                       style: TextStyle(
                           color: kBlueColor,
                           fontWeight: FontWeight.bold,
@@ -171,7 +171,7 @@ class CommunityItem extends StatelessWidget {
                       style: TextStyle(color: kPurpleColor, fontSize: 15),
                     ),
                     Text(
-                      '${communityUser.fromUserPercent}%',
+                      '${communityUser.fromUserPercent}',
                       style: TextStyle(
                           color: kPurpleColor,
                           fontWeight: FontWeight.bold,
