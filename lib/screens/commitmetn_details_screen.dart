@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:payback/data/http/urls.dart';
 import 'package:payback/model/auth_response.dart';
 import 'package:payback/providers/CommitmentsProvider.dart';
 import 'package:payback/screens/new_commitment_screen.dart';
@@ -10,26 +12,41 @@ import 'package:share_plus/share_plus.dart';
 import '../data/service_locator.dart';
 import '../helpers/colors.dart';
 import '../helpers/custom_widgets.dart';
+import '../model/contributor_model.dart';
 import '../providers/home_provider.dart';
 import 'contributer_screen.dart';
 import 'package:payback/model/commitment_model.dart' as model;
 
 
-class CommitmetDetails extends StatelessWidget {
+class CommitmetDetails extends StatefulWidget {
   CommitmetDetails({super.key,required this.commitment});
 
   model.Commitment commitment;
 
+  @override
+  State<CommitmetDetails> createState() => _CommitmetDetailsState();
+}
 
-
-
+class _CommitmetDetailsState extends State<CommitmetDetails> {
   shareCommitment(BuildContext context){
 
     int user = sl<AuthResponse>().data!.user!.id!;
 
     Provider.of<CommitmentsProvider>(context,listen: false).sendInvitation({
-      'commitment_id':commitment.id,
+      'commitment_id':widget.commitment.id,
       'user_id':user
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    Future.delayed(Duration.zero).then((value) {
+      Provider.of<CommitmentsProvider>(context, listen: false).getCommitmentsContributors({
+        'commitment_id':widget.commitment.id
+      });
     });
   }
 
@@ -73,12 +90,12 @@ class CommitmetDetails extends StatelessWidget {
                                         child: Icon(Icons.arrow_back_ios,color: Colors.white,)),
                                     Expanded(child: Text('Back',style: TextStyle(color: Colors.white),)),
                                     InkWell(onTap:(){
-                                      Get.to(NewCommitmentScreen(commitment: commitment,));
+                                      Get.to(NewCommitmentScreen(commitment: widget.commitment,));
                                     },child: Icon(Icons.edit,color: Colors.white,)),
                                     SizedBox(width: 5,),
                                     InkWell(
                                         onTap: (){
-                                          Provider.of<CommitmentsProvider>(context,listen: false).deleteCommitment(commitment.id!).then((value){
+                                          Provider.of<CommitmentsProvider>(context,listen: false).deleteCommitment(widget.commitment.id!).then((value){
                                             Provider.of<HomeProvider>(context,listen: false).getCommitments();
                                             Get.back();
                                             Get.snackbar(value['data']?'Success':'Error', value['message'],backgroundColor: value['data']?Colors.green:Colors.red,colorText: Colors.white,);
@@ -108,12 +125,12 @@ class CommitmetDetails extends StatelessWidget {
                                               Icon(Icons.airplanemode_on_rounded, color: Colors.white),
                                               SizedBox(width: 8),
                                               Text(
-                                                commitment.name??'',
+                                                widget.commitment.name??'',
                                                 style: TextStyle(fontSize: 20, color: Colors.white),
                                               ),
                                             ],
                                           )
-                                      ),Text('${commitment.paymentTarget??'0'} SAR', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.white),)
+                                      ),Text('${widget.commitment.paymentTarget??'0'} SAR', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.white),)
                                     ],
                                   ),
                                 ),
@@ -215,7 +232,7 @@ class CommitmetDetails extends StatelessWidget {
                                         style: TextStyle(fontSize: 15,color: kBlueColor,fontWeight: FontWeight.bold),
                                       ),
                                       trailing: Text(
-                                        '${commitment.paymentTarget} SAR',
+                                        '${widget.commitment.paymentTarget} SAR',
                                         style: TextStyle(
                                             fontSize: 15,
                                             color: Colors.black,
@@ -235,7 +252,7 @@ class CommitmetDetails extends StatelessWidget {
                                         style: TextStyle(fontSize: 15,color: kBlueColor,fontWeight: FontWeight.bold),
                                       ),
                                       trailing: Text(
-                                        '${commitment.cashbackToCommitment}%',
+                                        '${widget.commitment.cashbackToCommitment}%',
                                         style: TextStyle(
                                             fontSize: 15,
                                             color: Colors.black,
@@ -255,7 +272,7 @@ class CommitmetDetails extends StatelessWidget {
                                         style: TextStyle(fontSize: 15,color: kBlueColor,fontWeight: FontWeight.bold),
                                       ),
                                       trailing: Text(
-                                        '${commitment.dueDate}',
+                                        '${widget.commitment.dueDate}',
                                         style: TextStyle(
                                             fontSize: 15,
                                             color: Colors.black,
@@ -275,7 +292,7 @@ class CommitmetDetails extends StatelessWidget {
                                         style: TextStyle(fontSize: 15,color: kBlueColor,fontWeight: FontWeight.bold),
                                       ),
                                       trailing: Text(
-                                        '${commitment.categoryName}',
+                                        '${widget.commitment.categoryName}',
                                         style: TextStyle(
                                             fontSize: 15,
                                             color: Colors.black,
@@ -311,7 +328,7 @@ class CommitmetDetails extends StatelessWidget {
 
                             Provider.of<CommitmentsProvider>(context,listen: false).sendInvitation({
                               'user_id':sl<AuthResponse>().data?.user?.id,
-                              'commitment_id':commitment.id
+                              'commitment_id':widget.commitment.id
                             }).then((value){
                               if(value['data']!=null){
                                 Share.share('check out my invitation to share my commitment https://payback.example.com${value['data']}');
@@ -322,8 +339,10 @@ class CommitmetDetails extends StatelessWidget {
                           SizedBox(height: 20,),
                           Text('Commitment contributors',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
                           SizedBox(height: 20,),
-                          Column(
-                            children:  List.generate(2, (index) => ContributorWidget()),
+                          Consumer<CommitmentsProvider>(
+                            builder:(context, value, child) => Column(
+                              children:  List.generate(value.commitmentContributors.length, (index) => ContributorWidget(contributorModel: value.commitmentContributors[index],)),
+                            ),
                           )
                           ,
                           ],),)
@@ -349,14 +368,15 @@ class CommitmetDetails extends StatelessWidget {
 
 class ContributorWidget extends StatelessWidget{
   bool showDetails = true;
+  ContributorModel? contributorModel;
 
-  ContributorWidget({this.showDetails = true});
+  ContributorWidget({this.showDetails = true,this.contributorModel});
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
       margin: EdgeInsets.symmetric(vertical: 4),
-      child: ListTile(
+      child:contributorModel ==null? ListTile(
 
         leading: CircleAvatar(
           radius: 30,
@@ -371,7 +391,26 @@ class ContributorWidget extends StatelessWidget{
           ],
         ),
         onTap: () {
-          Get.to(ContributerScreen());
+          //Get.to(ContributerScreen());
+        },
+      ):
+      ListTile(
+
+        leading: CircleAvatar(
+          radius: 30,
+          child: CachedNetworkImage(imageUrl: contributorModel!.avatar??'',fit: BoxFit.cover,errorWidget:(context, url, error) => Image.network(Url.ERROR_IMAGE,fit: BoxFit.cover,),),
+       //   backgroundImage: NetworkImage('https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png'),
+        ),
+        title: Text(contributorModel!.name!,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),),
+        subtitle:!showDetails?null: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Sharing 10% of cashback',style: TextStyle(color: Colors.black)),
+            Text('${contributorModel!.amount} SAR contributed',style: TextStyle(fontWeight: FontWeight.bold,color: kBlueColor)),
+          ],
+        ),
+        onTap: () {
+          //Get.to(ContributerScreen());
         },
       ),
     );
