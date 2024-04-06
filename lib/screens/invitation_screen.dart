@@ -58,6 +58,12 @@ class _InvitationScreenState extends State<InvitationScreen> {
   }
 
   acceptRejectInvitation(int decision){
+    if(decision==0){
+
+      Get.to(MainScreen());
+
+      return;
+    }
     Map <String,dynamic> query = {
       'commitment_id':id,
 

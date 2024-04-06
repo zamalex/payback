@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:payback/helpers/custom_widgets.dart';
+import 'package:payback/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:slide_switcher/slide_switcher.dart';
 
 import '../helpers/colors.dart';
@@ -13,6 +16,17 @@ class SubscriptionScreen extends StatefulWidget {
 
 class _SubscriptionScreenState extends State<SubscriptionScreen> {
   int selected = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    Future.delayed(Duration.zero).then((value) {
+      Provider.of<AuthProvider>(context, listen: false).getPlans();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,76 +50,139 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               style: TextStyle(color: kPurpleColor),
             )),
       ),
-      body: Container(
-        height: double.infinity,
-        padding: EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SlideSwitcher(
-                      containerColor: Colors.white,
-                      slidersColors: const [
-                        kBlueColor,
-                      ],
-                      containerBorder: Border.all(color: Colors.white, width: 5),
+      body: Consumer<AuthProvider>(
+        builder: (context, value, child) => Container(
+          height: double.infinity,
+          padding: EdgeInsets.all(16),
+          child: value.isLoading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : value.plans.isEmpty
+                  ? Center(
+                      child: Text('No plans available'),
+                    )
+                  : Column(
                       children: [
-                        Text(
-                          'Monthly',
-                          style: TextStyle(
-                              color: selected == 0 ? Colors.white : kBlueColor),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                SlideSwitcher(
+                                  containerColor: Colors.white,
+                                  slidersColors: const [
+                                    kBlueColor,
+                                  ],
+                                  containerBorder:
+                                      Border.all(color: Colors.white, width: 5),
+                                  children: [
+                                    Text(
+                                      value.plans[0].planName,
+                                      style: TextStyle(
+                                          color: selected == 0
+                                              ? Colors.white
+                                              : kBlueColor),
+                                    ),
+                                    Text(
+                                        value.plans[1].planName,
+                                      style: TextStyle(
+                                          color: selected == 1
+                                              ? Colors.white
+                                              : kBlueColor),
+                                    ),
+                                  ],
+                                  onSelect: (index) {
+                                    setState(() {
+                                      selected = index;
+                                    });
+                                  },
+                                  containerHeight: 45,
+                                  containerWight:
+                                      MediaQuery.of(context).size.width -
+                                          32 -
+                                          10,
+                                ),
+                                Container(height: 20),
+                                Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.all(20),
+                                  decoration: BoxDecoration(
+                                      color: kBlueColor.withOpacity(.2),
+                                      borderRadius: BorderRadius.circular(12)),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/payback_logo.png',
+                                        color: kBlueColor,
+                                        width: 214,
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Text(
+                                        'Subscribe to Payback',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        '${subscribe}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 15),
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Text(
+                                        '${value.plans[selected].price} SAR/${value.plans[selected].planName}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                            color: kBlueColor),
+                                      ),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                     value.plans[selected].isSubscribed?Container(): Container(
+                                        width: double.infinity,
+                                        child: CustomButton(
+                                          buttonColor: kPurpleColor,
+                                          buttonText: 'Subscribe now',
+                                          onTap: (){
+                                            Provider.of<AuthProvider>(context,listen: false).subscribeToPlan({
+                                              'subscription_id':value.plans[selected].id
+                                            }).then((v) {
+                                              Get.back();
+                                            Get.snackbar('Alert', v['message']);
+                                            });
+                                          },
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        Text(
-                          'Yearly (10% off)',
-                          style: TextStyle(
-                              color: selected == 1 ? Colors.white : kBlueColor),
-                        ),
+                        CustomRichText()
                       ],
-                      onSelect: (index) {
-                        setState(() {
-                          selected = index;
-                        });
-                      },
-                      containerHeight: 45,
-                      containerWight: MediaQuery.of(context).size.width - 32 - 10,
                     ),
-                    Container(height: 20),
-                    Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                          color: kBlueColor.withOpacity(.2),
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                        Image.asset('assets/images/payback_logo.png',color: kBlueColor,width: 214,),
-                          SizedBox(height: 20,),
-                          Text('Subscribe to Payback',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),) ,
-                          SizedBox(height: 10,),
-                          Text('${subscribe}',style: TextStyle(fontWeight: FontWeight.normal,fontSize: 15),) ,
-                          SizedBox(height: 20,),
-                          Text('3,99 SAR/month',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: kBlueColor),)
-                          ,SizedBox(height: 15,),
-                          Container(width: double.infinity,child: CustomButton(buttonColor: kPurpleColor,buttonText: 'Subscribe now',),)
-                        ],),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            CustomRichText()
-
-          ],
         ),
       ),
     );
   }
 
-  String subscribe = 'Get maximum from one subscription:\n\t• Increased cashback from partners\n • Premium support from Payback team\n • Some other premium feature';
+  String subscribe =
+      'Get maximum from one subscription:\n\t• Increased cashback from partners\n • Premium support from Payback team\n • Some other premium feature';
 }
+
 class CustomRichText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

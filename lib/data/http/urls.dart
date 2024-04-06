@@ -3,6 +3,8 @@ class Url {
   static const LOGIN_URL = '/login';
   static const USERS_URL = '/admin/users';
   static const REGISTER_URL = '/register';
+  static const SUBSCRIPTIONS_URL = '/subscriptions';
+  static const SUBSCRIBE_URL = '/subscribe';
   static const SOCIAL_LOGIN_URL = '/social-login';
   static const VERIFY_URL = '/verify';
   static const FORGOT_URL = '/forget-password';

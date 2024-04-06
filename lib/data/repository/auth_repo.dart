@@ -9,6 +9,7 @@ import 'package:payback/model/notifications_response.dart';
 
 
 import '../../model/auth_response.dart';
+import '../../model/sbscription_plan.dart';
 import '../../model/settings_response.dart';
 import '../http/dio_client.dart';
 import '../http/urls.dart';
@@ -381,6 +382,51 @@ class AuthRepository {
       }
     } catch (e) {
       return'';
+
+    }
+  }
+
+
+  Future<List<Plan>> getSubscriptions() async {
+    try {
+      Response isResponse =
+      await sl<DioClient>().get('${Url.USERS_URL}/${sl<AuthResponse>().data!.user!.id}',);
+
+      Response response =
+      await sl<DioClient>().get(Url.SUBSCRIPTIONS_URL,);
+      if (response.statusCode == 200) {
+        dynamic id = isResponse.data['data']['subscription_id'];
+        List<Plan> plans = response.data.map<Plan>((json) => Plan.fromJson(json)).toList();
+        plans.forEach((element) {
+          if(element.id.toString()==id.toString()){
+            element.isSubscribed = true;
+          }
+        });
+
+         return plans;
+
+      } else {
+        return [];
+      }
+    } catch (e) {
+      return [];
+
+    }
+  }
+
+
+  Future<Map> subscribeToPlan(Map body) async {
+    try {
+      Response response =
+      await sl<DioClient>().put(Url.SUBSCRIBE_URL,data: jsonEncode(body));
+      if (response.statusCode == 200) {
+        return {'message':response.data['message'],'data':true};
+
+      } else {
+        return {'message':response.data['message'],'data':false};
+      }
+    } catch (e) {
+      return {'message':'Failed to subscribe','data':false};
 
     }
   }

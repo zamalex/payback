@@ -9,6 +9,7 @@ import 'package:payback/model/settings_response.dart';
 import '../data/http/urls.dart';
 import '../data/repository/auth_repo.dart';
 import '../data/service_locator.dart';
+import '../model/sbscription_plan.dart';
 
 class AuthProvider extends ChangeNotifier {
   bool isLoading = false;
@@ -17,6 +18,7 @@ class AuthProvider extends ChangeNotifier {
       CashbackModel.fromJson(jsonDecode(Url.NO_CASHBACK));
 
   List<NotificationItem> notifications = [];
+  List<Plan> plans = [];
 
   SettingsResponse? settingsResponse;
 
@@ -33,6 +35,33 @@ class AuthProvider extends ChangeNotifier {
 
     return response;
   }
+
+
+  Future getPlans() async {
+    isLoading = true;
+    notifyListeners();
+
+    plans = await sl<AuthRepository>().getSubscriptions();
+
+
+    isLoading = false;
+    notifyListeners();
+
+  }
+
+  Future<Map> subscribeToPlan(Map body) async {
+    isLoading = true;
+    notifyListeners();
+
+    Map response = await sl<AuthRepository>().subscribeToPlan(body);
+
+
+    isLoading = false;
+    notifyListeners();
+
+    return response;
+  }
+
 
   Future<CashbackModel> getCashback() async {
     cashbackModel = await sl<AuthRepository>().getCashback();
