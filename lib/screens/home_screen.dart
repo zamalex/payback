@@ -18,6 +18,7 @@ import 'package:provider/provider.dart';
 
 import '../data/service_locator.dart';
 import '../helpers/custom_widgets.dart';
+import '../providers/CommitmentsProvider.dart';
 
 class HomeScreen extends StatefulWidget {
   Function shopAll;
@@ -38,6 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     Future.delayed(Duration.zero).then((value) {
+      Provider.of<CommitmentsProvider>(context,listen: false).getCommitmentsCategories();
+
       Provider.of<HomeProvider>(context, listen: false).getCategories();
       Provider.of<HomeProvider>(context, listen: false)
           .getProducts(isHotDeals: true);

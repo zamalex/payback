@@ -7,14 +7,18 @@ import 'package:payback/model/auth_response.dart';
 import 'package:payback/screens/commitments_screen.dart';
 import 'package:payback/screens/help_community_screen.dart';
 import 'package:payback/screens/history_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../data/service_locator.dart';
+import '../providers/CommitmentsProvider.dart';
 
 class ControlsScreen extends StatelessWidget {
   const ControlsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<CommitmentsProvider>(context,listen: false).getCommitmentsCategories();
+
     return SafeArea(
       child: Container(
         padding: EdgeInsets.all(16),

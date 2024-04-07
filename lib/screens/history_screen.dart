@@ -48,7 +48,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
     Provider.of<CommitmentsProvider>(context,listen: false).getCashbackHistory(
       {
         'from':from,
-        'to':to
+        'to':to,
+        'month':Provider.of<CommitmentsProvider>(context,listen: false).selectedMonth
+
       }
       ,selected==0
     );

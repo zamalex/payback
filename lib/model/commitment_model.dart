@@ -13,6 +13,7 @@ class Commitment {
   late String? notify;
   late String? createdAt;
   late String? updatedAt;
+  late String? user_id;
 
   double amount;
 
@@ -30,6 +31,7 @@ class Commitment {
      this.notify,
     this.amount=0,
      this.createdAt,
+     this.user_id,
      this.updatedAt, this.paid,
   });
 
@@ -50,6 +52,7 @@ class Commitment {
       notify: json['notify'],
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
+      user_id: json['user_id'],
     );
   }
 

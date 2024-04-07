@@ -239,10 +239,27 @@ class CommitmentsRepository{
         List<Commitment> someCommitments=[];
         List<Transaction> transactions = List<Transaction>.from(transactionsRes.data['data'].map((x) => Transaction.fromJson(x)));
 
-        if(transactions.isNotEmpty){
+       /* if(transactions.isNotEmpty){
           transactions.forEach((trans) {
             if(trans.reference!=null)
             someCommitments.addAll(commitments.where((comm) => comm.name==trans.reference!.name).toList());
+
+          });
+
+        }else{
+          someCommitments.clear();
+        }*/
+        if(transactions.isNotEmpty){
+          transactions.forEach((trans) {
+            if(trans.reference!=null)
+              {
+                someCommitments.addAll(commitments.where((comm) => comm.name==trans.reference!.name).toList());
+
+                if(trans.reference!.commitment!=null){
+                  someCommitments.add(trans.reference!.commitment!);
+
+                }
+              }
 
           });
 

@@ -66,7 +66,7 @@ class _HelpCommunityScreenState extends State<HelpCommunityScreen> {
               SizedBox(
                 height: 20,
               ),
-              Container(
+             /* Container(
                 decoration: BoxDecoration(
                     color: kBlueColor.withOpacity(.2),
                     borderRadius: BorderRadius.circular(12)),
@@ -88,7 +88,7 @@ class _HelpCommunityScreenState extends State<HelpCommunityScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 5,),
+              SizedBox(height: 5,),*/
               Expanded(child: GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisSpacing: 8,crossAxisCount: 2,childAspectRatio: .7), itemBuilder:(context, index) {
                 return CommunityItem(communityUser: value.users[index],);
               },itemCount: value.users.length,))

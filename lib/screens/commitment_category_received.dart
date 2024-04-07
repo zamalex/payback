@@ -26,7 +26,8 @@ class CommitmentCategoryReceivedScreen extends StatefulWidget {
 
 class _CommitmentCategoryReceivedScreenState extends State<CommitmentCategoryReceivedScreen> {
 
-
+  DateTime? from;
+  DateTime? to;
 
 
   getCategoryReceivedProducts() {
@@ -35,18 +36,37 @@ class _CommitmentCategoryReceivedScreenState extends State<CommitmentCategoryRec
       Provider.of<CommitmentsProvider>(context, listen: false)
           .getReceivedProductsOfCategory({
         'category_id':widget.historyCategory.categoryId
+        ,'from':from,
+        'to':to,
+        'month':Provider.of<CommitmentsProvider>(context,listen: false).selectedMonth
+
       });
     }
     else{
       Provider.of<CommitmentsProvider>(context, listen: false)
           .getContributorsOfReceived({
-        'category_id':widget.historyCategory.categoryId
+        'category_id':widget.historyCategory.categoryId,
+        'from':from,
+        'to':to,
+        'month':Provider.of<CommitmentsProvider>(context,listen: false).selectedMonth
       });
     }
 
+  }
 
+  double calculateTotal(){
+    double all =0;
+    if(widget.historyCategory.categoryId!='0')
+    Provider.of<CommitmentsProvider>(context,listen: false).ordersOfCategory.forEach((element) {
+      all+=double.parse(element.totalPrice!.toString());
+    });
 
+    else
+    Provider.of<CommitmentsProvider>(context,listen: false).contributorsOfReceived.forEach((element) {
+      all+=double.parse(element.amount!.toString());
+    });
 
+    return all;
   }
 
   @override
@@ -64,7 +84,17 @@ class _CommitmentCategoryReceivedScreenState extends State<CommitmentCategoryRec
         actions: [
           InkWell(
               onTap: (){
-                showCustomDateRangePicker(context, dismissible: true, minimumDate:DateTime(1990,), maximumDate: DateTime.now(), onApplyClick: (one,two){}, onCancelClick: (){}, backgroundColor: Colors.white, primaryColor: kBlueColor);
+                showCustomDateRangePicker(context, dismissible: true, minimumDate:DateTime(1990,), maximumDate: DateTime.now(), onApplyClick: (one,two){
+                  from= one;
+                  to = two;
+
+                  getCategoryReceivedProducts();
+                }, onCancelClick: (){
+                  from= null;
+                  to = null;
+                  getCategoryReceivedProducts();
+
+                }, backgroundColor: Colors.white, primaryColor: kBlueColor);
               },
               child: Container(child: Icon(Icons.calendar_month,color: kBlueColor,),margin: EdgeInsets.only(right:16),))
         ],
@@ -74,12 +104,14 @@ class _CommitmentCategoryReceivedScreenState extends State<CommitmentCategoryRec
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Home bills',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
+            Text(widget.historyCategory.category??'',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
             SizedBox(height: 20,),
-            Consumer<CommitmentsProvider>(builder:(context, value, child) =>  SingleChildScrollView(scrollDirection: Axis.horizontal,child: Row(children: List.generate(value.months.length, (index) => MonthWidget(name: value.months[index],isChecked: value.selectedMonth==value.months[index],)),),)),
+            Consumer<CommitmentsProvider>(builder:(context, value, child) =>  SingleChildScrollView(scrollDirection: Axis.horizontal,child: Row(children: List.generate(value.months.length, (index) => MonthWidget(name: value.months[index],isChecked: value.selectedMonth==value.months[index],onTap: (s){
+              getCategoryReceivedProducts();
+            },)),),)),
 
             SizedBox(height: 20,),
-            Text('Total cashback: 191,25 SAR',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+            Text('Total cashback: ${calculateTotal()} SAR',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
 
             SizedBox(height: 20,),
 

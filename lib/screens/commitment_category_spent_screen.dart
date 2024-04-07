@@ -1,9 +1,11 @@
 import 'package:custom_date_range_picker/custom_date_range_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:payback/helpers/custom_widgets.dart';
+import 'package:payback/model/auth_response.dart';
 import 'package:payback/model/cashback_dashboard.dart';
 import 'package:provider/provider.dart';
 
+import '../data/service_locator.dart';
 import '../helpers/colors.dart';
 import '../providers/CommitmentsProvider.dart';
 import 'history_screen.dart';
@@ -28,10 +30,18 @@ class _CommitmentCategorySpentScreenState
     Future.delayed(Duration.zero).then((value) => getCategoryCommitments());
   }
 
+
+  DateTime? from;
+  DateTime? to;
+
   getCategoryCommitments() {
     Provider.of<CommitmentsProvider>(context, listen: false)
         .getCommitmentsOfCategory({
-      'category_id':widget.historyCategory.categoryId
+      'category_id':widget.historyCategory.categoryId,
+      'from':from,
+      'to':to,
+      'month':Provider.of<CommitmentsProvider>(context,listen: false).selectedMonth
+
     });
   }
 
@@ -48,7 +58,7 @@ class _CommitmentCategorySpentScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: BackButtonIcon(),
+        leading: BackButton(),
         actions: [
           InkWell(
               onTap: () {
@@ -63,12 +73,27 @@ class _CommitmentCategorySpentScreenState
                     backgroundColor: Colors.white,
                     primaryColor: kBlueColor);
               },
-              child: Container(
-                child: Icon(
-                  Icons.calendar_month,
-                  color: kBlueColor,
+              child: InkWell(
+                onTap: (){
+                  showCustomDateRangePicker(context, dismissible: true, minimumDate:DateTime(1990,), maximumDate: DateTime.now(), onApplyClick: (one,two){
+                    from= one;
+                    to = two;
+
+                    getCategoryCommitments();
+                  }, onCancelClick: (){
+                    from=null;
+                    to = null;
+                    getCategoryCommitments();
+                  }, backgroundColor: Colors.white, primaryColor: kBlueColor);
+
+                },
+                child: Container(
+                  child: Icon(
+                    Icons.calendar_month,
+                    color: kBlueColor,
+                  ),
+                  margin: EdgeInsets.only(right: 16),
                 ),
-                margin: EdgeInsets.only(right: 16),
               ))
         ],
       ),
@@ -122,6 +147,7 @@ class _CommitmentCategorySpentScreenState
                         margin: EdgeInsets.symmetric(vertical: 4),
                         child: Commitment(
                           commitment: value.commitmentsOfCategory[index],
+                          another:true// sl<AuthResponse>().data!.user!.id!.toString()==value.commitmentsOfCategory[index].user_id.toString(),
                         ),
                       ),
                       itemCount: value.commitmentsOfCategory.length,

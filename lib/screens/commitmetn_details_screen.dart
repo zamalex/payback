@@ -256,7 +256,7 @@ class _CommitmetDetailsState extends State<CommitmetDetails> {
                               ),
                               child: Column(
                                 children: [
-                                  ListTile(
+                                 /* ListTile(
                                     horizontalTitleGap: 0,
                                     dense: true,
                                     contentPadding: EdgeInsets.symmetric(
@@ -282,7 +282,7 @@ class _CommitmetDetailsState extends State<CommitmetDetails> {
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ),
-                                  Divider(),
+                                  Divider(),*/
                                   ListTile(
                                     horizontalTitleGap: 0,
                                     dense: true,

@@ -260,13 +260,16 @@ class CommitmentsProvider extends ChangeNotifier{
 
         double percentge = 0;
         double total = 0;
+        List toRemove = [];
         cashbackHistory!.categories!.forEach((element) {
           if(commitmentsCategories.any((category) => category.id.toString() == element.categoryId)){
             percentge+=element.summary!.fromAllReceived;
             total+=element.summary!.received!;
-
+            toRemove.add(element);
           }
            });
+
+        cashbackHistory!.categories!.removeWhere((element) => toRemove.contains(element),);
 
         communityCategory = HistoryCategory(categoryId: '0',category: 'Community',summary: Summary(received: total,fromAllReceived: percentge,));
 
