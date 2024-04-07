@@ -19,7 +19,7 @@ class Transaction {
 }
 
 class Reference {
-  String name;
+  String? name;
   String? category;
   Commitment? commitment; 
   String type;

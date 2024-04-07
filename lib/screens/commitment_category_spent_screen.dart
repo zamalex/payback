@@ -140,7 +140,7 @@ class _CommitmentCategorySpentScreenState
                       height: 20,
                     ),
                     Text(
-                      'Total spent: ${calculateTotal()} SAR',
+                      'Total: ${calculateTotal()} SAR',
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     ),

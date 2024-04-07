@@ -253,7 +253,7 @@ class CommitmentsRepository{
           transactions.forEach((trans) {
             if(trans.reference!=null)
               {
-                someCommitments.addAll(commitments.where((comm) => comm.name==trans.reference!.name).toList());
+               someCommitments.addAll(commitments.where((comm) => comm.name==trans.reference!.name).toList());
 
                 if(trans.reference!.commitment!=null){
                   someCommitments.add(trans.reference!.commitment!);

@@ -42,6 +42,7 @@ class CommitmentsProvider extends ChangeNotifier{
   List<Order> ordersOfCategory = [];
 
   Future<Map> getCommitmentsOfCategory(Map<String,dynamic>? params) async {
+
     isLoading = true;
     notifyListeners();
     final response = await sl<CommitmentsRepository>().getCommitmentsOfCategory(params);
