@@ -83,7 +83,7 @@ class _CommitmentCategoryReceivedScreenState extends State<CommitmentCategoryRec
 
             SizedBox(height: 20,),
 
-            widget.historyCategory.categoryId=='0'?Consumer<CommitmentsProvider>(builder:(context, value, child) => Expanded(child: ListView.builder(itemBuilder: (context, index) =>Container(margin: EdgeInsets.symmetric(vertical: 4),child: ContributorWidget(),),itemCount: value.contributorsOfReceived.length,))):Consumer<CommitmentsProvider>(builder:(context, value, child) => Expanded(child: ListView.builder(itemBuilder: (context, index) =>Container(margin: EdgeInsets.symmetric(vertical: 4),child:  ReceivedItem(order: value.ordersOfCategory[index],),),itemCount: value.ordersOfCategory.length,)))
+            widget.historyCategory.categoryId=='0'?Consumer<CommitmentsProvider>(builder:(context, value, child) => Expanded(child: ListView.builder(itemBuilder: (context, index) =>Container(margin: EdgeInsets.symmetric(vertical: 4),child: ContributorWidget(contributorModel: value.contributorsOfReceived[index],),),itemCount: value.contributorsOfReceived.length,))):Consumer<CommitmentsProvider>(builder:(context, value, child) => Expanded(child: ListView.builder(itemBuilder: (context, index) =>Container(margin: EdgeInsets.symmetric(vertical: 4),child:  ReceivedItem(order: value.ordersOfCategory[index],),),itemCount: value.ordersOfCategory.length,)))
           ],
         ),),
     );

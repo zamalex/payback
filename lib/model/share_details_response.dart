@@ -67,6 +67,7 @@ class ShareCommit {
   String? cashbackToCommitment;
   String? dueDate;
   String? userId;
+  String? image;
 
   ShareCommit(
       {this.id,
@@ -77,6 +78,7 @@ class ShareCommit {
         this.cashbackToCommitment,
         this.dueDate,
         this.userId,
+        this.image
  });
 
   ShareCommit.fromJson(Map<String, dynamic> json) {
@@ -88,6 +90,8 @@ class ShareCommit {
     cashbackToCommitment = json['cashback_to_commitment'];
     dueDate = json['due_date'];
     userId = json['user_id'];
+    image=  json['partner']==null?'':json['partner']['image'];
+
   }
 
 

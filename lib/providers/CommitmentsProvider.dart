@@ -253,8 +253,25 @@ class CommitmentsProvider extends ChangeNotifier{
         element.summary!.fromAllSpent == 0);
 
       }else{
+
         cashbackHistory!.categories!.removeWhere((element) => element.summary!.fromAllReceived==0);
-       // cashbackHistory!.categories!.add(HistoryCategory(category: 'Community',categoryId: '0',summary: Summary()));
+
+        HistoryCategory communityCategory;
+
+        double percentge = 0;
+        double total = 0;
+        cashbackHistory!.categories!.forEach((element) {
+          if(commitmentsCategories.any((category) => category.id.toString() == element.categoryId)){
+            percentge+=element.summary!.fromAllReceived;
+            total+=element.summary!.received!;
+
+          }
+           });
+
+        communityCategory = HistoryCategory(categoryId: '0',category: 'Community',summary: Summary(received: total,fromAllReceived: percentge,));
+
+
+         cashbackHistory!.categories!.add(communityCategory);
       }
     }
 

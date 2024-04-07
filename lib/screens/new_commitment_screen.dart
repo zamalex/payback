@@ -331,16 +331,16 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
                               children: List.generate(10, (index) {
                                 return InkWell(
                                   onTap: () {
-                                    if (((index + 1) * 10) <= 70)
+                                   // if (((index + 1) * 10) <= 70)
                                       setState(() {
                                         selectedPercentage = index;
                                       });
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
-                                        color: ((index + 1) * 10) > 70
+                                        color:/* ((index + 1) * 10) > 70
                                             ? Colors.grey.shade200
-                                            : selectedPercentage == index
+                                            : */selectedPercentage == index
                                                 ? kPurpleColor
                                                 : Colors.white,
                                         borderRadius: BorderRadius.circular(16),

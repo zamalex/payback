@@ -47,6 +47,6 @@ class Reference {
     createdAt: json["created_at"],
     to_user_id: json["to_user_id"]??0,
     from_user_id: json["user_id"]??0,
-    commitment: json["commitment"]==null?null:Commitment.fromJson(json['commitment']),
+    commitment: json["commitment"]==null?null:json["commitment"] is List?null:Commitment.fromJson(json['commitment']),
   );
 }

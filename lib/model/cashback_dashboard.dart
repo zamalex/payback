@@ -48,6 +48,7 @@ class Summary {
         this.spent=0,
         this.withdrawUnsignedBalance=0,
         this.depositUnsignedBalance=0,
+        this.fromAllReceived=0,
         this.withdrawAssignedBalance=0,
         this.depositAssignedBalance=0});
 

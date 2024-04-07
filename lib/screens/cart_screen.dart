@@ -328,7 +328,7 @@ class CartItem extends StatelessWidget {
                             child: CircleAvatar(
                               child: Icon(
                                 Icons.remove,
-                                size: 30,
+                                size: 25,
                               ),
                               radius: 16,
                             ),
@@ -336,7 +336,7 @@ class CartItem extends StatelessWidget {
                           SizedBox(
                             width: 10,
                           ),
-                          Text('${product!.cartQuantity}'),
+                          Text('${product!.cartQuantity}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
                           SizedBox(
                             width: 10,
                           ),
@@ -348,7 +348,7 @@ class CartItem extends StatelessWidget {
                             child: CircleAvatar(
                               child: Icon(
                                 Icons.add,
-                                size: 30,
+                                size: 25,
                               ),
                               radius: 16,
                             ),

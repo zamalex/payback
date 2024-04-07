@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
@@ -7,6 +8,7 @@ import 'package:payback/providers/CommitmentsProvider.dart';
 import 'package:payback/screens/main_screen.dart';
 import 'package:provider/provider.dart';
 
+import '../data/http/urls.dart';
 import '../data/service_locator.dart';
 import '../helpers/colors.dart';
 import '../helpers/custom_widgets.dart';
@@ -112,7 +114,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
                                     borderRadius: BorderRadius.circular(50),
                                     image: DecorationImage(
                                         image: NetworkImage(
-                                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVR9V1Ix26V2s_WWWryH3FU5Qkl2yR4PL3BcUybf2cUw&s'))),
+                                            value.shareDetailsResponse?.data?.user?.avatarUrl??''))),
                                 width: 70,
                                 height: 70,
                               ),
@@ -150,7 +152,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
                                         fontSize: 25),
                                   ),
                                   Text(
-                                    '20% available',
+                                    '',//'20% available',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
@@ -300,11 +302,11 @@ class _CommitmentOwner extends StatelessWidget {
                 Expanded(
                     child: Row(
                   children: [
-                    Image.asset(
-                      'assets/images/travel.png',
+                      CachedNetworkImage(
                       width: 25,
-                      height: 25,
-                      color: Colors.white,
+                      height: 25, imageUrl: shareCommit!.image??'',
+                      errorWidget: (context, url, error) => Image.network(Url.ERROR_IMAGE,width: 25,height: 25,),
+                      // color: Colors.white,
                     ),
                     SizedBox(width: 8),
                     Text(

@@ -4,6 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 
 import '../helpers/colors.dart';
 import '../helpers/custom_widgets.dart';
+import '../model/contributor_model.dart';
 import 'contributer_screen.dart';
 
 
@@ -234,7 +235,9 @@ ListTile(
 class ContributorWidget extends StatelessWidget{
   bool showDetails = true;
 
-  ContributorWidget({this.showDetails = true});
+  ContributorModel? contributorModel;
+
+  ContributorWidget({this.showDetails = true, this.contributorModel});
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -244,14 +247,14 @@ class ContributorWidget extends StatelessWidget{
 
         leading: CircleAvatar(
           radius: 30,
-          backgroundImage: NetworkImage('https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png'),
+          backgroundImage: NetworkImage(contributorModel!=null?contributorModel!.avatar??'':'https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png'),
         ),
-        title: Text('Alan Rahondy',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),),
+        title: Text(contributorModel!=null?contributorModel!.name??'':'Alan Rahondy',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),),
         subtitle:!showDetails?null: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Sharing 10% of cashback',style: TextStyle(color: Colors.black)),
-            Text('32 SAR contributed',style: TextStyle(fontWeight: FontWeight.bold,color: kBlueColor)),
+            Text('${contributorModel!=null?contributorModel!.amount??'':'0'} SAR contributed',style: TextStyle(fontWeight: FontWeight.bold,color: kBlueColor)),
           ],
         ),
         onTap: () {

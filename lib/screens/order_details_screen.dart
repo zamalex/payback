@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:payback/data/http/urls.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/helpers/custom_widgets.dart';
 import 'package:payback/model/orders_model.dart';
 import 'package:payback/screens/commitment_category_received.dart';
 
@@ -90,9 +91,20 @@ class OrderDetails extends StatelessWidget {
           ,SizedBox(height: 5,),
           LeadingTrailingItem(txt: 'Delivery', widget: Text('${order!.deliveryMethod}',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),))
 
+          ,SizedBox(height: 10,)
+
 
       ],),),
-      ],
+
+
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 15),
+              width: double.infinity,
+              child: CustomButton(buttonText: 'Cancel', buttonColor: Colors.red,textColor: Colors.white,onTap: (){
+
+              },),
+            )
+            ],
           ),
         ),
       ),
