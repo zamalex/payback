@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:payback/screens/contributor_details_screen.dart';
 
 import '../helpers/colors.dart';
 import '../helpers/custom_widgets.dart';
@@ -258,7 +259,8 @@ class ContributorWidget extends StatelessWidget{
           ],
         ),
         onTap: () {
-          Get.to(ContributerScreen());
+          if(contributorModel!=null)
+          Get.to(ContributorDetailsScreen(contributorModel: contributorModel!));
         },
       ),
     );

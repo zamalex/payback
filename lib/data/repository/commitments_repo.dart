@@ -301,7 +301,7 @@ class CommitmentsRepository{
           transactions.forEach((trans) {
             if(trans.reference!=null&&trans.reference!.category=='Community')
 
-              someCommitments.add(ContributorModel(amount: trans.amount,avatar:trans.reference!.avatar ,name: trans.reference!.name));
+              someCommitments.add(ContributorModel(amount: trans.amount,avatar:trans.reference!.avatar ,name: trans.reference!.name,commitment: trans.reference!.commitment));
 
 
           });
@@ -344,7 +344,7 @@ class CommitmentsRepository{
           transactions.forEach((trans) {
             if(trans.reference!=null&&trans.reference!.category=='Community')
 
-              someCommitments.add(ContributorModel(amount: trans.amount,avatar:trans.reference!.avatar ,name: trans.reference!.name));
+              someCommitments.add(ContributorModel(amount: trans.amount,avatar:trans.reference!.avatar ,name: trans.reference!.name,commitment: trans.reference!.commitment));
 
 
           });
