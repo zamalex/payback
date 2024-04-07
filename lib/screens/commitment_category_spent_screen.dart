@@ -54,6 +54,16 @@ class _CommitmentCategorySpentScreenState
     return all;
   }
 
+
+  getMonthsRange(String name){
+
+      int monthIndex = Provider.of<CommitmentsProvider>(context,listen: false).months.indexOf(name) + 1;
+
+      from = DateTime(DateTime.now().year, monthIndex, 1);
+      to = DateTime(DateTime.now().year, monthIndex, 31);
+      getCategoryCommitments();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,7 +131,7 @@ class _CommitmentCategorySpentScreenState
                                   isChecked: value.selectedMonth ==
                                       value.months[index],
                                   onTap: (mon) {
-                                    getCategoryCommitments();
+                                    getMonthsRange(mon);
                                   },
                                 )),
                       ),

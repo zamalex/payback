@@ -69,6 +69,15 @@ class _CommitmentCategoryReceivedScreenState extends State<CommitmentCategoryRec
     return all;
   }
 
+  getMonthsRange(String name){
+
+    int monthIndex = Provider.of<CommitmentsProvider>(context,listen: false).months.indexOf(name) + 1;
+
+    from = DateTime(DateTime.now().year, monthIndex, 1);
+    to = DateTime(DateTime.now().year, monthIndex, 31);
+    getCategoryReceivedProducts();
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -107,7 +116,7 @@ class _CommitmentCategoryReceivedScreenState extends State<CommitmentCategoryRec
             Text(widget.historyCategory.category??'',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
             SizedBox(height: 20,),
             Consumer<CommitmentsProvider>(builder:(context, value, child) =>  SingleChildScrollView(scrollDirection: Axis.horizontal,child: Row(children: List.generate(value.months.length, (index) => MonthWidget(name: value.months[index],isChecked: value.selectedMonth==value.months[index],onTap: (s){
-              getCategoryReceivedProducts();
+              getMonthsRange(s);
             },)),),)),
 
             SizedBox(height: 20,),

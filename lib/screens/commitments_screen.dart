@@ -29,6 +29,15 @@ class _CommitmentsScreenState extends State<CommitmentsScreen> {
     Provider.of<AuthProvider>(context,listen: false).getCashback();
   }
 
+  double commitmentsTotal(){
+    double total  = 0;
+
+    Provider.of<HomeProvider>(context,listen: false).commitments.forEach((element) {
+      total+= double.parse(element.paymentTarget??'0');
+    });
+
+    return total;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,7 +142,7 @@ class _CommitmentsScreenState extends State<CommitmentsScreen> {
                                   style: TextStyle(fontSize: 15),
                                 ),
                                 trailing: Text(
-                                  '20 SAR',
+                                  '${commitmentsTotal()} SAR',
                                   style: TextStyle(
                                       fontSize: 20,
                                       color: kBlueColor,

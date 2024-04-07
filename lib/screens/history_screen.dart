@@ -60,6 +60,15 @@ HistoryCategory? selectedCategory;
   DateTime? from;
   DateTime? to;
 
+  getMonthsRange(String name){
+
+    int monthIndex = Provider.of<CommitmentsProvider>(context,listen: false).months.indexOf(name) + 1;
+
+    from = DateTime(DateTime.now().year, monthIndex, 1);
+    to = DateTime(DateTime.now().year, monthIndex, 31);
+    getCashbackHistory();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,7 +136,7 @@ getCashbackHistory();
                 SizedBox(height: 20,),
                 value.isLoading?Center(child: CircularProgressIndicator(),):value.cashbackHistory==null?Center(child: Text('No available data',)): Column(children: [
                   SingleChildScrollView(scrollDirection: Axis.horizontal,child: Row(children: List.generate(value.months.length, (index) => MonthWidget(name: value.months[index],isChecked: value.selectedMonth==value.months[index],onTap: (mon){
-                    getCashbackHistory();
+                    getMonthsRange(mon);
                   },)),),),
                   SizedBox(height: 20,),
 
