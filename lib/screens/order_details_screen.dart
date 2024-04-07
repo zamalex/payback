@@ -1,11 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:payback/data/http/urls.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/helpers/custom_widgets.dart';
 import 'package:payback/model/orders_model.dart';
+import 'package:payback/providers/checkout_provider.dart';
 import 'package:payback/screens/commitment_category_received.dart';
+import 'package:provider/provider.dart';
 
 import '../helpers/functions.dart';
 
@@ -13,6 +16,9 @@ class OrderDetails extends StatelessWidget {
    OrderDetails({super.key,this.order});
 
    Order? order;
+
+   Map statues = {'1':'Completed','2':'Cancelled','0':'Pending',};
+   Map statusColors = {'1':Colors.green,'2':Colors.red,'0':Colors.amber,};
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +45,7 @@ class OrderDetails extends StatelessWidget {
                 ,SizedBox(height: 5,),
                 Divider()
                 ,SizedBox(height: 5,),
-                LeadingTrailingItem(txt: 'Status', widget: Text('${order!.status}',style: TextStyle(color:Colors.green,fontWeight: FontWeight.bold),))
+                LeadingTrailingItem(txt: 'Status', widget: Text('${statues[order!.status]}',style: TextStyle(color:statusColors[order!.status],fontWeight: FontWeight.bold),))
               ,SizedBox(height: 5,),
               Divider()
               ,SizedBox(height: 5,),
@@ -96,13 +102,17 @@ class OrderDetails extends StatelessWidget {
 
       ],),),
 
-
+            if(order!.status=='0')
             Container(
               margin: EdgeInsets.symmetric(vertical: 15),
               width: double.infinity,
               child: CustomButton(buttonText: 'Cancel', buttonColor: Colors.red,textColor: Colors.white,onTap: (){
+                    Provider.of<CheckoutProvider>(context,listen: false).cancelOrder({'status':2},int.parse(order!.orderId!)).then((value){
+                      Provider.of<CheckoutProvider>(context,listen: false).loadOrders();
+                      Get.back();
+                    });
 
-              },),
+                    },),
             )
             ],
           ),

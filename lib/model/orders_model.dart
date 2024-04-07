@@ -45,7 +45,7 @@ class Order {
       totalPrice: double.parse(json['price'].toString()),
       cashback: 0,
       orderNo: json['order_id'].toString(),
-      status: json['order']['status'].toString(),
+      status: int.parse(json['order']['status'].toString()).toString(),
       deliveryMethod: json['order']['delivery_method']['name'],
       pickupOffice: 'Office', // You need to extract this information from the data
       userName: (json['order']==null||json['order']['user']==null)?'----':json['order']['user']['name'],

@@ -13,7 +13,7 @@ import '../model/orders_model.dart';
 
 class CheckoutProvider extends ChangeNotifier{
 
-  String selectedStatus = 'completed';
+  String selectedStatus = '1';
 
   List<CheckoutObject> checkouts = [
 
@@ -132,6 +132,18 @@ class CheckoutProvider extends ChangeNotifier{
     }
 
 
+
+    notifyListeners();
+    return response;
+  }
+
+  Future<Map<String, dynamic>> cancelOrder(Map<String,dynamic> params,int id) async {
+
+    isLoading = true;
+    notifyListeners();
+    final response = await sl<CheckoutRepository>().cancelOrder(params,id);
+
+    isLoading = false;
 
     notifyListeners();
     return response;

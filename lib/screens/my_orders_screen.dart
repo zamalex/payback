@@ -85,7 +85,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
               onSelect: (index) {
                 setState(() {
                   selected = index;
-                  value.selectedStatus = selected==0?'completed':selected==1?'pending':'cancelled';
+                  value.selectedStatus = selected==0?'1':selected==1?'0':'2';
                   value.loadOrders();
                 });
               },

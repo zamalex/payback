@@ -118,7 +118,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             'product_options', () => null);
 
         map.putIfAbsent(
-            'status', () => 'pending');
+            'status', () => 0);
 
         map.putIfAbsent(
             'tax_amount', () => 0);
@@ -507,7 +507,7 @@ class _CheckoutItemState extends State<CheckoutItem> {
             return  CupertinoActionSheetAction(
               child:  Text(/*/pp.shippingsAddresses[index].name??*/'Address ${index+1}'),
               onPressed: () {
-                onSelect(pp.shippingsAddresses[index].name);
+                onSelect(/*pp.shippingsAddresses[index].name*/'Address ${index+1}');
                 Navigator.pop(context, 'Delete For Everyone');
               },
             );

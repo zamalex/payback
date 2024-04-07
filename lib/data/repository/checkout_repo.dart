@@ -94,6 +94,31 @@ class CheckoutRepository {
   }
 
 
+  Future cancelOrder(Map<String,dynamic> body,int id) async {
+    try {
+      Response response = await sl<DioClient>().put('${Url.CORDERS_URL}/$id',data: jsonEncode(body),queryParameters: body);
+
+      final parsedJson = response.data;
+      if (response.statusCode! < 400) {
+
+        return {
+          'message': 'canceled',
+          'data': true,
+
+        };
+      }
+
+      return {'message': 'Not found', 'data': false};
+    } catch (e) {
+      if (e is DioError) {
+        return {'message': e.message, 'data': false};
+      } else {
+        return {'message': 'Unknown error', 'data': false};
+      }
+    }
+  }
+
+
   Future<Map> getOrders() async {
     try {
       Response response = await sl<DioClient>().get(Url.CORDERS_URL,);
