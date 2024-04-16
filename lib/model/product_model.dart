@@ -8,6 +8,7 @@ class Product {
   late String? quantity;
   late String? price;
   late String? featuredImage;
+  late double? cashback;
   late List? gallery;
   int cartQuantity=0;
   bool isSaved =false;
@@ -18,6 +19,7 @@ class Product {
     this.cartQuantity=0,
      required this.id,
      this.name,
+    this.cashback=0,
      this.description,
      this.vendor_id,
      this.quantity,
@@ -38,7 +40,7 @@ class Product {
       gallery: json['gallery'],
       vendor_id: int.parse(json['vendor_id']==null?'0':json['vendor_id'].toString()),
       cartQuantity: json['cartQuantity']??0,
-
+      cashback: double.parse(json['cashback']!=null?json['cashback'].toString():'0'),
       categoryId: json['category_id'],
     );
   }

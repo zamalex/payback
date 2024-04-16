@@ -118,7 +118,7 @@ class _CommitmentsScreenState extends State<CommitmentsScreen> {
                                   style: TextStyle(fontSize: 15),
                                 ),
                                 trailing: Text(
-                                  '${((value.cashbackModel.depositAssignedBalance/value.cashbackModel.depositUnsignedBalance)).isNaN?0:(((value.cashbackModel.depositAssignedBalance/value.cashbackModel.depositUnsignedBalance)))*100}%',
+                                  '${((value.cashbackModel.depositAssignedBalance/value.cashbackModel.depositUnsignedBalance)).isNaN||((value.cashbackModel.depositAssignedBalance/value.cashbackModel.depositUnsignedBalance)).isInfinite?0:(((value.cashbackModel.depositAssignedBalance/value.cashbackModel.depositUnsignedBalance)))*100}%',
                                   style: TextStyle(
                                       fontSize: 20,
                                       color: kBlueColor,

@@ -120,7 +120,7 @@ class _CommitmentCategoryReceivedScreenState extends State<CommitmentCategoryRec
             },)),),)),
 
             SizedBox(height: 20,),
-            Text('Total cashback: ${calculateTotal()} SAR',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+            Text('Total cashback: ${widget.historyCategory.summary!.received} SAR',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
 
             SizedBox(height: 20,),
 

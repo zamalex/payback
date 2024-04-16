@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:payback/data/http/urls.dart';
@@ -575,20 +576,24 @@ class ProductWidget extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      child: Text(
-                        'Earn 100 SAR',
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: Colors.purple,
+                    Expanded(
+                      child: Container(
+
+                        child: Text(
+                          'Earn ${product?.cashback?.toStringAsFixed(2)} SAR',
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: Colors.purple,
+                          ),
                         ),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15)),
                       ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15)),
                     ),
+                    SizedBox(width: 8,),
                     InkWell(
                       onTap: (){
                         Provider.of<HomeProvider>(context,listen: false).saveProduct(product!);

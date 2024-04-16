@@ -256,7 +256,7 @@ class _CommitmetDetailsState extends State<CommitmetDetails> {
                               ),
                               child: Column(
                                 children: [
-                                 /* ListTile(
+                                  if(widget.commitment.sadad_num!=null)ListTile(
                                     horizontalTitleGap: 0,
                                     dense: true,
                                     contentPadding: EdgeInsets.symmetric(
@@ -275,14 +275,15 @@ class _CommitmetDetailsState extends State<CommitmetDetails> {
                                           fontWeight: FontWeight.bold),
                                     ),
                                     trailing: Text(
-                                      '20123456844',
+                                      widget.commitment.sadad_num??'',
                                       style: TextStyle(
                                           fontSize: 15,
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ),
-                                  Divider(),*/
+                                  if(widget.commitment.sadad_num!=null)
+                                  Divider(),
                                   ListTile(
                                     horizontalTitleGap: 0,
                                     dense: true,

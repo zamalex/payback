@@ -15,6 +15,8 @@ class Commitment {
   late String? updatedAt;
   late String? user_id;
 
+  late String? sadad_num;
+
   double amount;
 
   Commitment({
@@ -32,6 +34,7 @@ class Commitment {
     this.amount=0,
      this.createdAt,
      this.user_id,
+    this.sadad_num,
      this.updatedAt, this.paid,
   });
 
@@ -50,10 +53,35 @@ class Commitment {
       type: json['type'],
       paid: json['paid']??'0',
       notify: json['notify'],
+      sadad_num: json['partners_requirements'] != null &&
+          (json['partners_requirements'] as List).isNotEmpty &&
+          (json['partners_requirements'] as List).firstWhere(
+                  (item) => item['key'] == 'sadad_num',
+              orElse: () => null
+          ) != null
+          ? (json['partners_requirements'] as List)
+          .firstWhere((item) => item['key'] == 'sadad_num')['value']
+          : null,
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
       user_id: json['user_id'],
     );
+  }
+
+  String? getSadad(Map<String, dynamic> json){
+    String? sadad;
+
+    //partners_requirements: [{display_name: Sadad Num., key: sadad_num, value: 123463}]
+
+    if(json['partners_requirements']!=null){
+      if(((json['partners_requirements'])as List).isNotEmpty){
+        if(((json['partners_requirements'])as List).first['key']=='sadad_num'){
+            sadad = ((json['partners_requirements'])as List).first['value'];
+        }
+      }
+    }
+
+    return sadad;
   }
 
   Map<String, dynamic> toJson() {
