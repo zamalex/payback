@@ -66,20 +66,43 @@ class CheckoutRepository {
     }
   }
 
-
-
-  Future createOrder(Map<String,dynamic> body) async {
+  Future createOrder(Map<String, dynamic> body) async {
     try {
-      Response response = await sl<DioClient>().post(Url.CREATE_ORDER_URL,data: jsonEncode(body));
+      Response response = await sl<DioClient>()
+          .post(Url.CREATE_ORDER_URL, data: jsonEncode(body));
 
       final parsedJson = response.data;
       if (response.statusCode! < 400) {
+        double cashback = 0;
+
+        try {
+          if (parsedJson['data']) {
+            if ((parsedJson['data']['order_items'] as List).isNotEmpty) {
+              if ((parsedJson['data']['order_items'] as List)
+                      .first['product'] !=
+                  null) {
+                Map json = (parsedJson['data']['order_items'] as List)
+                    .first['product'];
+
+                cashback = (json['cashback_value'] != null &&
+                        (json['cashback_value'] as List).isNotEmpty)
+                    ? double.parse((json['cashback_value'] as List)
+                        .first['cashback_value']
+                        .toString())
+                    : 0;
+              }
+            }
+          }
+        } catch (e) {
+          cashback = 0;
+        }
 
         return {
           'message': 'order done',
           'data': true,
-          'amount':parsedJson['data']['amount'].toString(),
-          'created_at':parsedJson['data']['created_at'].toString()
+          'amount': parsedJson['data']['amount'].toString(),
+          'cashback': cashback,
+          'created_at': parsedJson['data']['created_at'].toString()
         };
       }
 
@@ -93,18 +116,16 @@ class CheckoutRepository {
     }
   }
 
-
-  Future cancelOrder(Map<String,dynamic> body,int id) async {
+  Future cancelOrder(Map<String, dynamic> body, int id) async {
     try {
-      Response response = await sl<DioClient>().put('${Url.CORDERS_URL}/$id',data: jsonEncode(body),queryParameters: body);
+      Response response = await sl<DioClient>().put('${Url.CORDERS_URL}/$id',
+          data: jsonEncode(body), queryParameters: body);
 
       final parsedJson = response.data;
       if (response.statusCode! < 400) {
-
         return {
           'message': 'canceled',
           'data': true,
-
         };
       }
 
@@ -118,31 +139,34 @@ class CheckoutRepository {
     }
   }
 
-
   Future<Map> getOrders() async {
     try {
-      Response response = await sl<DioClient>().get(Url.CORDERS_URL,);
+      Response response = await sl<DioClient>().get(
+        Url.CORDERS_URL,
+      );
 
       if (response.statusCode == 200) {
         List<dynamic> data = response.data['data'];
         List<Order> orders = data.map((json) => Order.fromJson(json)).toList();
-        return {'data':orders};
+        return {'data': orders};
       } else {
-        return {'data':[]};
+        return {'data': []};
       }
     } catch (e) {
-      return {'data':[]};
+      return {'data': []};
     }
   }
 
-
   Future<List<PaymentSetting>> getPaymentMethods() async {
     try {
-      Response response = await sl<DioClient>().get(Url.PAYMENTS_URL,);
+      Response response = await sl<DioClient>().get(
+        Url.PAYMENTS_URL,
+      );
 
       if (response.statusCode == 200) {
         List<dynamic> data = response.data['data'];
-        return List<PaymentSetting>.from(data.map((item) => PaymentSetting.fromJson(item)));
+        return List<PaymentSetting>.from(
+            data.map((item) => PaymentSetting.fromJson(item)));
       } else {
         return [];
       }

@@ -132,7 +132,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       Text('${widget.product.price} SAR',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: kPurpleColor),),
                       Container(
 
-                        child: Text('Cashback: 12,9 SAR',style: TextStyle(fontSize:11,color: kPurpleColor,),),
+                        child: Text('Cashback: ${widget.product.cashback} SAR',style: TextStyle(fontSize:11,color: kPurpleColor,),),
                         padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
 
                         decoration:BoxDecoration(color: kPurpleColor.withOpacity(.32),borderRadius: BorderRadius.circular(10)),)

@@ -40,7 +40,7 @@ class Product {
       gallery: json['gallery'],
       vendor_id: int.parse(json['vendor_id']==null?'0':json['vendor_id'].toString()),
       cartQuantity: json['cartQuantity']??0,
-      cashback: double.parse(json['cashback']!=null?json['cashback'].toString():'0'),
+      cashback: (json['cashback_value'] != null && (json['cashback_value'] as List).isNotEmpty)? double.parse((json['cashback_value'] as List).first['cashback_value'].toString()) : 0 ,
       categoryId: json['category_id'],
     );
   }

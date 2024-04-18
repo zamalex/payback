@@ -130,11 +130,11 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                                      visualDensity: VisualDensity(vertical: -4),
 
                                      title: Text(
-                                       'Total cashbak',
+                                       'Total cashback',
                                        style: TextStyle(fontSize: 15,color: Colors.black),
                                      ),
                                      trailing: Text(
-                                       '0 SAR',
+                                       '${widget.data['cashback']} SAR',
                                        style: TextStyle(
                                            fontSize: 15,
                                            color: Colors.grey,

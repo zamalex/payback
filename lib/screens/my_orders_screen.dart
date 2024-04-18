@@ -162,7 +162,7 @@ class MyOrderItem extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Text('Cashback'), Text('0 SAR')],
+                children: [Text('Cashback'), Text('${order.cashback} SAR')],
               ),
             ),
           ],

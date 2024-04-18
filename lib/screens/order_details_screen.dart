@@ -91,7 +91,7 @@ class OrderDetails extends StatelessWidget {
           ,SizedBox(height: 5,),
           Divider()
           ,SizedBox(height: 5,),
-          LeadingTrailingItem(txt: 'Cashback', widget: Text('0 SAR',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),))
+          LeadingTrailingItem(txt: 'Cashback', widget: Text('${order!.cashback} SAR',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),))
           ,SizedBox(height: 5,),
           Divider()
           ,SizedBox(height: 5,),
