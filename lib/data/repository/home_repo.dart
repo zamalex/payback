@@ -58,6 +58,8 @@ class HomeRepository {
 
       return {'message': 'Not found','data':[] as List<Product>};
     } catch (e) {
+      print('products error is ${e.toString()}');
+
       if (e is DioError) {
         return {'message': e.message,'data':[] as List<Product>};
       } else {

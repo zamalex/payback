@@ -89,7 +89,7 @@ class _HelpCommunityScreenState extends State<HelpCommunityScreen> {
                 ),
               ),
               SizedBox(height: 5,),*/
-              Expanded(child: GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisSpacing: 8,crossAxisCount: 2,childAspectRatio: .7), itemBuilder:(context, index) {
+              Expanded(child: GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisSpacing: 8,crossAxisCount: 2,childAspectRatio: .7,), itemBuilder:(context, index) {
                 return CommunityItem(communityUser: value.users[index],);
               },itemCount: value.users.length,))
             ],
