@@ -57,9 +57,16 @@ class _CartScreenState extends State<CartScreen> {
         child: Consumer<CheckoutProvider>(
           builder:(c,provider,cc){
             double total=0;
+            double totalCashback = 0;
+
+            totalCashback = calculateCashback(provider.cart);
       
             provider.cart.forEach((element) {
               total = total+(element.cartQuantity*double.parse(element.price??'0'));
+
+              print('quantiyy from w to');
+              print(element.quantity_from);
+              print(element.quantity_to);
             });
       
             if(provider.cart.isEmpty){
@@ -184,7 +191,7 @@ class _CartScreenState extends State<CartScreen> {
                             children: [
                               Text('Cashback'),
                               Text(
-                                '0 SAR',
+                                '${totalCashback} SAR',
                                 style: TextStyle(
                                     color: kBlueColor,
                                     fontWeight: FontWeight.bold,

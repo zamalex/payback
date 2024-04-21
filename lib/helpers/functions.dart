@@ -30,6 +30,31 @@ double calculateCartTotal(List<Product> pros){
   return total;
 }
 
+
+
+double calculateCashback(List<Product> pros){
+  double total = 0;
+
+  pros.forEach((element) {
+    if(element.cartQuantity>=element.quantity_from!){
+      int q = element.cartQuantity%element.quantity_to!;
+      if(q==0){
+        q=( element.cartQuantity/element.quantity_to!).toInt();
+      }
+      else{
+        q=1;
+      }
+      total+=(element.cashback!*q);
+    }
+
+
+  });
+
+  return total;
+}
+
+
+
 String parseDate(String s){
   DateTime dateTime = DateTime.parse(s);
 

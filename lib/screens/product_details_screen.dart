@@ -38,6 +38,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   int _currentIndex = 0;
    @override
   Widget build(BuildContext context) {
+     print('quantity from ${widget.product.quantity_from}');
+     print('quantity to ${widget.product.quantity_to}');
     return Scaffold(appBar:AppBar(
      // title: Text('Product details'),
       leadingWidth: 100,
