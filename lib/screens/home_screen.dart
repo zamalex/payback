@@ -39,26 +39,28 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     Future.delayed(Duration.zero).then((value) {
-      Provider.of<CommitmentsProvider>(context,listen: false).getCommitmentsCategories();
+      Provider.of<CommitmentsProvider>(context, listen: false)
+          .getCommitmentsCategories();
 
       Provider.of<HomeProvider>(context, listen: false).getCategories();
       Provider.of<HomeProvider>(context, listen: false)
           .getProducts(isHotDeals: true);
       Provider.of<HomeProvider>(context, listen: false)
-          .getProducts(isSuggested: true).then((value){
+          .getProducts(isSuggested: true)
+          .then((value) {
         sl<PreferenceUtils>().readIProduct().then((pp) {
-
-          if(pp!=null){
+          if (pp != null) {
             Uri uri = Uri.parse(pp);
-            int id = int.parse(uri.queryParameters['pro']??'0');
+            int id = int.parse(uri.queryParameters['pro'] ?? '0');
             sl<PreferenceUtils>().deleteProduct();
 
-            Product? p = Provider.of<HomeProvider>(context, listen: false).products.firstWhereOrNull((element) => element.id==id);
-          if(p!=null){
-            Get.to(ProductDetailsScreen(product: p));
+            Product? p = Provider.of<HomeProvider>(context, listen: false)
+                .products
+                .firstWhereOrNull((element) => element.id == id);
+            if (p != null) {
+              Get.to(ProductDetailsScreen(product: p));
+            }
           }
-          }
-
         });
       });
       if (sl.isRegistered<AuthResponse>()) {
@@ -82,7 +84,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView(
           children: [
             Consumer<authProvider.AuthProvider>(
-              builder:(context, value, child) => InkWell(
+              builder: (context, value, child) => InkWell(
                 onTap: () {
                   if (sl.isRegistered<AuthResponse>())
                     Get.to(MyProfileScreen());
@@ -140,7 +141,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     )
                                   : Image.network(
-                                      sl<AuthResponse>().data?.user?.avatarUrl??'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVR9V1Ix26V2s_WWWryH3FU5Qkl2yR4PL3BcUybf2cUw&s',
+                                      sl<AuthResponse>()
+                                              .data
+                                              ?.user
+                                              ?.avatarUrl ??
+                                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVR9V1Ix26V2s_WWWryH3FU5Qkl2yR4PL3BcUybf2cUw&s',
                                       fit: BoxFit.cover,
                                       width: 70,
                                       height: 70,
@@ -150,59 +155,54 @@ class _HomeScreenState extends State<HomeScreen> {
                           width: 10,
                         ),
                         Expanded(
-
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                AutoSizeText(
-
-                                  !sl.isRegistered<AuthResponse>()
-                                      ? 'Welcome Guest, Login now'
-                                      : 'Hello, ${authResponse == null ? 'Mustafa' : authResponse!.data!.user!.name}',
-
-                                  style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold,
-                                      color: kPurpleColor,
-                                      overflow: TextOverflow.ellipsis),
-                                  maxLines: 1,
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                if (sl.isRegistered<AuthResponse>())
-                                  Container(
-                                    width: 200,
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 4),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        color: kPurpleColor),
-                                    child: Consumer<authProvider.AuthProvider>(
-                                        builder: (context, value, child) => Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.notification_add_outlined,
-                                                  color: Colors.white,
-                                                ),
-                                                AutoSizeText(
-                                                  '${value.notifications.length==0?'no':value.notifications.length} notifications',
-                                                  style:
-                                                      TextStyle(color: Colors.white),
-                                                  maxLines: 1,
-                                                )
-                                              ],
-                                            )),
-                                  )
-                              ],
-                            ),
-
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AutoSizeText(
+                                !sl.isRegistered<AuthResponse>()
+                                    ? 'Welcome Guest, Login now'
+                                    : 'Hello, ${authResponse == null ? 'Mustafa' : authResponse!.data!.user!.name}',
+                                style: TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                    color: kPurpleColor,
+                                    overflow: TextOverflow.ellipsis),
+                                maxLines: 1,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              if (sl.isRegistered<AuthResponse>())
+                                Container(
+                                  width: 200,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 4),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      color: kPurpleColor),
+                                  child: Consumer<authProvider.AuthProvider>(
+                                      builder: (context, value, child) => Row(
+                                            children: [
+                                              Icon(
+                                                Icons.notification_add_outlined,
+                                                color: Colors.white,
+                                              ),
+                                              AutoSizeText(
+                                                '${value.notifications.length == 0 ? 'no' : value.notifications.where((element) => element.read==null).toList().length} notifications',
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                                maxLines: 1,
+                                              )
+                                            ],
+                                          )),
+                                )
+                            ],
+                          ),
                         ),
                         Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [Icon(Icons.arrow_forward)],
-                          ),
-
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [Icon(Icons.arrow_forward)],
+                        ),
                       ],
                     ),
                   ),
@@ -250,8 +250,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     Consumer<HomeProvider>(
                         builder: (c, v, cc) => v.commitments.isEmpty
                             ? Container()
-                            : Commitment(
-                                commitment: v.commitments.first,
+                            : Column(
+                                children: List.generate(
+                                    v.commitments.length > 3
+                                        ? 3
+                                        : v.commitments.length,
+                                    (index) => Container(
+                                      margin: EdgeInsets.symmetric(vertical: 2),
+                                      child: Commitment(
+                                            commitment: v.commitments[index],
+                                          ),
+                                    )),
                               )),
                   SizedBox(
                     height: 20,

@@ -445,7 +445,7 @@ class Commitment extends StatelessWidget {
 
                   min: 0.0,
                   max: 100.0,
-                  value: 100,
+                  value: commitment!.completed_percentage!,
                   // divisions: 10,
                   label: '100',
                   onChanged: (value) {},
@@ -457,9 +457,9 @@ class Commitment extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('100% collected',
+                  Text('${commitment!.completed_percentage!.toStringAsFixed(2)}% collected',
                       style: TextStyle(fontSize: 12, color: Colors.white)),
-                  Text('0 SAR left',
+                  Text('${(100-commitment!.completed_percentage!).toStringAsFixed(2)/*double.parse(commitment!.paymentTarget!)*/} % left',
                       style: TextStyle(fontSize: 12, color: Colors.white)),
                 ],
               ),

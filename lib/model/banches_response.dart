@@ -68,7 +68,7 @@ class Branch {
           ? json['vendor_id']['description']
           : null,
       vendorImage:
-      json['vendor_id'] != null ? json['vendor_id']['image'] : null,
+      json['vendor_id'] != null ? json['vendor_id']['image']??json['vendor_id']['store_photo'] : null,
       vendor: json['vendor_id'] != null
           ? Partner.fromJson(json['vendor_id'])
           : null,

@@ -52,6 +52,9 @@ class _CommitmentCategoryReceivedScreenState extends State<CommitmentCategoryRec
       });
     }
 
+    from = null;
+    to = null;
+
   }
 
   double calculateTotal(){
@@ -115,7 +118,21 @@ class _CommitmentCategoryReceivedScreenState extends State<CommitmentCategoryRec
           children: [
             Text(widget.historyCategory.category??'',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
             SizedBox(height: 20,),
-            Consumer<CommitmentsProvider>(builder:(context, value, child) =>  SingleChildScrollView(scrollDirection: Axis.horizontal,child: Row(children: List.generate(value.months.length, (index) => MonthWidget(name: value.months[index],isChecked: value.selectedMonth==value.months[index],onTap: (s){
+            Consumer<CommitmentsProvider>(builder:(context, value, child) =>   (from != null &&
+                to != null &&
+                value.selectedMonth.isEmpty)
+                ? DataRangeWidget(
+              start: from!,
+              end: to!,
+              reset: () {
+                setState(() {
+                  from = null;
+                  to = null;
+                });
+
+                getCategoryReceivedProducts();
+              },
+            ): SingleChildScrollView(scrollDirection: Axis.horizontal,child: Row(children: List.generate(value.months.length, (index) => MonthWidget(name: value.months[index],isChecked: value.selectedMonth==value.months[index],onTap: (s){
               getMonthsRange(s);
             },)),),)),
 

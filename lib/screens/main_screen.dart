@@ -75,7 +75,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
             BottomNavigationBarItem(
               icon: Image.asset('assets/images/online_shop_navigation.png',color: _currentIndex==1?kBlueColor:Colors.grey),
-              label: 'Shopping online',
+              label: 'Shop online',
             ),
             BottomNavigationBarItem(
               icon: Image.asset('assets/images/local_stores_navigation.png',color: _currentIndex==2?kBlueColor:Colors.grey),

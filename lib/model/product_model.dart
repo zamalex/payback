@@ -46,7 +46,7 @@ class Product {
       gallery: json['gallery'],
       vendor_id: int.parse(json['vendor_id']==null?'0':json['vendor_id'].toString()),
       cartQuantity: json['cartQuantity']??0,
-      cashback:json['cashback']!=null?double.parse(json['cashback'].toString()): (json['cashback_value'] != null &&json['cashback_value'] is List&& (json['cashback_value'] as List).isNotEmpty)?(json['cashback_value'] as List).first['cashback_value']==null?0: double.parse((json['cashback_value'] as List).first['cashback_value'].toString()) : 0 ,
+      cashback:json['cashback']!=null?double.parse(json['cashback'].toString()): (json['cashback_value'] != null &&json['cashback_value'] is List&& (json['cashback_value'] as List).isNotEmpty)?(json['cashback_value'] as List).first['cashback_value']==null?0: double.parse((json['cashback_value'] as List).first['user_cashback_value'].toString()) : 0 ,
       cashback2:json['cashback']==null?0:double.parse(json['cashback'].toString()??'0'),
       quantity_from:json['quantity_from'] != null?json['quantity_from']: (json['cashback_value'] != null && (json['cashback_value'] as List).isNotEmpty)?(json['cashback_value'] as List).first['quantity_from']==null?0: int.parse((json['cashback_value'] as List).first['quantity_from'].toString()) : 0 ,
       quantity_to:json['quantity_to'] != null?json['quantity_to']: (json['cashback_value'] != null && (json['cashback_value'] as List).isNotEmpty)?(json['cashback_value'] as List).first['quantity_to']==null?0: int.parse((json['cashback_value'] as List).first['quantity_to'].toString()) : 0 ,

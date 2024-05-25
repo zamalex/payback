@@ -356,6 +356,38 @@ class AuthRepository {
     }
   }
 
+
+
+  Future<Map> markAsReadNotifications() async {
+    try {
+      Map body = {
+        'read_at':'skljdcn',
+        'user_id':sl<AuthResponse>().data!.user!.id
+      };
+      Response response =
+      await sl<DioClient>().put('${Url.NOTIFICATIONS_URL}/2',data: jsonEncode(body));
+
+      final parsedJson = response.data;
+
+
+      if (response.statusCode! < 400) {
+        NotificationsResponse loginModel = NotificationsResponse.fromJson(parsedJson);
+        return {'message': 'success', 'data': loginModel.notifications};
+      }
+
+      return {'message': 'Server Error','data':[]};
+    } catch (e) {
+      if (e is DioError) {
+        String error = e.response?.data['message']??
+            e.message;
+        return {'message': error,'data':[]};
+        //return {'message':e.message};
+      } else {
+        return {'message': 'unknown error','data':[]};
+      }
+    }
+  }
+
   Future<Map> getSettings() async {
     try {
       Response response =

@@ -19,6 +19,7 @@ class NotificationItem {
   String? imageUrl;
   String? title;
   String? content;
+  String? read;
 
   NotificationItem({this.imageUrl, this.title, this.content});
 
@@ -26,6 +27,7 @@ class NotificationItem {
     imageUrl = json['imageUrl'];
     title = json['title']??'Notification';
     content = json['body'];
+    read = json['read_at'];
   }
 
   Map<String, dynamic> toJson() {

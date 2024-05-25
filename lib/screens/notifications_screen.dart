@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:payback/data/repository/auth_repo.dart';
 import 'package:provider/provider.dart';
 
+import '../data/service_locator.dart';
 import '../helpers/colors.dart';
 import '../model/notifications_response.dart';
 import '../providers/auth_provider.dart';
@@ -28,10 +30,18 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         actions: [
           Padding(
             padding: EdgeInsets.all(8),
-            child: Text(
-              'Read all',
-              style:
-                  TextStyle(color: kPurpleColor, fontWeight: FontWeight.bold),
+            child: InkWell(
+              onTap: (){
+                sl<AuthRepository>().markAsReadNotifications().then((value){
+                  Provider.of<AuthProvider>(context,listen: false).getNotifications();
+                  Navigator.pop(context);
+                });
+              },
+              child: Text(
+                'Read all',
+                style:
+                    TextStyle(color: kPurpleColor, fontWeight: FontWeight.bold),
+              ),
             ),
           )
         ],

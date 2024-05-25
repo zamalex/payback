@@ -15,6 +15,10 @@ class Commitment {
   late String? updatedAt;
   late String? user_id;
 
+  late double? completed_percentage;
+
+  late bool? completed;
+
   late String? sadad_num;
 
   double amount;
@@ -33,6 +37,8 @@ class Commitment {
      this.notify,
     this.amount=0,
      this.createdAt,
+    this.completed_percentage,
+    this.completed,
      this.user_id,
     this.sadad_num,
      this.updatedAt, this.paid,
@@ -65,6 +71,8 @@ class Commitment {
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
       user_id: json['user_id'],
+      completed: json['completed']??false,
+      completed_percentage: json['completed_percentage'] == null?0:double.parse(json['completed_percentage'].toString()),
     );
   }
 
@@ -98,6 +106,8 @@ class Commitment {
       'notify': notify,
       'created_at': createdAt,
       'updated_at': updatedAt,
+      'completed_percentage': completed_percentage,
+      'completed': completed,
     };
     return data;
   }

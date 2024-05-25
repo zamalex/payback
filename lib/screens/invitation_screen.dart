@@ -76,7 +76,7 @@ class _InvitationScreenState extends State<InvitationScreen> {
     };
     FocusScope.of(context).requestFocus(FocusNode());
     Provider.of<CommitmentsProvider>(context,listen: false).acceptRejectInvitation({
-      'amount':decision==0?0:int.parse(controller.text.replaceAll('%','')),
+      'amount':decision==0?0:int.parse(controller.text.replaceAll('%',''))*100,
       'status':decision
     },query).then((value){
       Get.snackbar('Alert', value['message'],backgroundColor:value['data']?Colors.green: Colors.red,colorText: Colors.white);

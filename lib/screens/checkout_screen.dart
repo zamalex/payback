@@ -248,6 +248,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               allTotal+= element.getTotalPrice();
             });
 
+            double totalCashback = 0;
+
+            totalCashback = calculateCashback(value.cart);
+
             return SafeArea(
               child: Form(
                 key: _formKey,
@@ -394,9 +398,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text('Total orders cashack'),
+                                    Text('Total orders cashback'),
                                     Text(
-                                      '0 SAR',
+                                      '${totalCashback} SAR',
                                       style: TextStyle(
                                           color: kBlueColor,
                                           fontWeight: FontWeight.bold,
@@ -527,6 +531,10 @@ class _CheckoutItemState extends State<CheckoutItem> {
 
     return Consumer<CheckoutProvider>(
       builder:(context, pp, child) {
+        double totalCashback = 0;
+
+        totalCashback = calculateCashback(widget.checkoutObject.products);
+
         addressTextEditingController.text= addressTextEditingController.text;
         cityTextEditingController.text= cityTextEditingController.text;
         streetTextEditingController.text= streetTextEditingController.text;
@@ -832,7 +840,7 @@ class _CheckoutItemState extends State<CheckoutItem> {
                     children: [
                       Text('Cashback'),
                       Text(
-                        '0 SAR',
+                        '${totalCashback} SAR',
                         style: TextStyle(
                             color: kBlueColor,
                             fontWeight: FontWeight.bold,

@@ -106,7 +106,7 @@ class ControlsItem extends StatelessWidget {
                 ],
               ),
             ),
-            Positioned(child: Icon(Icons.arrow_forward),right: 10,top: 10,)
+            Positioned(child: Icon(Icons.arrow_forward,color: kBlueColor,),right: 10,top: 10,)
           ],
         ),
       ),

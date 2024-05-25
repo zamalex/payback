@@ -62,6 +62,8 @@ class _CommitmentCategorySpentScreenState
       from = DateTime(DateTime.now().year, monthIndex, 1);
       to = DateTime(DateTime.now().year, monthIndex, 31);
       getCategoryCommitments();
+      from = null;
+      to = null;
   }
 
   @override
@@ -121,6 +123,21 @@ class _CommitmentCategorySpentScreenState
                     SizedBox(
                       height: 20,
                     ),
+                    (from != null &&
+                        to != null &&
+                        value.selectedMonth.isEmpty)
+                        ? DataRangeWidget(
+                      start: from!,
+                      end: to!,
+                      reset: () {
+                        setState(() {
+                          from = null;
+                          to = null;
+                        });
+
+                        getCategoryCommitments();
+                      },
+                    ):
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(

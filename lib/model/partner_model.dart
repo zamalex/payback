@@ -16,9 +16,9 @@ class Partner {
   factory Partner.fromJson(Map<String, dynamic> json) {
     return Partner(
       id: json['id'],
-      name: json['name'],
+      name: json['name']??json['store_name'],
       description: json['description'],
-      image: json['image']??'https://www.huber-online.com/daisy_website_files/_processed_/8/0/csm_no-image_d5c4ab1322.jpg',
+      image: json['image']??json['store_photo']??json['store_banner']??'https://www.huber-online.com/daisy_website_files/_processed_/8/0/csm_no-image_d5c4ab1322.jpg',
     );
   }
 
