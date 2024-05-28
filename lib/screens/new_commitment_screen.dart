@@ -250,14 +250,7 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
                           SizedBox(
                             height: 20,
                           ),
-                          Text(selected==1?'Enter commitment name':'Enter SADAD'),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          CustomTextField(controller:nameController,onSaved:(v){name=v;},hintText:selected==1?'Type commitment name': 'Type SADAD number'),
-                          SizedBox(
-                            height: 15,
-                          ),
+
                           if(selected==1&&widget.commitment==null)
                           Text('Choose partner'),
                           if(selected==1&&widget.commitment==null)
@@ -274,6 +267,17 @@ class _NewCommitmentScreenState extends State<NewCommitmentScreen> {
                                 partner=p;
                               });});
                             },
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Text(selected==1?'Enter commitment name':'Enter SADAD'),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          CustomTextField(controller:nameController,onSaved:(v){name=v;},hintText:selected==1?'Type commitment name': 'Type SADAD number'),
+                          SizedBox(
+                            height: 15,
                           ),
                           if(selected==1&&widget.commitment==null)
 

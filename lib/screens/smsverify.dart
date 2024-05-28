@@ -11,27 +11,33 @@ import '../helpers/custom_widgets.dart';
 import '../helpers/functions.dart';
 import '../providers/auth_provider.dart';
 
-class SMSScreen extends StatelessWidget {
+class SMSScreen extends StatefulWidget {
   SMSScreen({Key? key,required this.request,this.isRegister=true}) : super(key: key);
 
   bool isRegister = true;
+  Map<String,String> request;
+
+  @override
+  State<SMSScreen> createState() => _SMSScreenState();
+}
+
+class _SMSScreenState extends State<SMSScreen> {
+  bool clickable = false;
 
   TextEditingController controller = TextEditingController();
-
-  Map<String,String> request;
 
   verify(BuildContext context){
     if (controller.text.isEmpty) {
       showErrorMessage(context, 'Enter required data');
       return;
     }
-    if(isRegister){
-      request.putIfAbsent('otp', () => controller.text);
+    if(widget.isRegister){
+      widget.request.putIfAbsent('otp', () => controller.text);
 
-      print(request.toString());
+      print(widget.request.toString());
 
       Provider.of<AuthProvider>(context, listen: false)
-          .verify(request)
+          .verify(widget.request)
           .then((value) {
         value['data']==null?showErrorMessage(context, value['message'])
             :showSuccessMessage(context,value['message']);
@@ -41,17 +47,17 @@ class SMSScreen extends StatelessWidget {
       });
     }
     else{
-      request.putIfAbsent('token', () => controller.text);
+      widget.request.putIfAbsent('token', () => controller.text);
 
-      print(request.toString());
+      print(widget.request.toString());
 
       Provider.of<AuthProvider>(context, listen: false)
-          .checkForgotToken(request)
+          .checkForgotToken(widget.request)
           .then((value) {
         value['data']==false?showErrorMessage(context, value['message'])
             :showSuccessMessage(context,value['message']);
         if(value['data']){
-          Get.to(ResetScreen(request: request));
+          Get.to(ResetScreen(request: widget.request));
         }
       });
     }
@@ -111,8 +117,16 @@ class SMSScreen extends StatelessWidget {
                       print("Completed");
                     },
                     onChanged: (value) {
-                      print(value);
-
+                      if(controller.text.length==4){
+                        setState(() {
+                          clickable = true;
+                        });
+                      }
+                  else{
+                        setState(() {
+                          clickable = false;
+                        });
+                      }
                     },
                     beforeTextPaste: (text) {
                       print("Allowing to paste $text");
@@ -127,7 +141,11 @@ class SMSScreen extends StatelessWidget {
                 Consumer<AuthProvider>(
                   builder:(context, value, child) => value.isLoading?Center(child: CircularProgressIndicator(),): Container(
                       width: MediaQuery.of(context).size.width,
-                      child: CustomButton(buttonText: 'Confirm', buttonColor: kPurpleColor,onTap: (){verify(context);},)),
+                      child: Opacity(opacity:clickable?1:.4,child: CustomButton(buttonText: 'Confirm', buttonColor: kPurpleColor,onTap: (){
+
+                        if(!clickable)
+                          return;
+                        verify(context);},))),
                 ),
                 SizedBox(height: 30,),
                 Row(
