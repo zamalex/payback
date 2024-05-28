@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:payback/data/preferences.dart';
+import 'package:payback/helpers/apple.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/helpers/functions.dart';
 import 'package:payback/model/auth_response.dart' as ar;
@@ -22,30 +23,36 @@ class LoginScreen extends StatelessWidget {
   final GoogleSignIn googleSignIn = GoogleSignIn();
   Future<User?> _handleSignIn(BuildContext context) async {
     try {
-      final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+      final GoogleSignInAccount? googleSignInAccount =
+          await googleSignIn.signIn();
       final GoogleSignInAuthentication googleSignInAuthentication =
-      await googleSignInAccount!.authentication;
+          await googleSignInAccount!.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken,
       );
-      final UserCredential authResult = await _auth.signInWithCredential(credential);
+      final UserCredential authResult =
+          await _auth.signInWithCredential(credential);
       final User? user = authResult.user;
-      if(user!=null)
-      print('user ${user?.email}');
-     // print('token ${googleSignInAuthentication.accessToken}');
-     // print('id token ${googleSignInAuthentication.idToken}');
+      if (user != null) print('user ${user?.email}');
+      // print('token ${googleSignInAuthentication.accessToken}');
+      // print('id token ${googleSignInAuthentication.idToken}');
 
-      Provider.of<a.AuthProvider>(context, listen: false)
-          .socialLogin({'provider':'google','name':user?.displayName??'','email':user?.email??''})
-          .then((value){
+      Provider.of<a.AuthProvider>(context, listen: false).socialLogin({
+        'provider': 'google',
+        'name': user?.displayName ?? '',
+        'email': user?.email ?? ''
+      }).then((value) {
         value['data'] == null
-            ?Get.snackbar('Alert', value['message'],backgroundColor: Colors.red,colorText: Colors.white): Get.to(MainScreen());
+            ? Get.snackbar('Alert', value['message'],
+                backgroundColor: Colors.red, colorText: Colors.white)
+            : Get.to(MainScreen());
         if (value['data'] != null) {
           ar.AuthResponse authResponse = value['data'];
 
-
-          sl<PreferenceUtils>().saveUser(authResponse..data?.user?.avatarUrl=user?.photoURL..data?.user?.phone=user?.phoneNumber);
+          sl<PreferenceUtils>().saveUser(authResponse
+            ..data?.user?.avatarUrl = user?.photoURL
+            ..data?.user?.phone = user?.phoneNumber);
           print('photo is ${user!.photoURL}');
         }
       });
@@ -54,6 +61,30 @@ class LoginScreen extends StatelessWidget {
     } catch (error) {
       print(error);
       return null;
+    }
+  }
+
+  appleSignin(BuildContext context) async {
+    UserCredential? user = await signInWithApple();
+
+    if (user != null) {
+      Provider.of<a.AuthProvider>(context, listen: false).socialLogin({
+        'provider': 'google',
+        'name': user.user?.displayName ?? '',
+        'email': user.user?.email ?? ''
+      }).then((value) {
+        value['data'] == null
+            ? Get.snackbar('Alert', value['message'],
+                backgroundColor: Colors.red, colorText: Colors.white)
+            : Get.to(MainScreen());
+        if (value['data'] != null) {
+          ar.AuthResponse authResponse = value['data'];
+
+          sl<PreferenceUtils>().saveUser(authResponse
+            ..data?.user?.avatarUrl = user.user?.photoURL
+            ..data?.user?.phone = user.user?.phoneNumber);
+        }
+      });
     }
   }
 
@@ -67,14 +98,14 @@ class LoginScreen extends StatelessWidget {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-
       Provider.of<a.AuthProvider>(context, listen: false)
           .login(emailController.text, passwordController.text, '')
           .then((value) {
         value['data'] == null
-            ?Get.snackbar('Alert', value['message'],backgroundColor: Colors.red,colorText: Colors.white): Get.to(MainScreen());
+            ? Get.snackbar('Alert', value['message'],
+                backgroundColor: Colors.red, colorText: Colors.white)
+            : Get.to(MainScreen());
         if (value['data'] != null) {
-
           sl<PreferenceUtils>().saveUser(value['data']);
         }
       });
@@ -153,7 +184,6 @@ class LoginScreen extends StatelessWidget {
                       hintText: 'Enter your password',
                       obscureText: true,
                       isPassword: true,
-
                       controller: passwordController,
                     ),
                     SizedBox(
@@ -201,7 +231,9 @@ class LoginScreen extends StatelessWidget {
                       height: 10,
                     ),
                     InkWell(
-                      onTap: (){Get.to(ForgotScreen());},
+                      onTap: () {
+                        Get.to(ForgotScreen());
+                      },
                       child: Text(
                         'Forgot password?',
                         style: TextStyle(
@@ -223,14 +255,21 @@ class LoginScreen extends StatelessWidget {
                       children: [
                         Expanded(
                             child: CustomIconButton(
-                                buttonText: 'Apple', iconData: 'assets/images/apple.png')),
+                                onTap: () {
+                                  appleSignin(context);
+                                },
+                                buttonText: 'Apple',
+                                iconData: 'assets/images/apple.png')),
                         SizedBox(
                           width: 15,
                         ),
                         Expanded(
                             child: CustomIconButton(
-                              onTap: (){_handleSignIn(context);},
-                                buttonText: 'Google', iconData:'assets/images/google.png')),
+                                onTap: () {
+                                  _handleSignIn(context);
+                                },
+                                buttonText: 'Google',
+                                iconData: 'assets/images/google.png')),
                       ],
                     ),
                     SizedBox(

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:payback/data/repository/auth_repo.dart';
+import 'package:payback/helpers/apple.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/model/auth_response.dart';
 import 'package:payback/providers/CommitmentsProvider.dart';
@@ -30,7 +31,6 @@ import 'data/preferences.dart';
 import 'data/service_locator.dart';
 import 'providers/auth_provider.dart' as a;
 
-
 bool _initialURILinkHandled = false;
 
 bool hasInvitation = false;
@@ -48,26 +48,22 @@ Future<void> _initURIHandler() async {
       final initialURI = await getInitialUri();
       // 4
       if (initialURI != null) {
-        debugPrint("Initial URI received $initialURI with id ${initialURI.queryParameters.toString()}");
+        debugPrint(
+            "Initial URI received $initialURI with id ${initialURI.queryParameters.toString()}");
 
-
-        if(initialURI.toString().contains('pro')){
+        if (initialURI.toString().contains('pro')) {
           sl<PreferenceUtils>().saveProduct(initialURI.toString());
-
-        }else{
+        } else {
           sl<PreferenceUtils>().saveInvitation(initialURI.toString());
-
         }
-
-
-
       } else {
         debugPrint("Null Initial URI received");
       }
-    } on PlatformException { // 5
+    } on PlatformException {
+      // 5
       debugPrint("Failed to receive initial uri");
-    } on FormatException catch (err) { // 6
-
+    } on FormatException catch (err) {
+      // 6
     }
   }
 }
@@ -77,33 +73,25 @@ void _incomingLinkHandler() {
   if (!kIsWeb) {
     // 2
     _streamSubscription = uriLinkStream.listen((Uri? uri) {
-
       debugPrint('Received URI: $uri');
 
-      if(uri!=null) {
-        if(uri.toString().contains('pro')){
+      if (uri != null) {
+        if (uri.toString().contains('pro')) {
           sl<PreferenceUtils>().saveProduct(uri.toString());
           if (sl.isRegistered<AuthResponse>()) {
             Get.to(MainScreen());
           }
-        }else{
+        } else {
           sl<PreferenceUtils>().saveInvitation(uri.toString());
           if (sl.isRegistered<AuthResponse>()) {
             Get.to(InvitationScreen());
           }
         }
-
       }
-
-
-
-
 
       // 3
     }, onError: (Object err) {
-
       debugPrint('Error occurred: $err');
-
     });
   }
 }
@@ -124,8 +112,6 @@ void _configureFCMListeners() {
   });
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-
 }
 
 void _initializeFCM() {
@@ -133,12 +119,11 @@ void _initializeFCM() {
   FirebaseMessaging.instance.getToken().then((token) {
     print("FCM Token: $token");
 
-
-    Future.delayed(Duration.zero).then((value){
-      if(sl.isRegistered<AuthResponse>()&&sl.isRegistered<AuthRepository>()){
-        if(token!=null){
-          sl<AuthRepository>().sendFCMToken({'token':token});
-
+    Future.delayed(Duration.zero).then((value) {
+      if (sl.isRegistered<AuthResponse>() &&
+          sl.isRegistered<AuthRepository>()) {
+        if (token != null) {
+          sl<AuthRepository>().sendFCMToken({'token': token});
         }
       }
     });
@@ -155,10 +140,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
   sl<PreferenceUtils>().saveNotification();*/
 }
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-  );
+  await Firebase.initializeApp();
   await FirebaseMessaging.instance.setAutoInitEnabled(true);
   _initializeFCM();
 
@@ -172,7 +157,7 @@ void main() async {
   };
 
   await init();
-  final  user = FirebaseAuth.instance.currentUser;
+  final user = FirebaseAuth.instance.currentUser;
   final uid = user?.uid;
 
   print('uid ${uid}');
@@ -180,14 +165,11 @@ void main() async {
 
   _configureFCMListeners();
 
-
   AuthResponse? loginModel = await sl<PreferenceUtils>().readUser();
 
   if (loginModel != null) {
     sl.registerSingleton(loginModel);
     Url.TOKEN = loginModel.data!.token!;
-
-
   }
 
   runApp(
@@ -216,6 +198,7 @@ void main() async {
     ),
   );
 }
+
 //AIzaSyAm_ZEJZ58IDAn9IjtGr3a9Y0UKKjOcWI0
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -238,7 +221,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -290,16 +272,24 @@ class PieChart extends StatelessWidget {
       onTapUp: (TapUpDetails details) {
         final RenderBox box = context.findRenderObject() as RenderBox;
         final Offset localPosition = box.globalToLocal(details.globalPosition);
-        final double tapAngle = (math.atan2(localPosition.dy - radius, localPosition.dx - radius) + math.pi * 2) % (math.pi * 2);
+        final double tapAngle =
+            (math.atan2(localPosition.dy - radius, localPosition.dx - radius) +
+                    math.pi * 2) %
+                (math.pi * 2);
         double cumulativePercent = 0;
         for (int i = 0; i < data.length; i++) {
           final double startAngle = math.pi * 2 * cumulativePercent / 100;
-          final double endAngle = math.pi * 2 * (cumulativePercent + data[i].percent) / 100;
-          print('Tap Angle: $tapAngle, Branch $i - Start Angle: $startAngle, End Angle: $endAngle'); // Debugging statement
+          final double endAngle =
+              math.pi * 2 * (cumulativePercent + data[i].percent) / 100;
+          print(
+              'Tap Angle: $tapAngle, Branch $i - Start Angle: $startAngle, End Angle: $endAngle'); // Debugging statement
 
           if (tapAngle >= startAngle && tapAngle <= endAngle) {
             if (onSectionSelected != null) {
-              onSectionSelected!(i, data[i]); // Call the callback with the index and data of the tapped section
+              onSectionSelected!(
+                  i,
+                  data[
+                      i]); // Call the callback with the index and data of the tapped section
             }
 
             break;
