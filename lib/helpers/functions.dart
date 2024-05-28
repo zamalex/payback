@@ -49,10 +49,10 @@ double calculateCashback(List<Product> pros){
   try{
     pros.forEach((element) {
       if(element.cartQuantity>=element.quantity_from!){
-        int q = element.cartQuantity%element.quantity_to!;
-        if(q==0){
+        int q = (element.cartQuantity.toInt() / element.quantity_to!.toInt()).toInt();
+        if(q>1){
           q=( element.cartQuantity/element.quantity_to!).toInt();
-          q=1;
+         // q=1;
         }
         else{
           q=1;
