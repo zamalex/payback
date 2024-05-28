@@ -117,7 +117,7 @@ class _CartScreenState extends State<CartScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'You will cover 12% of your commitments',
+                            'You will cover some of your commitments',
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,

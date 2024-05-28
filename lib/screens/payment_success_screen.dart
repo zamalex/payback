@@ -10,8 +10,8 @@ import '../data/service_locator.dart';
 import '../helpers/custom_widgets.dart';
 
 class PaymentSuccessScreen extends StatefulWidget {
-   PaymentSuccessScreen({super.key,required this.data});
-
+   PaymentSuccessScreen({super.key,required this.data,required this.cashback});
+  double cashback = 0;
   Map data;
 
   @override
@@ -134,7 +134,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                                        style: TextStyle(fontSize: 15,color: Colors.black),
                                      ),
                                      trailing: Text(
-                                       '${widget.data['cashback']} SAR',
+                                       '${/*widget.data['cashback']*/widget.cashback} SAR',
                                        style: TextStyle(
                                            fontSize: 15,
                                            color: Colors.grey,

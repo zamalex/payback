@@ -30,42 +30,56 @@ class _ShopOnlineScreenState extends State<ShopOnlineScreen> {
             CupertinoActionSheetAction(
               child: const Text('Best cashback',style: TextStyle(color: Colors.blue)),
               onPressed: () {
+                Provider.of<HomeProvider>(context,listen: false).sortProducts(0);
+
                 Navigator.pop(context, 'Delete For Everyone');
               },
             ),
             CupertinoActionSheetAction(
               child: const Text('Popular',style: TextStyle(color: Colors.blue)),
               onPressed: () {
+                Provider.of<HomeProvider>(context,listen: false).sortProducts(0);
+
                 Navigator.pop(context, 'Delete For Everyone');
               },
             ),
             CupertinoActionSheetAction(
               child: const Text('Hot deals',style: TextStyle(color: Colors.blue)),
               onPressed: () {
+                Provider.of<HomeProvider>(context,listen: false).sortProducts(1);
+
                 Navigator.pop(context, 'Delete For Everyone');
               },
             ),
             CupertinoActionSheetAction(
               child: const Text('Price : lowest to high',style: TextStyle(color: Colors.blue)),
               onPressed: () {
+                Provider.of<HomeProvider>(context,listen: false).sortProducts(2);
+
                 Navigator.pop(context, 'Delete For Everyone');
               },
             ),
             CupertinoActionSheetAction(
               child: const Text('Price : highest to low',style: TextStyle(color: Colors.blue)),
               onPressed: () {
+                Provider.of<HomeProvider>(context,listen: false).sortProducts(3);
+
                 Navigator.pop(context, 'Delete For Everyone');
               },
             ),
             CupertinoActionSheetAction(
               child: const Text('Name : A-Z',style: TextStyle(color: Colors.blue)),
               onPressed: () {
+                Provider.of<HomeProvider>(context,listen: false).sortProducts(4);
+
                 Navigator.pop(context, 'Delete For Everyone');
               },
             ),
             CupertinoActionSheetAction(
               child: const Text('Name : Z-A',style: TextStyle(color: Colors.blue)),
               onPressed: () {
+                Provider.of<HomeProvider>(context,listen: false).sortProducts(5);
+
                 Navigator.pop(context, 'Delete For Everyone');
               },
             ),
@@ -73,6 +87,8 @@ class _ShopOnlineScreenState extends State<ShopOnlineScreen> {
           cancelButton: CupertinoActionSheetAction(
             child: const Text('Cancel',style: TextStyle(color: kBlueColor)),
             onPressed: () {
+              Provider.of<HomeProvider>(context,listen: false).sortProducts(6);
+
               Navigator.pop(context, 'Cancel');
             },
           )),
@@ -219,7 +235,7 @@ class _ShopOnlineScreenState extends State<ShopOnlineScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      TextButton.icon(
+                     if( selected==0)  TextButton.icon(
                         onPressed: () {
                           selected==0?sortProducts():sortPartners();
                         },

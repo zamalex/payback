@@ -59,14 +59,18 @@ dependencies:
   carousel_slider: ^4.2.1
   image_picker: ^1.0.7
   auto_size_text: ^3.0.0
-  country_code_picker: ^3.0.0
+  country_code_picker:
+    git:
+      url: https://github.com/zamalex/CountryCodePicker.git
+      ref: master
   fl_chart: ^0.66.2
   firebase_crashlytics: ^3.4.19
   firebase_analytics: ^10.8.10
   intl: ^0.18.1
 
 
-
+dependency_overrides:
+  modal_bottom_sheet: ^3.0.0-pre
 
 dev_dependencies:
   flutter_test:

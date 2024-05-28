@@ -256,6 +256,13 @@ class CommitmentsRepository{
                someCommitments.addAll(commitments.where((comm) => comm.name==trans.reference!.name).toList());
 
                 if(trans.reference!.commitment!=null){
+                  bool add = true;
+                  someCommitments.forEach((element) {
+                    if(element.id==trans.reference!.commitment!.id){
+                      add = false;
+                    }
+                  });
+                  if(add)
                   someCommitments.add(trans.reference!.commitment!);
 
                 }

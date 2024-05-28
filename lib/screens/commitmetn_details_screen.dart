@@ -212,10 +212,10 @@ class _CommitmetDetailsState extends State<CommitmetDetails> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text('100% collected',
+                                    Text('${(widget.commitment.completed_percentage!).toStringAsFixed(2)}% collected',
                                         style: TextStyle(
                                             fontSize: 12, color: Colors.white)),
-                                    Text('100% collected',
+                                    Text('${(100-widget.commitment.completed_percentage!).toStringAsFixed(2)}% left',
                                         style: TextStyle(
                                             fontSize: 12, color: Colors.white)),
                                   ],
@@ -550,7 +550,7 @@ class ContributorWidget extends StatelessWidget {
                 //   backgroundImage: NetworkImage('https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png'),
               ),
               title: Text(
-                contributorModel!.name!,
+                contributorModel!.name??'',
                 style:
                     TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
               ),

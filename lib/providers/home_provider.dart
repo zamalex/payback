@@ -147,6 +147,35 @@ class HomeProvider extends ChangeNotifier {
   List<Branch> branches = [];
   List<Branch> filterBranches = [];
 
+
+  sortProducts(int index)async{
+
+    await getProducts(location: 'SHOPPING',);
+    if([0,1,2].contains(index)){
+      shoppingProducts.sort((a, b) => a.cashback!.compareTo(b.cashback!));
+
+      shoppingProducts = shoppingProducts.reversed.toList();
+    }
+    else if(index==3){
+      shoppingProducts.sort((a, b) => double.parse(a.price!).compareTo(double.parse(b.price!)));
+      shoppingProducts = shoppingProducts.reversed.toList();
+
+    } else if(index==4){
+      shoppingProducts.sort((a, b) => double.parse(a.price!).compareTo(double.parse(b.price!)));
+
+    }else if(index==5){
+      shoppingProducts.sort((a, b) => a.name!.compareTo(b.name!));
+      shoppingProducts = shoppingProducts.reversed.toList();
+
+    } else if(index==6){
+      shoppingProducts.sort((a, b) => a.name!.compareTo(b.name!));
+
+    }
+
+
+    notifyListeners();
+  }
+
   Future<Map<String, dynamic>> getVendors() async {
     // Implement your loading logic here if needed
     // ...
@@ -361,7 +390,7 @@ class HomeProvider extends ChangeNotifier {
 
     if (location == 'HOME') {
       if (isHotDeals != null && isHotDeals)
-        filters.putIfAbsent('hot_deal', () => 1);
+        filters.putIfAbsent(/*'hot_deal'*/'is_suggest', () => 1);
       else if (isSuggested != null && isSuggested)
         filters.putIfAbsent('is_suggest', () => 1);
 
@@ -370,9 +399,9 @@ class HomeProvider extends ChangeNotifier {
             'category_id', () => categories[selectedHomeIndex].id);
       }
     } else if (location == 'SHOPPING') {
-      if(searchControllerShopping.text.isNotEmpty){
+      /*if(searchControllerShopping.text.isNotEmpty){
         filters.putIfAbsent('search', () => searchControllerShopping.text.toString());
-      }
+      }*/
 
       vendors.forEach((element) {
         if (element.isChecked) {
@@ -424,12 +453,19 @@ class HomeProvider extends ChangeNotifier {
     if (response.containsKey('data')) {
       if (location == 'HOME') {
         products = response['data'];
-        if (isHotDeals != null && isHotDeals)
-          hotDealsProducts = products;
-        else if (isSuggested != null && isSuggested)
+        if (isHotDeals != null && isHotDeals){
+          products.sort((a, b) => a.cashback!.compareTo(b.cashback!));
+
+          hotDealsProducts = products.reversed.toList();
+        }
+
+
+      else if (isSuggested != null && isSuggested)
           suggestedProducts = products;
-      } else if (location == 'SHOPPING')
+      } else if (location == 'SHOPPING') {
         shoppingProducts = response['data'];
+        shoppingProducts = shoppingProducts.where((element) => element.name!.toLowerCase().contains(searchControllerShopping.text.toString().toLowerCase())).toList();
+      }
 
       else if (location == 'QR')
         QRProducts = response['data'];

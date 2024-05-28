@@ -175,7 +175,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         Get.snackbar(value['data']?'Success':'Failed',value['message'],colorText: Colors.white,backgroundColor: value['data']?Colors.green:Colors.red);
 
         if(value['data']){
-          Get.to(PaymentSuccessScreen(data: value,));
+          Get.to(PaymentSuccessScreen(data: value,cashback: tcb,));
         }
 
       });
@@ -216,6 +216,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     );
   }
 
+  double tcb = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -251,6 +252,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             double totalCashback = 0;
 
             totalCashback = calculateCashback(value.cart);
+            tcb = totalCashback;
 
             return SafeArea(
               child: Form(

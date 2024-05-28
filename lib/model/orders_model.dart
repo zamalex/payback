@@ -38,7 +38,7 @@ class Order {
       id: json['id'],
       orderId: json['order_id'].toString(),
       productName: json['product']['name'],
-      quantity: int.parse(json['qty'].toString()),
+      quantity: int.parse(json['quantity'].toString()),
       vendorName: json['order']['vendor']==null?'----':json['order']['vendor']['store_name'],
       productImage: json['product']==null?'----':json['product']['featured_image'],
       dateTime: json['created_at'],
