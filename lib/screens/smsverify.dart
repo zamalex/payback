@@ -17,6 +17,8 @@ class SMSScreen extends StatefulWidget {
   bool isRegister = true;
   Map<String,String> request;
 
+
+
   @override
   State<SMSScreen> createState() => _SMSScreenState();
 }
@@ -33,6 +35,7 @@ class _SMSScreenState extends State<SMSScreen> {
     }
     if(widget.isRegister){
       widget.request.putIfAbsent('otp', () => controller.text);
+      widget.request['otp'] = controller.text;
 
       print(widget.request.toString());
 
@@ -48,6 +51,8 @@ class _SMSScreenState extends State<SMSScreen> {
     }
     else{
       widget.request.putIfAbsent('token', () => controller.text);
+
+      widget.request['token'] = controller.text;
 
       print(widget.request.toString());
 
@@ -148,12 +153,20 @@ class _SMSScreenState extends State<SMSScreen> {
                         verify(context);},))),
                 ),
                 SizedBox(height: 30,),
-                Row(
+              if(!widget.isRegister)  Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text('Haven’t received the code?'),
                     SizedBox(width: 5,),
-                    Text('Resend',style: TextStyle(fontWeight: FontWeight.bold,color: kBlueColor),),
+                    InkWell(
+                        onTap: (){
+                          setState(() {
+                            controller.clear();
+                          });
+                          Provider.of<AuthProvider>(context, listen: false)
+                              .forgotPassword({'email':widget.request['email']!.toString()},);
+                        },
+                        child: Text('Resend',style: TextStyle(fontWeight: FontWeight.bold,color: kBlueColor),)),
                   ],
                 ),
 

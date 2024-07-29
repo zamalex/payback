@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -24,15 +25,22 @@ class DioClient {
     token = sl.isRegistered<AuthResponse>()?sl<AuthResponse>().data!.token??'':"";
     // print(token);
     dio = dioC;
+
+    // Ensure that the httpClientAdapter is configured correctly
+    /*(dio!.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (HttpClient client) {
+      client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+      return client;
+    };*/
     dio!
       ..options.baseUrl = baseUrl
       ..options.connectTimeout = 30000
       ..options.receiveTimeout = 30000
-      ..httpClientAdapter
+      //..httpClientAdapter
       ..options.headers = {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token'
       };
+
     dio!.interceptors.add(loggingInterceptor!);
 
     dio!.interceptors

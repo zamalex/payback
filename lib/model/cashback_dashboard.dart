@@ -1,3 +1,5 @@
+import '../data/http/urls.dart';
+
 class CashBackHistory {
   List<HistoryCategory>? categories;
 
@@ -53,6 +55,13 @@ class Summary {
         this.depositAssignedBalance=0});
 
   Summary.fromJson(Map<String, dynamic> json) {
+  /*  if(Url.selectedHistory==1){
+      received = double.parse(json['deposit'].toString());
+      spent = double.parse(json['withdraw'].toString());
+    }else{
+      received = double.parse(json['withdraw'].toString());
+      spent = double.parse(json['deposit'].toString());
+    }*/
     received = double.parse(json['deposit'].toString());
     spent = double.parse(json['withdraw'].toString());
     withdrawUnsignedBalance = double.parse(json['withdraw_unsigned_balance'].toString());

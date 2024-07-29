@@ -1,6 +1,7 @@
 import 'package:custom_date_range_picker/custom_date_range_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payback/data/http/urls.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/helpers/functions.dart';
 import 'package:payback/model/cashback_dashboard.dart';
@@ -21,7 +22,6 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  int selected = 0;
 
   double calculateSpent(bool spent, List<HistoryCategory> cats) {
     double all = 0;
@@ -38,6 +38,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    Url.selectedHistory = 0;
 
     Future.delayed(Duration.zero).then((value) => getCashbackHistory());
   }
@@ -51,7 +52,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       'to': to,
       'month':
           Provider.of<CommitmentsProvider>(context, listen: false).selectedMonth
-    }, selected == 0);
+    }, Url.selectedHistory == 0);
   }
 
   HistoryCategory? selectedCategory;
@@ -154,17 +155,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     Text(
                       'Spent',
                       style: TextStyle(
-                          color: selected == 0 ? Colors.white : kBlueColor),
+                          color: Url.selectedHistory == 0 ? Colors.white : kBlueColor),
                     ),
                     Text(
                       'Received',
                       style: TextStyle(
-                          color: selected == 1 ? Colors.white : kBlueColor),
+                          color: Url.selectedHistory == 1 ? Colors.white : kBlueColor),
                     ),
                   ],
                   onSelect: (index) {
                     setState(() {
-                      selected = index;
+                      Url.selectedHistory = index;
                     });
 
                     getCashbackHistory();
@@ -228,7 +229,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     radius:
                                         MediaQuery.of(context).size.width * .25,
                                     child: PieChartSample2(
-                                      spent: selected == 0,
+                                      spent: Url.selectedHistory == 0,
                                       categories:
                                           value.cashbackHistory!.categories!,
                                       onTap: (ss) {
@@ -265,7 +266,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                           children: [
                                             Text('Total cashback spent (SAR):'),
                                             Text(
-                                              '${calculateSpent(selected == 0, value.cashbackHistory!.categories!)}',
+                                              '${calculateSpent(Url.selectedHistory == 0, value.cashbackHistory!.categories!)}',
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 20),
@@ -311,7 +312,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                                 colors.length]),
                                                   ),
                                                   Text(
-                                                    '${selected == 0 ? selectedCategory!.summary!.spent : selectedCategory!.summary!.received}',
+                                                    '${Url.selectedHistory == 0 ? selectedCategory!.summary!.spent : selectedCategory!.summary!.received}',
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold,
@@ -362,7 +363,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     value.cashbackHistory!.categories!.length,
                                     (index) => InkWell(
                                           onTap: () {
-                                            if (selected == 0) {
+                                            if (Url.selectedHistory == 0) {
                                               Get.to(
                                                   CommitmentCategorySpentScreen(
                                                 historyCategory: value
@@ -405,14 +406,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                     margin: EdgeInsets.only(
                                                         right: 50, left: 10),
                                                     child: Text(
-                                                      '${/*value.cashbackHistory!.categories![index].categoryId=='0'?'':*/ selected == 0 ? value.cashbackHistory!.categories![index].summary!.fromAllSpent : value.cashbackHistory!.categories![index].summary!.fromAllReceived}%',
+                                                      '${/*value.cashbackHistory!.categories![index].categoryId=='0'?'':*/ Url.selectedHistory == 0 ? value.cashbackHistory!.categories![index].summary!.fromAllSpent : value.cashbackHistory!.categories![index].summary!.fromAllReceived}%',
                                                       style: TextStyle(
                                                           fontWeight: FontWeight
                                                               .normal),
                                                     )),
                                                 Container(
                                                     child: Text(
-                                                  '${/*value.cashbackHistory!.categories![index].categoryId=='0'?'':*/ selected == 0 ? value.cashbackHistory!.categories![index].summary!.spent : value.cashbackHistory!.categories![index].summary!.received}',
+                                                  '${/*value.cashbackHistory!.categories![index].categoryId=='0'?'':*/ Url.selectedHistory == 0 ? value.cashbackHistory!.categories![index].summary!.spent : value.cashbackHistory!.categories![index].summary!.received}',
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.normal),

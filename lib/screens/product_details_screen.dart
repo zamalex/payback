@@ -6,9 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payback/data/preferences.dart';
 import 'package:payback/helpers/colors.dart';
+import 'package:payback/helpers/functions.dart';
+import 'package:payback/model/auth_response.dart';
 import 'package:payback/model/product_model.dart';
 import 'package:payback/providers/checkout_provider.dart';
 import 'package:payback/providers/home_provider.dart';
+import 'package:payback/screens/settings_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:slide_switcher/slide_switcher.dart';
@@ -152,9 +155,28 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(15)),
                       child: Column(
                         children: [
-                          ProductListTile(title: 'Product information',image: 'assets/images/product_characteristics.png',),
-                          Divider(), ProductListTile(title: 'Delivery and pickup',image: 'assets/images/shipping_info.png',),
-                          Divider(), ProductListTile(title: 'Support',image: 'assets/images/support_icon.png',),
+                          ProductListTile(title: 'Product information',image: 'assets/images/product_characteristics.png',onTap: (){
+                            showSettingsDialog('product_info', context,details: widget.product.description);
+
+                          },),
+                          Divider(), ProductListTile(title: 'Delivery and pickup',image: 'assets/images/shipping_info.png',onTap: (){
+
+                            if(!sl.isRegistered<AuthResponse>()){
+                              showGoToLogin();
+                              return;
+                            }
+                            showSettingsDialog('contact_us', context);
+
+                          },),
+                          Divider(), ProductListTile(title: 'Support',image: 'assets/images/support_icon.png',onTap: (){
+
+                            if(!sl.isRegistered<AuthResponse>()){
+                              showGoToLogin();
+                              return;
+                            }
+                            showSettingsDialog('contact_us', context);
+
+                          },),
                         ],
                       ),
                     ),
@@ -181,9 +203,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 }
 
 class ProductListTile extends StatelessWidget {
-   ProductListTile({super.key,required this.title,required this.image});
+   ProductListTile({super.key,required this.title,required this.image,this.onTap});
   String title;
   String image;
+  Function? onTap;
 
 
   @override
@@ -191,6 +214,10 @@ class ProductListTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(0),
       child: ListTile(
+        onTap: (){
+          if(onTap!=null)
+          onTap!();
+        },
         dense: true,
         contentPadding: EdgeInsets.zero,
         leading: Image.asset(image,width: 16,height: 16,),

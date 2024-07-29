@@ -16,6 +16,7 @@ import 'package:payback/screens/settings_screen.dart';
 import 'package:payback/screens/subscription_screen.dart';
 import 'package:provider/provider.dart';
 
+import '../data/http/urls.dart';
 import '../data/service_locator.dart';
 import '../providers/auth_provider.dart';
 
@@ -171,6 +172,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(children: [
+                      if(Url.showSubscribe)
                       ProfileItem(text: 'Subscription',image: 'assets/images/subscription_crown.png',onTap:(){Get.to(SubscriptionScreen());}),
                       Divider(height: 30),
                       ProfileItem(text: 'My orders',image: 'assets/images/orders_list.png',onTap: (){

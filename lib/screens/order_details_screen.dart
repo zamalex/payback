@@ -57,7 +57,7 @@ class OrderDetails extends StatelessWidget {
               Text('Shipping information',style: TextStyle(fontWeight: FontWeight.bold),),
               SizedBox(height: 20,),
               Container(padding:EdgeInsets.all(16),decoration: BoxDecoration(color: kBlueColor.withOpacity(.2),borderRadius: BorderRadius.circular(15)),child: Column(children: [
-                LeadingTrailingItem(txt: 'Delivery method', widget:Image.network('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPdRZh8TJiJxxdkvyg61IBHGiVQgQZhm62YXJb_YPeRQ&s',width: 60,height: 20,),
+                LeadingTrailingItem(txt: 'Delivery method', widget: Text('${order!.deliveryMethod}',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),),
                 )
                 ,SizedBox(height: 5,),
                 Divider()
@@ -66,7 +66,7 @@ class OrderDetails extends StatelessWidget {
                 ,SizedBox(height: 5,),
                 Divider()
                 ,SizedBox(height: 5,),
-                LeadingTrailingItem(txt: 'Office', widget: Text('${order!.pickupOffice}',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),))
+                LeadingTrailingItem(txt: 'Address', widget: Text('${order!.pickupOffice}',style: TextStyle(color:kBlueColor,fontWeight: FontWeight.bold),))
   ,SizedBox(height: 5,),
                 Divider()
                 ,SizedBox(height: 5,),
@@ -107,6 +107,18 @@ class OrderDetails extends StatelessWidget {
               margin: EdgeInsets.symmetric(vertical: 15),
               width: double.infinity,
               child: CustomButton(buttonText: 'Cancel', buttonColor: Colors.red,textColor: Colors.white,onTap: (){
+                    Provider.of<CheckoutProvider>(context,listen: false).cancelOrder({'status':2},int.parse(order!.orderId!)).then((value){
+                      Provider.of<CheckoutProvider>(context,listen: false).loadOrders();
+                      Get.back();
+                    });
+
+                    },),
+            )
+
+              ,Container(
+              margin: EdgeInsets.symmetric(vertical: 15),
+              width: double.infinity,
+              child: CustomButton(buttonText: 'Repeat order', buttonColor: Colors.red,textColor: Colors.white,onTap: (){
                     Provider.of<CheckoutProvider>(context,listen: false).cancelOrder({'status':2},int.parse(order!.orderId!)).then((value){
                       Provider.of<CheckoutProvider>(context,listen: false).loadOrders();
                       Get.back();

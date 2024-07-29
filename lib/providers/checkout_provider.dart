@@ -149,6 +149,19 @@ class CheckoutProvider extends ChangeNotifier{
     return response;
   }
 
+
+  Future<Map<String, dynamic>> reOrder(Map<String,dynamic> params,int id) async {
+
+    isLoading = true;
+    notifyListeners();
+    final response = await sl<CheckoutRepository>().reOrder(params,id);
+
+    isLoading = false;
+
+    notifyListeners();
+    return response;
+  }
+
   Future<Map<String, dynamic>> getShippingAddresses() async {
 
     final response = await sl<CheckoutRepository>().getShippingAddresses();

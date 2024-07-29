@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
+import 'package:payback/data/repository/checkout_repo.dart';
 import 'package:payback/helpers/colors.dart';
 import 'package:payback/helpers/custom_widgets.dart';
 import 'package:payback/helpers/functions.dart';
@@ -13,6 +14,7 @@ import 'package:payback/providers/checkout_provider.dart';
 import 'package:payback/screens/cart_screen.dart';
 import 'package:payback/screens/checkout_object.dart';
 import 'package:payback/screens/main_screen.dart';
+import 'package:payback/screens/payment_screen.dart';
 import 'package:payback/screens/payment_success_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -69,7 +71,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     Provider.of<CheckoutProvider>(context, listen: false).getPaymentMethods();
   }
 
-  submitOrder() {
+  submitOrder(String payment) {
     Map<String, dynamic> request = {};
     List<Map<String, dynamic>> ordersArray = [];
 
@@ -83,6 +85,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     _formKey.currentState!.save();
     request.putIfAbsent('receiver_name', () => receiverName);
     request.putIfAbsent('receiver_phone', () => receiverPhone);
+    request.putIfAbsent(
+        'cashback', () => tcb);
 
     List<CheckoutObject> ordersList =
         Provider.of<CheckoutProvider>(context, listen: false).checkouts;
@@ -107,6 +111,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
         map.putIfAbsent(
             'vendor_id', () => order.vendor);
+
+
 
          map.putIfAbsent(
             'delivery_method_id', () => provider.shippings[order.selectedDelivery].id);
@@ -172,10 +178,36 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
 
       provider.createOrder(request).then((value){
+        if(!value['data'])
         Get.snackbar(value['data']?'Success':'Failed',value['message'],colorText: Colors.white,backgroundColor: value['data']?Colors.green:Colors.red);
 
         if(value['data']){
-          Get.to(PaymentSuccessScreen(data: value,cashback: tcb,));
+
+
+          if(payment=='Cash on delivery'){
+            Get.to(PaymentSuccessScreen(data: value,cashback: tcb,));
+
+          }
+
+          else{
+
+            double allTotal = 0;
+            provider.checkouts.forEach((element) {
+              allTotal+= element.getTotalPrice();
+            });
+
+
+            sl<CheckoutRepository>().generatePaymentUrl({
+              'order_id':value['id'],
+              'order_amount': allTotal
+            }).then((vv) {
+              if(vv['data']&&vv['url']!=null){
+                Get.to(PaymentScreen(url: vv['url'],data: value,cashback: tcb,));
+              }
+            },);
+          }
+
+
         }
 
       });
@@ -217,6 +249,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   double tcb = 0;
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -456,7 +490,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   buttonColor: kPurpleColor,
                                   onTap: () {
                                     showPaymentPicker(context,(s){
-                                      submitOrder();
+                                      submitOrder(s);
                                     });
                                   },
                                 )),

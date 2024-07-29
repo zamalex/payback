@@ -235,7 +235,7 @@ class ReceivedItem extends StatelessWidget {
 
                                Text(
 
-                                'Cashback: 0 SAR',
+                                'Cashback: ${order.cashback} SAR',
                                 textAlign: TextAlign.end,
                                 style: TextStyle(
 

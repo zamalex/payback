@@ -37,7 +37,7 @@ class Order {
     return Order(
       id: json['id'],
       orderId: json['order_id'].toString(),
-      productName: json['product']['name'],
+      productName: json['product']==null?'--':json['product']['name'],
       quantity: int.parse(json['quantity'].toString()),
       vendorName: json['order']['vendor']==null?'----':json['order']['vendor']['store_name'],
       productImage: json['product']==null?'----':json['product']['featured_image'],

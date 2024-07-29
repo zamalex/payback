@@ -47,6 +47,7 @@ class RegisterScreen extends StatelessWidget {
 
    final _formKey = GlobalKey<FormState>();
 
+
    @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,17 +114,19 @@ class RegisterScreen extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 30,),
-                    Text('Or sign in with',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)
+                    /*Text('Or sign in with',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)
                     ,SizedBox(height: 5,),
                     Row(
                       children: [
                         Expanded(child: CustomIconButton(buttonText: 'Apple', iconData: 'assets/images/apple.png')),
                         SizedBox(width: 15,),
-                        Expanded(child: CustomIconButton(buttonText: 'Google', iconData: 'assets/images/google.png')),
+                        Expanded(child: CustomIconButton(buttonText: 'Google', iconData: 'assets/images/google.png',onTap: (){
+
+                        },)),
 
                       ],
                     ),
-                    SizedBox(height: 20,),
+                    SizedBox(height: 20,),*/
                     InkWell(onTap:(){
                       Navigator.of(context)
                           .pushReplacement(MaterialPageRoute(

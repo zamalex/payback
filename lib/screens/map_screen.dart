@@ -233,7 +233,7 @@ class MapSampleState extends State<MapSample> {
                               'Partners details',
                               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                             ),
-                            TextButton.icon(onPressed: (){}, icon:Text('Go to partner'),label: Icon(Icons.navigation_outlined,color: kBlueColor,),)
+                           // TextButton.icon(onPressed: (){}, icon:Text('Go to partner'),label: Icon(Icons.navigation_outlined,color: kBlueColor,),)
                   
                   
                           ],),

@@ -37,7 +37,6 @@ class AuthProvider extends ChangeNotifier {
     return response;
   }
 
-
   Future getPlans() async {
     isLoading = true;
     notifyListeners();
@@ -45,29 +44,26 @@ class AuthProvider extends ChangeNotifier {
     plans = await sl<AuthRepository>().getSubscriptions();
 
     plans.forEach((element) {
-      if(element.isSubscribed){
+      if (element.isSubscribed) {
         subscribedPlan = element;
       }
     });
 
     isLoading = false;
     notifyListeners();
-
   }
 
-  Future<Map> subscribeToPlan(Map body) async {
+  Future<Map> subscribeToPlan(Map<String, dynamic> body) async {
     isLoading = true;
     notifyListeners();
 
     Map response = await sl<AuthRepository>().subscribeToPlan(body);
-
 
     isLoading = false;
     notifyListeners();
 
     return response;
   }
-
 
   Future<CashbackModel> getCashback() async {
     cashbackModel = await sl<AuthRepository>().getCashback();

@@ -45,6 +45,14 @@ class Url {
   static String LOCALE = 'ar';
 
 
+
+  static bool showSubscribe = true;
+  static bool showApple = true;
+  static bool showGoogle = true;
+
+
+  static int selectedHistory = 0;
+
   static String NO_CASHBACK="""
    {
         "deposit": "0",

@@ -21,6 +21,7 @@ class ResetScreen extends StatelessWidget {
 
 
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
 
   login(BuildContext context) {
     /*Get.to(MainScreen());
@@ -28,6 +29,12 @@ class ResetScreen extends StatelessWidget {
 
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+
+      if(passwordController.text!= confirmPasswordController.text){
+        showErrorMessage(context,'Password not match');
+        return;
+
+      }
 
       Provider.of<a.AuthProvider>(context, listen: false)
           .resetPassword(request..putIfAbsent('password', () => passwordController.text)..putIfAbsent('password_confirmation', () => passwordController.text))
@@ -95,6 +102,15 @@ class ResetScreen extends StatelessWidget {
                       obscureText: true,
                       isPassword: true,
                       controller: passwordController,
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    CustomTextField(
+                      hintText: 'Confirm your password',
+                      obscureText: true,
+                      isPassword: true,
+                      controller: confirmPasswordController,
                     ),
                     SizedBox(
                       height: 20,

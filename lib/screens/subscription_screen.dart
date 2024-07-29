@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:payback/helpers/custom_widgets.dart';
 import 'package:payback/providers/auth_provider.dart';
+import 'package:payback/screens/subscribe_payment_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_switcher/slide_switcher.dart';
 
@@ -84,7 +85,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                               : kBlueColor),
                                     ),
                                     Text(
-                                        value.plans[1].planName,
+                                      value.plans[1].planName,
                                       style: TextStyle(
                                           color: selected == 1
                                               ? Colors.white
@@ -149,21 +150,39 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                       SizedBox(
                                         height: 15,
                                       ),
-                                     value.plans[selected].isSubscribed?Container(): Container(
-                                        width: double.infinity,
-                                        child: CustomButton(
-                                          buttonColor: kPurpleColor,
-                                          buttonText: 'Subscribe now',
-                                          onTap: (){
-                                            Provider.of<AuthProvider>(context,listen: false).subscribeToPlan({
-                                              'subscription_id':value.plans[selected].id
-                                            }).then((v) {
-                                              Get.back();
-                                            Get.snackbar('Alert', v['message']);
-                                            });
-                                          },
-                                        ),
-                                      )
+                                      value.plans[selected].isSubscribed
+                                          ? Container()
+                                          : Container(
+                                              width: double.infinity,
+                                              child: CustomButton(
+                                                buttonColor: kPurpleColor,
+                                                buttonText: 'Subscribe now',
+                                                onTap: () {
+                                                  Provider.of<AuthProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .subscribeToPlan({
+                                                    'subscription_id': value
+                                                        .plans[selected].id,
+                                                    'order_id': value
+                                                        .plans[selected].id,
+                                                    'order_amount': value
+                                                        .plans[selected].price,
+                                                  }).then((v) {
+                                                    if (v['data'] == null) {
+                                                      Get.snackbar('Alert',
+                                                          v['message']);
+
+                                                      return;
+                                                    }
+                                                    /*Get.back();
+                                            Get.snackbar('Alert', v['message']);*/
+                                                    Get.to(PaymentScreen(
+                                                        url: v['data']));
+                                                  });
+                                                },
+                                              ),
+                                            )
                                     ],
                                   ),
                                 ),
